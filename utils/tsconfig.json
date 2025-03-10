@@ -8,6 +8,7 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "noUnusedLocals": false,
     "outDir": "./dist", /* Redirect output structure to the directory. */
+    "declaration": true
   },
   "include": [
     "src/index.ts",

@@ -1,4 +1,4 @@
-import {AxiosError} from "axios";
+import { AxiosError } from "axios";
 
 function sanitizeAxiosErrorMessage(err: AxiosError<any>) {
     if (err.response && err.response.data && typeof err.response.data?.message === "string") {
