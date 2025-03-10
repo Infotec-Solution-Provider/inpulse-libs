@@ -1,10 +1,12 @@
 {
 	"name": "@in.pulse-crm/sdk",
-	"version": "1.0.1",
+	"version": "1.0.4",
 	"description": "SDKs for abstraction of api consumption of in.pulse-crm application",
 	"main": "./dist/index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "tsc",
+		"prettier": "prettier --write .",
+		"prettier:check": "prettier --check ."
 	},
 	"repository": {
 		"type": "git",
@@ -13,9 +15,11 @@
 	"author": "Renan G. Dutra <r.granatodutra@gmail.com>",
 	"license": "ISC",
 	"dependencies": {
+		"@in.pulse-crm/utils": "^1.0.0",
 		"axios": "^1.8.1"
 	},
 	"devDependencies": {
+		"@in.pulse-crm/types": "^1.0.3",
 		"@types/node": "^22.13.8",
 		"prettier": "^3.5.3",
 		"typescript": "^5.8.2"

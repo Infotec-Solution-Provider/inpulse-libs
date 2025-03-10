@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { DataResponse, LoginData, SessionData } from "@in.pulse-crm/types";
+import { sanitizeErrorMessage } from "@in.pulse-crm/utils";
 
 interface AuthSDKOptions {
 	axiosConfig: CreateAxiosDefaults;
@@ -29,17 +30,8 @@ class AuthSDK {
 				},
 			})
 			.catch((error) => {
-				console.error(error.response?.data?.error);
-
-				if (error.response?.data?.message) {
-					throw new Error(error.response.data.message);
-				}
-				if (error.response?.status) {
-					throw new Error(
-						`Failed to authenticate, status: ${error.response.status}`,
-					);
-				}
-				throw new Error(error.message);
+				const message = sanitizeErrorMessage(error);
+				throw new Error("Failed to fetch session data! " + message);
 			});
 
 		return response.data;

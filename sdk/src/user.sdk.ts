@@ -1,5 +1,11 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
-import { DataResponse, PaginatedResponse, User, CreateUserDTO, UpdateUserDTO } from "@in.pulse-crm/types";
+import type {
+	DataResponse,
+	PaginatedResponse,
+	User,
+	CreateUserDTO,
+	UpdateUserDTO,
+} from "@in.pulse-crm/types";
 
 interface UserSDKOptions {
 	axiosConfig: CreateAxiosDefaults;
@@ -13,7 +19,9 @@ class UserSDK {
 	}
 
 	public async getUsers(instance: string) {
-		const response = await this._api.get<PaginatedResponse<User>>(`/${instance}/users`);
+		const response = await this._api.get<PaginatedResponse<User>>(
+			`/${instance}/users`,
+		);
 
 		return response.data;
 	}
