@@ -1,6 +1,9 @@
-import axios, { AxiosInstance } from "axios";
-import { AuthSDKOptions, LoginData, SessionData } from "../types/auth.types";
-import { SuccessDataResponse } from "../types/response.types";
+import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
+import { DataResponse, LoginData, SessionData } from "@in.pulse-crm/types";
+
+interface AuthSDKOptions {
+	axiosConfig: CreateAxiosDefaults;
+}
 
 class AuthSDK {
 	private readonly _api: AxiosInstance;
@@ -10,17 +13,17 @@ class AuthSDK {
 	}
 
 	public async login(instance: string, login: string, password: string) {
-		const response = await this._api.post<SuccessDataResponse<LoginData>>(
+		const response = await this._api.post<DataResponse<LoginData>>(
 			`${instance}/login`,
 			{ LOGIN: login, SENHA: password },
 		);
 
-
+		return response.data;
 	}
 
 	public async fetchSessionData(instance: string, token: string) {
 		const response = await this._api
-			.get<SuccessDataResponse<SessionData>>(`/${instance}/auth`, {
+			.get<DataResponse<SessionData>>(`/${instance}/auth`, {
 				headers: {
 					authorization: token,
 				},
@@ -39,14 +42,14 @@ class AuthSDK {
 				throw new Error(error.message);
 			});
 
-		return response.data.data;
+		return response.data;
 	}
 
 	public async isAuthenticated(instance: string, token: string) {
 		try {
-			await this.fetchSessionData(instance, token);
+			const { data } = await this.fetchSessionData(instance, token);
 
-			return true;
+			return !!data.userId;
 		} catch {
 			return false;
 		}
@@ -58,9 +61,9 @@ class AuthSDK {
 		authorizedRoles: string[],
 	) {
 		try {
-			const session = await this.fetchSessionData(instance, token);
+			const { data } = await this.fetchSessionData(instance, token);
 
-			return authorizedRoles.includes(session.role);
+			return authorizedRoles.includes(data.role);
 		} catch {
 			return false;
 		}

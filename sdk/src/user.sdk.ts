@@ -1,11 +1,9 @@
-import axios, { AxiosInstance } from "axios";
-import {
-	User,
-	UserSDKOptions,
-	CreateUserDTO,
-	UpdateUserDTO,
-} from "../types/user.types";
-import { SuccessDataResponse } from "../types/response.types";
+import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
+import { DataResponse, PaginatedResponse, User, CreateUserDTO, UpdateUserDTO } from "@in.pulse-crm/types";
+
+interface UserSDKOptions {
+	axiosConfig: CreateAxiosDefaults;
+}
 
 class UserSDK {
 	private readonly _api: AxiosInstance;
@@ -15,13 +13,13 @@ class UserSDK {
 	}
 
 	public async getUsers(instance: string) {
-		const response = await this._api.get<Array<User>>(`/${instance}/users`);
+		const response = await this._api.get<PaginatedResponse<User>>(`/${instance}/users`);
 
 		return response.data;
 	}
 
 	public async getUserById(instance: string, userId: number) {
-		const response = await this._api.get<User>(
+		const response = await this._api.get<DataResponse<User>>(
 			`/${instance}/users/${userId}`,
 		);
 
@@ -30,7 +28,7 @@ class UserSDK {
 
 	public async createUser(instance: string, data: CreateUserDTO) {
 		try {
-			const response = await this._api.post<SuccessDataResponse<User>>(
+			const response = await this._api.post<DataResponse<User>>(
 				`/${instance}/users`,
 				data,
 			);
@@ -47,7 +45,7 @@ class UserSDK {
 		data: UpdateUserDTO,
 	) {
 		try {
-			const response = await this._api.patch<SuccessDataResponse<User>>(
+			const response = await this._api.patch<DataResponse<User>>(
 				`/${instance}/users/${userId}`,
 				data,
 			);

@@ -1,5 +1,5 @@
-import UserSDK from "./user.sdk";
 import AuthSDK from "./auth.sdk";
+import UserSDK from "./user.sdk";
 import InstanceSDK from "./instance.sdk";
 
-export { UserSDK, AuthSDK, InstanceSDK };
+export { AuthSDK, UserSDK, InstanceSDK };
