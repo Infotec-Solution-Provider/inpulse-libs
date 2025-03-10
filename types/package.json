@@ -1,8 +1,13 @@
 {
-  "name": "@in.pulse-crm/types",
-  "version": "1.0.0",
-  "description": "Types provider for in-pulse crm development",
-  "main": "src/index.ts",
-  "author": "Renan G. Dutra <r.granatodutra@gmail.com>",
-  "license": "ISC"
+	"name": "@in.pulse-crm/types",
+	"version": "1.0.3",
+	"description": "Types provider for in-pulse crm development",
+	"main": "./dist/index.d.ts",
+	"author": "Renan G. Dutra <r.granatodutra@gmail.com>",
+	"license": "ISC",
+	"scripts": {
+		"build": "tsc",
+		"prettier": "prettier --write .",
+		"prettier:check": "prettier --check ."
+	}
 }
