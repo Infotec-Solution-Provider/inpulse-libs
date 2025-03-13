@@ -3,6 +3,10 @@ export interface DataResponse<T> {
     data: T;
 }
 
+export interface MessageResponse {
+	message: string;
+}
+
 export interface ErrorResponse {
     message: string;
     cause?: any;
