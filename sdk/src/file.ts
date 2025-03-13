@@ -107,6 +107,15 @@ class FileSDK {
     }
 
     /**
+     * Obtém a URL de download de um arquivo.
+     * @param {number} id - ID do arquivo.
+     * @returns {string} URL de download do arquivo.
+     */
+    public getFileDownloadUrl(id: number): string {
+        return this.httpClient.defaults.baseURL + `/files/${id}`;
+    }
+
+    /**
      * Faz o upload de um arquivo.
      * @param {UploadFileOptions} props - Opções para o upload do arquivo.
      * @returns {Promise<File>} Os dados do arquivo enviado.
