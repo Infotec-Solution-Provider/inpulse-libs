@@ -3,6 +3,8 @@
 	"version": "1.0.0",
 	"description": "Utility functions for inpulse development",
 	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"module": "./dist/index.js",
 	"scripts": {
 		"build": "tsc",
 		"prettier": "prettier --write .",
