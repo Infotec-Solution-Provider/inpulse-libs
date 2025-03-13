@@ -1,6 +1,6 @@
 {
 	"name": "@in.pulse-crm/sdk",
-	"version": "1.0.4",
+	"version": "1.0.7",
 	"description": "SDKs for abstraction of api consumption of in.pulse-crm application",
 	"main": "./dist/index.js",
 	"scripts": {
@@ -19,8 +19,7 @@
 		"axios": "^1.8.1"
 	},
 	"devDependencies": {
-		"@in.pulse-crm/types": "^1.0.3",
-		"@types/node": "^22.13.8",
+		"@types/node": "^22.13.10",
 		"prettier": "^3.5.3",
 		"typescript": "^5.8.2"
 	}

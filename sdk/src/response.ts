@@ -3,6 +3,11 @@ export interface DataResponse<T> {
     data: T;
 }
 
+export interface ErrorResponse {
+    message: string;
+    cause?: any;
+}
+
 export interface PaginatedResponse<T> {
     message: string;
     data: Array<T>;
@@ -14,9 +19,4 @@ export interface PaginatedResponse<T> {
 
 export interface QueryResponse<T> {
     result: T;
-}
-
-export interface ErrorResponse {
-    message: string;
-    cause?: any;
 }

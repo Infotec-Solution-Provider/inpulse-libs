@@ -1,9 +1,6 @@
-import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
-import { QueryResponse } from "@in.pulse-crm/types";
+import { AxiosInstance } from "axios";
+import { QueryResponse } from "./response";
 
-interface InstanceSDKOptions {
-	axiosConfig: CreateAxiosDefaults;
-}
 /**
  * Classe InstanceSDK para interagir com a API de instâncias.
  */
