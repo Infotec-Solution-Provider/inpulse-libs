@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { User } from "./user/types";
+import { User } from "./user";
 import { sanitizeErrorMessage } from "@in.pulse-crm/utils";
 import { DataResponse } from "./response";
 
