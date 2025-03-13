@@ -4,21 +4,30 @@ import { QueryResponse } from "@in.pulse-crm/types";
 interface InstanceSDKOptions {
 	axiosConfig: CreateAxiosDefaults;
 }
-
+/**
+ * Classe InstanceSDK para interagir com a API de instâncias.
+ */
 class InstanceSDK {
-	private readonly _api: AxiosInstance;
+	/**
+	 * Cria uma instância do SDK de instância.
+	 * @param {AxiosInstance} httpClient A instância do cliente HTTP a ser usada para fazer requisições à API.
+	 */
+	constructor(private readonly httpClient: AxiosInstance) { }
 
-	constructor(props: InstanceSDKOptions) {
-		this._api = axios.create(props.axiosConfig);
-	}
-
+	/**
+	 * Executa uma consulta na instância especificada.
+	 * @param {string} instanceName Nome da instância do Inpulse.
+	 * @param {string} query Consulta a ser executada.
+	 * @param {any[]} parameters Parâmetros da consulta.
+	 * @returns {Promise<T>} Resultado da consulta.
+	 */
 	public async executeQuery<T>(
-		instance: string,
+		instanceName: string,
 		query: string,
-		parameters: Array<any>,
-	) {
-		const response = await this._api
-			.post<QueryResponse<T>>(`/${instance}/query`, { query, parameters })
+		parameters: any[],
+	): Promise<T> {
+		const response = await this.httpClient
+			.post<QueryResponse<T>>(`/${instanceName}/query`, { query, parameters })
 			.catch((error) => {
 				if (error.response?.data?.message) {
 					throw new Error(error.response.data.message);
