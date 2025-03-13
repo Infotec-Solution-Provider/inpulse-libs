@@ -26,7 +26,7 @@ class Formatter {
    * @param phone - O número de telefone a ser formatado.
    * @returns O número de telefone formatado.
    */
-  public phone(phone: string): string {
+  public static phone(phone: string): string {
     return formatPhone(phone);
   }
 }

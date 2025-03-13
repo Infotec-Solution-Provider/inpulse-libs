@@ -1,6 +1,6 @@
 {
 	"name": "@in.pulse-crm/utils",
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"description": "Utility functions for inpulse development",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
