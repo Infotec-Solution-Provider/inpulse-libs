@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
-import { DataResponse, LoginData, SessionData } from "@in.pulse-crm/types";
+import { DataResponse, LoginData, SessionData, User } from "@in.pulse-crm/types";
 import { sanitizeErrorMessage } from "@in.pulse-crm/utils";
 
 interface AuthSDKOptions {
@@ -32,6 +32,21 @@ class AuthSDK {
 			.catch((error) => {
 				const message = sanitizeErrorMessage(error);
 				throw new Error("Failed to fetch session data! " + message);
+			});
+
+		return response.data;
+	}
+
+	public async fetchSessionUser(instance: string, token: string) {
+		const response = await this._api
+			.get<DataResponse<User>>(`/${instance}/auth/user`, {
+				headers: {
+					authorization: token,
+				},
+			})
+			.catch((error) => {
+				const message = sanitizeErrorMessage(error);
+				throw new Error("Failed to fetch session user! " + message);
 			});
 
 		return response.data;
