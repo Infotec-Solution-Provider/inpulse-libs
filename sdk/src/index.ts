@@ -3,6 +3,7 @@ import FileSDK, { File, FileDirType } from "./file";
 import InstanceSDK from "./instance";
 import UserSDK, { CreateUserDTO, UpdateUserDTO, User, UserRole } from "./user";
 import { DataResponse, ErrorResponse, PaginatedResponse, QueryResponse } from "./response";
+import ReportSDK, { ChatReport, ChatReportFileFormat, GenerateChatReportOptions } from "./report";
 
 export {
     AuthSDK,
@@ -21,4 +22,8 @@ export {
     ErrorResponse,
     PaginatedResponse,
     QueryResponse,
+    ReportSDK,
+    ChatReport,
+    ChatReportFileFormat,
+    GenerateChatReportOptions
 };

@@ -26,8 +26,8 @@ export enum ChatReportFileFormat {
 	PDF = "pdf",
 }
 
-export default class ReportsSDK {
-	constructor(private readonly httpClient: AxiosInstance) {}
+export default class ReportSDK {
+	constructor(private readonly httpClient: AxiosInstance) { }
 
 	public async getChatsReports(instanceName: string) {
 		const url = `/${instanceName}/reports/chats`;
@@ -50,10 +50,10 @@ export default class ReportsSDK {
 		return response.data;
 	}
 
-    public async deleteReport(instanceName: string, reportId: number) {
-        const url = `/${instanceName}/reports/chats/${reportId}`;
-        const response = await this.httpClient.delete<MessageResponse>(url);
+	public async deleteReport(instanceName: string, reportId: number) {
+		const url = `/${instanceName}/reports/chats/${reportId}`;
+		const response = await this.httpClient.delete<MessageResponse>(url);
 
-        return response.data;
-    }
+		return response.data;
+	}
 }
