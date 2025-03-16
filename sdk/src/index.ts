@@ -11,11 +11,11 @@ SocketServerSDK,
     EmitFunction,
     InstanceName,
     SocketAdminRoom,
-    SocketChatReportsRoom,
     SocketChatRoom,
-    SocketEventType,
     SocketMonitorRoom,
-    SocketRoomType
+    SocketReportsRoom,
+    SocketRoomType,
+    SocketEventType,
 } from "./socket-server";
 
 export {
@@ -47,7 +47,7 @@ export {
     EmitFunction,
     InstanceName,
     SocketAdminRoom,
-    SocketChatReportsRoom,
+    SocketReportsRoom,
     SocketChatRoom,
     SocketEventType,
     SocketMonitorRoom,

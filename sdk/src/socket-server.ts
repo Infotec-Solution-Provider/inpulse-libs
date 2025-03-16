@@ -11,7 +11,8 @@ export enum SocketEventType {
     NEW_CHAT = "new_chat",
     CHAT_FINISHED = "chat_finished",
     NOTIFICATION = "notification",
-    QR_CODE = "qr_code"
+    QR_CODE = "qr_code",
+    REPORT_STATUS = "report_status"
 }
 
 /**
@@ -30,19 +31,31 @@ export type SocketAdminRoom = `sector:${SectorId}:admin`;
 export type SocketMonitorRoom = `sector:${SectorId}:monitor`;
 
 /**
- * Sala de relatórios de chat, recebe eventos de relatórios de chat de um setor específico.
+ * Sala de relatórios, recebe eventos de um tipo relatório específico de um setor específico.
  */
-export type SocketChatReportsRoom = `sector:${SectorId}:chat_reports`;
+export type SocketReportsRoom = `sector:${number}:reports:${string}`;
 
 /**
  * Tipo de sala de socket.
  */
-export type SocketRoomType = SocketChatRoom | SocketAdminRoom | SocketChatReportsRoom | SocketMonitorRoom;
+export type SocketRoomType = SocketChatRoom | SocketAdminRoom | SocketReportsRoom | SocketMonitorRoom;
 
 /**
  * Ainda não implementado.
  */
 export type NotImplemented = unknown;
+
+/**
+ * Dados de status de um relatório.
+ */
+export type ReportStatusData = {
+    id: number;
+    type: string;
+    progress: number;
+    isCompleted: boolean;
+    isFailed: boolean;
+    error?: string;
+};
 
 /**
  * String representando um QR Code.
@@ -106,6 +119,12 @@ export type EmitFunction = {
         room: SocketChatRoom,
         event: SocketEventType.MESSAGE_STATUS,
         value: NotImplemented
+    ): void;
+    (
+        instanceName: string,
+        room: SocketAdminRoom,
+        event: SocketEventType.REPORT_STATUS,
+        value: ReportStatusData
     ): void;
 };
 
