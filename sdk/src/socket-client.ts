@@ -1,63 +1,6 @@
 import { Socket } from "socket.io-client";
 import { PhoneNumber } from "@in.pulse-crm/utils";
-
-/**
- * Tipos de eventos de socket.
- */
-export enum SocketEventType {
-    MESSAGE = "message",
-    MESSAGE_EDIT = "message_edit",
-    MESSAGE_STATUS = "message_status",
-    NEW_CHAT = "new_chat",
-    CHAT_FINISHED = "chat_finished",
-    NOTIFICATION = "notification",
-    QR_CODE = "qr_code"
-}
-
-/**
- * Sala de chat, recebe todos eventos de um chat específico.
- */
-export type SocketChatRoom = `chat:${PhoneNumber}`;
-
-/**
- * Sala de administrador, recebe eventos de adminstrador de um setor específico.
- */
-export type SocketAdminRoom = `sector:${SectorId}:admin`;
-
-/**
- * Sala de relatórios de chat, recebe eventos de relatórios de chat de um setor específico.
- */
-export type SocketChatReportsRoom = `sector:${SectorId}:chat_reports`;
-
-/**
- * Tipo de sala de socket.
- */
-export type SocketRoomType = SocketChatRoom | SocketAdminRoom | SocketChatReportsRoom;
-
-/**
- * Ainda não implementado.
- */
-export type NotImplemented = never;
-
-/**
- * String representando um QR Code.
- */
-export type QRCode = string;
-
-/**
- * Id de um chat.
- */
-export type ChatId = number;
-
-/**
- * Id de um setor.
- */
-export type SectorId = number;
-
-/**
- * Nome de uma instância.
- */
-export type InstanceName = string;
+import { ChatId, NotImplemented, QRCode, SocketEventType, SocketRoomType } from "./socket-server";
 
 /**
  * Função para entrar em uma sala de socket.
@@ -125,9 +68,9 @@ export type ListenEventFunction = {
 }
 
 /**
- * Classe para manipulação de sockets.
+ * Classe para consumo dos eventos de socket.
  */
-export default class SocketSDK {
+export default class SocketClientSDK {
     constructor(private readonly io: Socket) {
 
         this.on(SocketEventType.CHAT_FINISHED, (chatId) => {

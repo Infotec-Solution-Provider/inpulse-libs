@@ -4,6 +4,19 @@ import InstanceSDK from "./instance";
 import UserSDK, { CreateUserDTO, UpdateUserDTO, User, UserRole } from "./user";
 import { DataResponse, ErrorResponse, PaginatedResponse, QueryResponse } from "./response";
 import ReportSDK, { ChatReport, ChatReportFileFormat, GenerateChatReportOptions } from "./report";
+import SocketClientSDK, { JoinChatFunction, JoinRoomFunction, ListenEventFunction } from "./socket-client";
+import
+SocketServerSDK,
+{
+    EmitFunction,
+    InstanceName,
+    SocketAdminRoom,
+    SocketChatReportsRoom,
+    SocketChatRoom,
+    SocketEventType,
+    SocketMonitorRoom,
+    SocketRoomType
+} from "./socket-server";
 
 export {
     AuthSDK,
@@ -25,5 +38,18 @@ export {
     ReportSDK,
     ChatReport,
     ChatReportFileFormat,
-    GenerateChatReportOptions
+    GenerateChatReportOptions,
+    SocketClientSDK,
+    JoinChatFunction,
+    JoinRoomFunction,
+    ListenEventFunction,
+    SocketServerSDK,
+    EmitFunction,
+    InstanceName,
+    SocketAdminRoom,
+    SocketChatReportsRoom,
+    SocketChatRoom,
+    SocketEventType,
+    SocketMonitorRoom,
+    SocketRoomType
 };
