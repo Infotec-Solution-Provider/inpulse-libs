@@ -52,10 +52,16 @@ export type ReportStatusData = {
     id: number;
     type: string;
     progress: number;
-    isCompleted: boolean;
-    isFailed: boolean;
-    error?: string;
-};
+    isCompleted: true;
+    isFailed: false;
+    fileId: number;
+} | {
+    id: number;
+    type: string;
+    isCompleted: false;
+    isFailed: true;
+    error: string;
+}
 
 /**
  * String representando um QR Code.
