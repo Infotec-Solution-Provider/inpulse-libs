@@ -51,7 +51,12 @@ export type NotImplemented = unknown;
 export type ReportStatusData = {
     id: number;
     type: string;
+    isCompleted: false;
+    isFailed: false;
     progress: number;
+} | {
+    id: number;
+    type: string;
     isCompleted: true;
     isFailed: false;
     fileId: number;
