@@ -60,13 +60,12 @@ export default class AuthSDK {
 
     /**
      * Busca os dados da sessão.
-     * @param {string} instanceName Nome da instância do Inpulse.
      * @param {string} authToken Token de autenticação.
      * @returns {Promise<DataResponse<AuthTypes.SessionData>>} Dados da sessão.
      */
-    public async fetchSessionData(instanceName: string, authToken: string): Promise<DataResponse<SessionData>> {
+    public async fetchSessionData(authToken: string): Promise<DataResponse<SessionData>> {
         const response = await this.httpClient
-            .get<DataResponse<SessionData>>(`/${instanceName}/auth`, {
+            .get<DataResponse<SessionData>>(`/auth`, {
                 headers: {
                     authorization: authToken,
                 },
@@ -81,13 +80,12 @@ export default class AuthSDK {
 
     /**
      * Busca os dados do usuário da sessão.
-     * @param {string} instanceName Nome da instância do Inpulse.
      * @param {string} authToken Token de autenticação.
      * @returns {Promise<DataResponse<AuthTypes.User>>} Dados do usuário.
      */
-    public async fetchSessionUser(instanceName: string, authToken: string): Promise<DataResponse<User>> {
+    public async fetchSessionUser(authToken: string): Promise<DataResponse<User>> {
         const response = await this.httpClient
-            .get<DataResponse<User>>(`/${instanceName}/auth/user`, {
+            .get<DataResponse<User>>(`/auth/user`, {
                 headers: {
                     authorization: authToken,
                 },
@@ -108,9 +106,9 @@ export default class AuthSDK {
      */
     public async isAuthenticated(instanceName: string, authToken: string): Promise<boolean> {
         try {
-            const { data } = await this.fetchSessionData(instanceName, authToken);
+            const { data } = await this.fetchSessionData(authToken);
 
-            return !!data.userId;
+            return !!data.userId && data.instance === instanceName;
         } catch {
             return false;
         }
@@ -129,9 +127,9 @@ export default class AuthSDK {
         authorizedRoles: string[],
     ): Promise<boolean> {
         try {
-            const { data } = await this.fetchSessionData(instanceName, authToken);
+            const { data } = await this.fetchSessionData(authToken);
 
-            return authorizedRoles.includes(data.role);
+            return authorizedRoles.includes(data.role) && data.instance === instanceName;
         } catch {
             return false;
         }
