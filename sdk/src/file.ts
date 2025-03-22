@@ -35,7 +35,6 @@ export enum FileDirType {
     MODELS = "models",
 }
 
-
 /**
  * Representa um arquivo no sistema.
  */

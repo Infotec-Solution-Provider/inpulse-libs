@@ -1,7 +1,13 @@
 import { AxiosInstance } from "axios";
 import { DataResponse, MessageResponse } from "./response";
 
-export interface ChatReport {
+export enum ChatsReportStatus {
+	PENDING = "PENDING",
+	COMPLETED = "COMPLETED",
+	FAILED = "FAILED",
+}
+
+export interface ChatsReport {
 	id: number;
 	userId: string;
 	fileId: number;
@@ -10,17 +16,20 @@ export interface ChatReport {
 	startDate: string;
 	endDate: string;
 	exportDate: string;
+	chats: number;
+	messages: number;
+	status: ChatsReportStatus;
 }
 
-export interface GenerateChatReportOptions {
+export interface GenerateChatsReportOptions {
 	instance: string;
 	userId: string;
-	format: ChatReportFileFormat;
+	format: ChatsReportFileFormat;
 	startDate: string;
 	endDate: string;
 }
 
-export enum ChatReportFileFormat {
+export enum ChatsReportFileFormat {
 	TXT = "txt",
 	CSV = "csv",
 	PDF = "pdf",
@@ -32,17 +41,17 @@ export default class ReportSDK {
 	public async getChatsReports(instanceName: string) {
 		const url = `/${instanceName}/reports/chats`;
 		const response =
-			await this.httpClient.get<DataResponse<Array<ChatReport>>>(url);
+			await this.httpClient.get<DataResponse<Array<ChatsReport>>>(url);
 
 		return response.data;
 	}
 
-	public async generateChatReport({
+	public async generateChatsReport({
 		instance,
 		...body
-	}: GenerateChatReportOptions) {
+	}: GenerateChatsReportOptions) {
 		const url = `/${instance}/reports/chats`;
-		const response = await this.httpClient.post<DataResponse<ChatReport>>(
+		const response = await this.httpClient.post<DataResponse<ChatsReport>>(
 			url,
 			body,
 		);
@@ -50,8 +59,8 @@ export default class ReportSDK {
 		return response.data;
 	}
 
-	public async deleteReport(instanceName: string, reportId: number) {
-		const url = `/${instanceName}/reports/chats/${reportId}`;
+	public async deleteChatsReport(instanceName: string, chatsReportId: number) {
+		const url = `/${instanceName}/reports/chats/${chatsReportId}`;
 		const response = await this.httpClient.delete<MessageResponse>(url);
 
 		return response.data;

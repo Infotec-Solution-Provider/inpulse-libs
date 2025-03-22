@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { PhoneNumber } from "@in.pulse-crm/utils";
-import { ChatId, NotImplemented, QRCode, ReportStatusData, SocketEventType, SocketRoomType } from "./socket-server";
+import { ChatId, NotImplemented, QRCode, ChatsReportStatusData, SocketEventType, SocketRoomType } from "./socket-server";
 
 /**
  * Função para entrar em uma sala de socket.
@@ -71,7 +71,7 @@ export type ListenEventFunction = {
      * @trigger Quando o status de um relatório é atualizado
      * @target Sala de relatórios
      */
-    (event: SocketEventType.REPORT_STATUS, listener: (data: ReportStatusData) => void): void;
+    (event: SocketEventType.REPORT_STATUS, listener: (data: ChatsReportStatusData) => void): void;
 }
 
 /**

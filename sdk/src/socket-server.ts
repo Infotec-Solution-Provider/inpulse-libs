@@ -46,23 +46,25 @@ export type SocketRoomType = SocketChatRoom | SocketAdminRoom | SocketReportsRoo
 export type NotImplemented = unknown;
 
 /**
- * Dados de status de um relatório.
+ * Dados de status de um relatório de conversas.
  */
-export type ReportStatusData = {
+export type ChatsReportStatusData = {
     id: number;
-    type: string;
+    type: "chats-report";
     isCompleted: false;
     isFailed: false;
     progress: number;
 } | {
     id: number;
-    type: string;
+    type: "chats-report";
     isCompleted: true;
     isFailed: false;
     fileId: number;
+    chats: number;
+    messages: number;
 } | {
     id: number;
-    type: string;
+    type: "chats-report";
     isCompleted: false;
     isFailed: true;
     error: string;
@@ -198,7 +200,7 @@ export type EmitFunction = {
         instanceName: string,
         room: SocketReportsRoom,
         event: SocketEventType.REPORT_STATUS,
-        value: ReportStatusData
+        value: ChatsReportStatusData
     ): void;
 };
 
