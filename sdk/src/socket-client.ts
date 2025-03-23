@@ -16,6 +16,14 @@ export type JoinChatFunction = {
     (phone: PhoneNumber): void;
 };
 
+export type LeaveRoomFunction = {
+    (room: SocketRoomType): void;
+};
+
+export type LeaveChatFunction = {
+    (phone: PhoneNumber): void;
+};
+
 /**
  * Função para escutar eventos de socket.
  */
@@ -101,16 +109,32 @@ export default class SocketClientSDK {
      * @param room - O tipo de sala a ser ingressada.
      */
     public joinRoom: JoinRoomFunction = (room) => {
-        this.io.emit("join", `${room}`);
+        this.io.emit("join-room", `${room}`);
     }
 
     /**
-     * Entra em um chat de socket.
+     * Entra em um chat.
      * 
      * @param phone - O número de telefone do chat a ser ingressado.
      */
     public joinChat: JoinChatFunction = (phone) => {
-        this.io.emit("join", `chat:${phone}`);
+        this.joinRoom(`chat:${phone}`);
+    }
+
+    /**
+     * Sai de uma sala de socket.
+     * @param room  - O tipo de sala a ser deixada.
+     */
+    public leaveRoom: LeaveRoomFunction = (room) => {
+        this.io.emit("leave-room", `${room}`);
+    }
+
+    /**
+     * Sai de um chat.
+     * @param phone  - O número de telefone do chat a ser deixado.
+     */
+    public leaveChat: LeaveChatFunction = (phone) => {
+        this.leaveRoom(`chat:${phone}`);
     }
 
     /**
