@@ -18,7 +18,7 @@ import {
     SocketEventType,
 } from "./types/socket-server.types";
 import {
-    SocketChatRoom,
+    SocketClientChatRoom,
     SocketClientAdminRoom,
     SocketClientMonitorRoom,
     SocketClientReportsRoom,
@@ -60,7 +60,7 @@ export {
 
     // Socket Client
     SocketClientSDK,
-    SocketChatRoom,
+    SocketClientChatRoom as SocketChatRoom,
     SocketClientAdminRoom,
     SocketClientMonitorRoom,
     SocketClientReportsRoom,

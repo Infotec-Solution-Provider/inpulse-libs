@@ -1,4 +1,4 @@
-import { SocketClientAdminRoom, SocketChatRoom, SocketClientRoom, SocketClientMonitorRoom, SocketClientReportsRoom } from "./socket-client.types";
+import { SocketClientAdminRoom, SocketClientChatRoom, SocketClientMonitorRoom, SocketClientReportsRoom } from "./socket-client.types";
 
 /**
  * Tipos de eventos que podem ser emitidos ou recebidos via socket.
@@ -13,11 +13,13 @@ export type SocketEventType =
     "qr_code" |
     "report_status";
 
-type SocketRoomWithSector<T extends string> = `sector:${number}:${T}`;
+type SocketRoomWithInstance<T extends string> = `${string}:${T}`;
+type SocketRoomWithSector<T extends string> = SocketRoomWithInstance<`:${number}:${T}`>;
 export type SocketServerAdminRoom = SocketRoomWithSector<SocketClientAdminRoom>;
 export type SocketServerMonitorRoom = SocketRoomWithSector<SocketClientMonitorRoom>;
 export type SocketServerReportsRoom = SocketRoomWithSector<SocketClientReportsRoom>;
-export type SocketServerRoom = SocketChatRoom | SocketServerAdminRoom | SocketServerMonitorRoom | SocketServerReportsRoom;
+export type SocketServerChatRoom = SocketRoomWithInstance<SocketClientChatRoom>;
+export type SocketServerRoom = SocketClientChatRoom | SocketServerAdminRoom | SocketServerMonitorRoom | SocketServerReportsRoom;
 
 /**
  * Estrutura de dados para o status de relatórios de chats.
@@ -132,31 +134,31 @@ export type EmitFunction = {
     ): void;
     (
         instanceName: string,
-        room: SocketChatRoom | SocketServerMonitorRoom,
+        room: SocketClientChatRoom | SocketServerMonitorRoom,
         event: "new_chat",
         value: unknown
     ): void;
     (
         instanceName: string,
-        room: SocketChatRoom | SocketServerMonitorRoom,
+        room: SocketClientChatRoom | SocketServerMonitorRoom,
         event: "chat_finished",
         value: ChatId
     ): void;
     (
         instanceName: string,
-        room: SocketChatRoom,
+        room: SocketClientChatRoom,
         event: "message",
         value: unknown
     ): void;
     (
         instanceName: string,
-        room: SocketChatRoom,
+        room: SocketClientChatRoom,
         event: "message_edit",
         value: unknown
     ): void;
     (
         instanceName: string,
-        room: SocketChatRoom,
+        room: SocketClientChatRoom,
         event: "message_status",
         value: unknown
     ): void;

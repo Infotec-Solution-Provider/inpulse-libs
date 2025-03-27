@@ -5,7 +5,7 @@ import type { ChatsReportStatusData, QRCode } from "./socket-server.types";
 /**
  * Representa uma sala de chat identificada por um número de telefone.
  */
-export type SocketChatRoom = `chat:${PhoneNumber}`;
+export type SocketClientChatRoom = `chat:${PhoneNumber}`;
 
 /**
  * Representa a sala de administração.
@@ -25,7 +25,7 @@ export type SocketClientReportsRoom = `reports:${ReportType}`;
 /**
  * Representa as salas disponíveis para clientes, incluindo chat, administração, relatórios e monitoramento.
  */
-export type SocketClientRoom = SocketChatRoom | SocketClientAdminRoom | SocketClientReportsRoom | SocketClientMonitorRoom;
+export type SocketClientRoom = SocketClientChatRoom | SocketClientAdminRoom | SocketClientReportsRoom | SocketClientMonitorRoom;
 
 /**
  * Função para entrar em uma sala de socket.
