@@ -3,7 +3,7 @@ import FileSDK, { File, FileDirType } from "./file";
 import InstanceSDK from "./instance";
 import UserSDK, { CreateUserDTO, UpdateUserDTO, User, UserRole } from "./user";
 import { DataResponse, ErrorResponse, PaginatedResponse, QueryResponse } from "./response";
-import ReportSDK, { ChatsReport, ChatsReportFileFormat, GenerateChatsReportOptions } from "./report";
+import ReportSDK, { ChatsReport, ChatsReportFormat, GenerateChatsReportOptions } from "./report";
 import SocketClientSDK, { JoinChatFunction, JoinRoomFunction, ListenEventFunction } from "./socket-client";
 import
 SocketServerSDK,
@@ -14,7 +14,7 @@ SocketServerSDK,
     SocketChatRoom,
     SocketMonitorRoom,
     SocketReportsRoom,
-    SocketRoomType,
+    SocketServerRoom,
     SocketEventType,
 } from "./socket-server";
 
@@ -37,7 +37,7 @@ export {
     QueryResponse,
     ReportSDK,
     ChatsReport as ChatReport,
-    ChatsReportFileFormat as ChatReportFileFormat,
+    ChatsReportFormat as ChatReportFileFormat,
     GenerateChatsReportOptions as GenerateChatReportOptions,
     SocketClientSDK,
     JoinChatFunction,
@@ -51,5 +51,5 @@ export {
     SocketChatRoom,
     SocketEventType,
     SocketMonitorRoom,
-    SocketRoomType
+    SocketServerRoom as SocketRoomType
 };

@@ -1,97 +1,11 @@
 import { Socket } from "socket.io-client";
-import { PhoneNumber } from "@in.pulse-crm/utils";
-import { ChatId, NotImplemented, QRCode, ChatsReportStatusData, SocketEventType, SocketRoomType } from "./socket-server";
-
-/**
- * Função para entrar em uma sala de socket.
- */
-export type JoinRoomFunction = {
-    (room: SocketRoomType): void;
-};
-
-/**
- * Função para entrar em um chat de socket.
- */
-export type JoinChatFunction = {
-    (phone: PhoneNumber): void;
-};
-
-export type LeaveRoomFunction = {
-    (room: SocketRoomType): void;
-};
-
-export type LeaveChatFunction = {
-    (phone: PhoneNumber): void;
-};
-
-/**
- * Função para escutar eventos de socket.
- */
-export type ListenEventFunction = {
-    /**
-     * Escuta evento de mensagem
-     * Ainda não implementado.
-     */
-    (event: SocketEventType.MESSAGE, listener: (data: NotImplemented) => void): void;
-
-    /**
-     * Escuta evento de edição de mensagem
-     * Ainda não implementado.
-     */
-    (event: SocketEventType.MESSAGE_EDIT, listener: (data: NotImplemented) => void): void;
-
-    /**
-     * Escuta evento de status de mensagem
-     * Ainda não implementado.
-     */
-    (event: SocketEventType.MESSAGE_STATUS, listener: (data: NotImplemented) => void): void;
-
-    /**
-     * Escuta evento de novo chat
-     * Ainda não implementado.
-     */
-    (event: SocketEventType.NEW_CHAT, listener: (data: NotImplemented) => void): void;
-
-    /**
-     * Escuta evento de chat finalizado
-     * @trigger Quando um chat é finalizado
-     * @target Sala de monitoria e ao atendente do chat
-     * @data Um número contendo o ID do chat finalizado
-     */
-    (event: SocketEventType.CHAT_FINISHED, listener: (chatId: ChatId) => void): void;
-
-    /**
-     * Escuta evento de notificação
-     * @trigger Quando uma notificação é enviada
-     * @target Sala de administração do setor
-     */
-    (event: SocketEventType.NOTIFICATION, listener: (notification: NotImplemented) => void): void;
-
-    /**
-     * Escuta evento de QR Code
-     * @trigger Quando um QR Code é gerado
-     * @target Sala de administração do setor
-     */
-    (event: SocketEventType.QR_CODE, listener: (qr: QRCode) => void): void;
-
-    /**
-     * Escuta evento de status de relatório
-     * @trigger Quando o status de um relatório é atualizado
-     * @target Sala de relatórios
-     */
-    (event: SocketEventType.REPORT_STATUS, listener: (data: ChatsReportStatusData) => void): void;
-}
+import { JoinChatFunction, JoinRoomFunction, LeaveChatFunction, LeaveRoomFunction, ListenEventFunction } from "./types/socket-client.types";
 
 /**
  * Classe para consumo dos eventos de socket.
  */
 export default class SocketClientSDK {
-    constructor(private readonly io: Socket) {
-
-        this.on(SocketEventType.CHAT_FINISHED, (chatId) => {
-            console.log(`Chat ${chatId} finalizado.`);
-        });
-    }
+    constructor(private readonly io: Socket) { }
 
     /**
      * Escuta eventos de socket.
@@ -101,6 +15,16 @@ export default class SocketClientSDK {
      */
     public on: ListenEventFunction = (event, listener) => {
         this.io.on(event, listener);
+    }
+
+    /**
+     * Escuta eventos de socket.
+     * 
+     * @param event - O tipo de evento a ser escutado.
+     * @param listener - A função a ser chamada quando o evento ocorrer.
+     */
+    public off: ListenEventFunction = (event, listener) => {
+        this.io.off(event, listener);
     }
 
     /**
@@ -123,7 +47,9 @@ export default class SocketClientSDK {
 
     /**
      * Sai de uma sala de socket.
-     * @param room  - O tipo de sala a ser deixada.
+     * 
+     * @param room - O tipo de sala a ser deixada.
+     * @description Remove o cliente da sala especificada no servidor de socket.
      */
     public leaveRoom: LeaveRoomFunction = (room) => {
         this.io.emit("leave-room", `${room}`);
@@ -131,7 +57,9 @@ export default class SocketClientSDK {
 
     /**
      * Sai de um chat.
-     * @param phone  - O número de telefone do chat a ser deixado.
+     * 
+     * @param phone - O número de telefone do chat a ser deixado.
+     * @description Remove o cliente do chat especificado, utilizando o número de telefone.
      */
     public leaveChat: LeaveChatFunction = (phone) => {
         this.leaveRoom(`chat:${phone}`);
@@ -141,6 +69,8 @@ export default class SocketClientSDK {
      * Define o token de autenticação para o socket.
      * 
      * @param token - O token de autenticação.
+     * @description Configura o token de autenticação para ser enviado em todas as conexões de socket subsequentes.
+     *              Se o token for nulo ou vazio, a autenticação será removida.
      */
     public setAuth(token: string) {
         this.io.auth = { token: token ? `Bearer ${token}` : null };
