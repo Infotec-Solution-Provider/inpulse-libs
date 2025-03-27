@@ -7,6 +7,7 @@ import ReportSDK, { ChatsReport, ChatsReportFormat, GenerateChatsReportOptions }
 import SocketClientSDK from "./socket-client";
 import SocketServerSDK from "./socket-server";
 import {
+    EmitFunction,
     ChatsReportStatusData,
     SocketServerAdminRoom,
     SocketServerMonitorRoom,
@@ -67,6 +68,7 @@ export {
 
     // Socket Server
     SocketServerSDK,
+    EmitFunction,
     SocketEventType,
     ChatsReportStatusData,
     SocketServerAdminRoom,
