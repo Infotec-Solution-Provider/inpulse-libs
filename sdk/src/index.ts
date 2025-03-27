@@ -4,52 +4,75 @@ import InstanceSDK from "./instance";
 import UserSDK, { CreateUserDTO, UpdateUserDTO, User, UserRole } from "./user";
 import { DataResponse, ErrorResponse, PaginatedResponse, QueryResponse } from "./response";
 import ReportSDK, { ChatsReport, ChatsReportFormat, GenerateChatsReportOptions } from "./report";
-import SocketClientSDK, { JoinChatFunction, JoinRoomFunction, ListenEventFunction } from "./socket-client";
-import
-SocketServerSDK,
-{
-    EmitFunction,
-    InstanceName,
-    SocketAdminRoom,
-    SocketChatRoom,
-    SocketMonitorRoom,
-    SocketReportsRoom,
+import SocketClientSDK from "./socket-client";
+import SocketServerSDK from "./socket-server";
+import {
+    ChatsReportStatusData,
+    SocketServerAdminRoom,
+    SocketServerMonitorRoom,
+    SocketServerReportsRoom,
     SocketServerRoom,
+    ChatId,
+    QRCode,
     SocketEventType,
-} from "./socket-server";
+} from "./types/socket-server.types";
+import {
+    SocketChatRoom,
+    SocketClientAdminRoom,
+    SocketClientMonitorRoom,
+    SocketClientReportsRoom,
+    SocketClientRoom,
+} from "./types/socket-client.types";
 
 export {
+    // Auth
     AuthSDK,
     LoginData,
     SessionData,
+
+    // File
     FileSDK,
     File,
     FileDirType,
+
+    // Instance
     InstanceSDK,
+
+    // User
     UserSDK,
     CreateUserDTO,
     UpdateUserDTO,
     User,
     UserRole,
+
+    // Response
     DataResponse,
     ErrorResponse,
     PaginatedResponse,
     QueryResponse,
+
+    // Report
     ReportSDK,
-    ChatsReport as ChatReport,
-    ChatsReportFormat as ChatReportFileFormat,
-    GenerateChatsReportOptions as GenerateChatReportOptions,
+    ChatsReport,
+    ChatsReportFormat as ChatsReportFileFormat,
+    GenerateChatsReportOptions,
+
+    // Socket Client
     SocketClientSDK,
-    JoinChatFunction,
-    JoinRoomFunction,
-    ListenEventFunction,
-    SocketServerSDK,
-    EmitFunction,
-    InstanceName,
-    SocketAdminRoom,
-    SocketReportsRoom,
     SocketChatRoom,
+    SocketClientAdminRoom,
+    SocketClientMonitorRoom,
+    SocketClientReportsRoom,
+    SocketClientRoom,
+
+    // Socket Server
+    SocketServerSDK,
     SocketEventType,
-    SocketMonitorRoom,
-    SocketServerRoom as SocketRoomType
+    ChatsReportStatusData,
+    SocketServerAdminRoom,
+    SocketServerMonitorRoom,
+    SocketServerReportsRoom,
+    SocketServerRoom,
+    ChatId,
+    QRCode,
 };
