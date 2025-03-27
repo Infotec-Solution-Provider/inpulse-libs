@@ -20,6 +20,10 @@ export interface SessionData {
      */
     userId: number;
     /**
+     * ID do setor do usuário.
+     */
+    sectorId: number
+    /**
      * Papel do usuário.
      */
     role: string;
