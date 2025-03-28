@@ -55,7 +55,7 @@ export default class AuthSDK {
      */
     public async login(instance: string, username: string, password: string): Promise<DataResponse<LoginData>> {
         const response = await this.httpClient.post<DataResponse<LoginData>>(
-            `/login`,
+            `/auth /login`,
             { LOGIN: username, SENHA: password, instance },
         );
 
@@ -69,7 +69,7 @@ export default class AuthSDK {
      */
     public async fetchSessionData(authToken: string): Promise<DataResponse<SessionData>> {
         const response = await this.httpClient
-            .get<DataResponse<SessionData>>(`/auth`, {
+            .get<DataResponse<SessionData>>(`/auth/session`, {
                 headers: {
                     authorization: authToken,
                 },
