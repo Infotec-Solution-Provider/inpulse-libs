@@ -13,18 +13,18 @@ class InstanceSDK {
 
 	/**
 	 * Executa uma consulta na instância especificada.
-	 * @param {string} instanceName Nome da instância do Inpulse.
+	 * @param {string} instance Nome da instância do Inpulse.
 	 * @param {string} query Consulta a ser executada.
 	 * @param {any[]} parameters Parâmetros da consulta.
 	 * @returns {Promise<T>} Resultado da consulta.
 	 */
 	public async executeQuery<T>(
-		instanceName: string,
+		instance: string,
 		query: string,
 		parameters: any[],
 	): Promise<T> {
 		const response = await this.httpClient
-			.post<QueryResponse<T>>(`/${instanceName}/query`, { query, parameters })
+			.post<QueryResponse<T>>(`/${instance}/query`, { query, parameters })
 			.catch((error) => {
 				if (error.response?.data?.message) {
 					throw new Error(error.response.data.message);

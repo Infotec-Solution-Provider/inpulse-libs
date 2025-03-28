@@ -48,15 +48,15 @@ export default class AuthSDK {
 
     /**
      * Realiza o login do usuário.
-     * @param {string} instanceName Nome da instância do Inpulse.
+     * @param {string} instance Nome da instância do Inpulse.
      * @param {string} username Nome de usuário.
      * @param {string} password Senha do usuário.
      * @returns {Promise<DataResponse<LoginData>>} Dados de login.
      */
-    public async login(instanceName: string, username: string, password: string): Promise<DataResponse<LoginData>> {
+    public async login(instance: string, username: string, password: string): Promise<DataResponse<LoginData>> {
         const response = await this.httpClient.post<DataResponse<LoginData>>(
-            `${instanceName}/login`,
-            { LOGIN: username, SENHA: password },
+            `/login`,
+            { LOGIN: username, SENHA: password, instance },
         );
 
         return response.data;
@@ -77,26 +77,6 @@ export default class AuthSDK {
             .catch((error) => {
                 const message = sanitizeErrorMessage(error);
                 throw new Error("Failed to fetch session data! " + message);
-            });
-
-        return response.data;
-    }
-
-    /**
-     * Busca os dados do usuário da sessão.
-     * @param {string} authToken Token de autenticação.
-     * @returns {Promise<DataResponse<AuthTypes.User>>} Dados do usuário.
-     */
-    public async fetchSessionUser(authToken: string): Promise<DataResponse<User>> {
-        const response = await this.httpClient
-            .get<DataResponse<User>>(`/auth/user`, {
-                headers: {
-                    authorization: authToken,
-                },
-            })
-            .catch((error) => {
-                const message = sanitizeErrorMessage(error);
-                throw new Error("Failed to fetch session user! " + message);
             });
 
         return response.data;
