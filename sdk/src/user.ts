@@ -172,44 +172,34 @@ class UserSDK {
 
     /**
      * Obtém a lista de usuários.
-     * @param instance - O nome da instância.
      * @returns Uma resposta paginada contendo os usuários.
      */
-    public async getUsers(instance: string) {
-        const response = await this.httpClient.get<PaginatedResponse<User>>(
-            `/${instance}/users`,
-        );
+    public async getUsers() {
+        const response = await this.httpClient.get<PaginatedResponse<User>>(`/users`);
 
         return response.data;
     }
 
     /**
      * Obtém um usuário pelo ID.
-     * @param instance - O nome da instância.
      * @param userId - O ID do usuário.
      * @returns Uma resposta contendo os dados do usuário.
      */
-    public async getUserById(instance: string, userId: number) {
-        const response = await this.httpClient.get<DataResponse<User>>(
-            `/${instance}/users/${userId}`,
-        );
+    public async getUserById(userId: number) {
+        const response = await this.httpClient.get<DataResponse<User>>(`/users/${userId}`);
 
         return response.data;
     }
 
     /**
      * Cria um novo usuário.
-     * @param instance - O nome da instância.
      * @param data - Os dados para criação do usuário.
      * @returns Uma resposta contendo os dados do usuário criado.
      * @throws Um erro se a criação do usuário falhar.
      */
-    public async createUser(instance: string, data: CreateUserDTO) {
+    public async createUser(data: CreateUserDTO) {
         try {
-            const response = await this.httpClient.post<DataResponse<User>>(
-                `/${instance}/users`,
-                data,
-            );
+            const response = await this.httpClient.post<DataResponse<User>>(`/users`, data);
 
             return response.data;
         } catch (error) {
@@ -219,20 +209,15 @@ class UserSDK {
 
     /**
      * Atualiza um usuário existente.
-     * @param instance - O nome da instância.
      * @param userId - O ID do usuário.
      * @param data - Os dados para atualização do usuário.
      * @returns Uma resposta contendo os dados do usuário atualizado.
      * @throws Um erro se a atualização do usuário falhar.
      */
-    public async updateUser(
-        instance: string,
-        userId: string,
-        data: UpdateUserDTO,
-    ) {
+    public async updateUser(userId: string, data: UpdateUserDTO) {
         try {
             const response = await this.httpClient.patch<DataResponse<User>>(
-                `/${instance}/users/${userId}`,
+                `/users/${userId}`,
                 data,
             );
 
@@ -240,6 +225,10 @@ class UserSDK {
         } catch (error) {
             throw new Error("Failed to update user", { cause: error });
         }
+    }
+
+    public setAuth(token: string) {
+        this.httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
 }
 

@@ -58,4 +58,8 @@ export default class ReportSDK {
 
 		return response.data;
 	}
+
+	public setAuth(token: string) {
+		this.httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+	}
 }
