@@ -14,7 +14,7 @@ export type SocketEventType =
     "report_status";
 
 type SocketRoomWithInstance<T extends string> = `${string}:${T}`;
-type SocketRoomWithSector<T extends string> = SocketRoomWithInstance<`:${number}:${T}`>;
+type SocketRoomWithSector<T extends string> = SocketRoomWithInstance<`${number}:${T}`>;
 export type SocketServerAdminRoom = SocketRoomWithSector<SocketClientAdminRoom>;
 export type SocketServerMonitorRoom = SocketRoomWithSector<SocketClientMonitorRoom>;
 export type SocketServerReportsRoom = SocketRoomWithSector<SocketClientReportsRoom>;
