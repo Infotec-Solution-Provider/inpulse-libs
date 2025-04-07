@@ -49,7 +49,10 @@ export type ChatsReportStatusData = {
 /**
  * Representa um código QR como uma string.
  */
-export type QRCode = { qr: string };
+export type QRCode = {
+    qr: string;
+    number: string;
+};
 
 /**
  * Representa o identificador de um chat.
