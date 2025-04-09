@@ -1,5 +1,5 @@
 import ApiClient from "./api-client";
-import { UploadFileOptions } from "./types/files.types";
+import { File, UploadFileOptions } from "./types/files.types";
 import { DataResponse } from "./types/response.types";
 
 class FilesClient extends ApiClient {

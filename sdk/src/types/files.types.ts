@@ -18,6 +18,11 @@ export interface UploadFileOptions {
      * Buffer com o conteúdo do arquivo.
      */
     buffer: Buffer;
+
+    /**
+     * Tipo MIME do arquivo.
+     */
+    mimeType: string;
 }
 
 /**
