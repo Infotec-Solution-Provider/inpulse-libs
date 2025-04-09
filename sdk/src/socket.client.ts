@@ -84,4 +84,8 @@ export default class SocketClient {
 	public joinRoom: JoinRoomFn = (room) => {
 		this.ws.emit("join-room", room);
 	};
+
+	public leaveRoom: JoinRoomFn = (room) => {
+		this.ws.emit("leave-room", room);
+	};
 }
