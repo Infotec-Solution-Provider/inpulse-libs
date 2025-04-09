@@ -1,6 +1,6 @@
 export interface DataResponse<T> {
-    message: string;
-    data: T;
+	message: string;
+	data: T;
 }
 
 export interface MessageResponse {
@@ -8,19 +8,19 @@ export interface MessageResponse {
 }
 
 export interface ErrorResponse {
-    message: string;
-    cause?: any;
+	message: string;
+	cause?: any;
 }
 
 export interface PaginatedResponse<T> {
-    message: string;
-    data: Array<T>;
-    page: {
-        current: number;
-        next: boolean;
-    }
+	message: string;
+	data: Array<T>;
+	page: {
+		current: number;
+		total: number;
+	};
 }
 
 export interface QueryResponse<T> {
-    result: T;
+	result: T;
 }
