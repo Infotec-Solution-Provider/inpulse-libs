@@ -8,7 +8,7 @@ class CustomersClient extends ApiClient {
      * @returns Uma Promise que resolve para o cliente criado.
      */
     public async createCustomer(data: CreateCustomerDTO) {
-        const response = await this.httpClient.post(`/customers`, data);
+        const response = await this.httpClient.post(`/api/customers`, data);
 
         return response.data;
     }
@@ -19,7 +19,7 @@ class CustomersClient extends ApiClient {
      * @returns Uma Promise que resolve para o cliente obtido.
      */
     public async getCustomerById(customerId: number) {
-        const response = await this.httpClient.get(`/customers/${customerId}`);
+        const response = await this.httpClient.get(`/api/customers/${customerId}`);
         return response.data;
     }
 
@@ -30,7 +30,7 @@ class CustomersClient extends ApiClient {
      * @returns Uma Promise que resolve para o cliente atualizado.
      */
     public async updateCustomer(customerId: number, data: UpdateCustomerDTO) {
-        const response = await this.httpClient.patch(`/customers/${customerId}`, data);
+        const response = await this.httpClient.patch(`/api/customers/${customerId}`, data);
         return response.data;
     }
 
@@ -42,14 +42,14 @@ class CustomersClient extends ApiClient {
      * @returns Uma Promise que resolve para uma lista de clientes.
      */
     public async getAllCustomers(filters: Record<string, string>) {
-        let baseUrl = `/customers`;
+        let baseUrl = `/api/customers`;
         const params = new URLSearchParams(filters);
 
         if (params.toString()) {
             baseUrl += `?${params.toString()}`;
         }
 
-        const response = await this.httpClient.get(`/customers`);
+        const response = await this.httpClient.get(`/api/customers`);
 
         return response.data;
     }

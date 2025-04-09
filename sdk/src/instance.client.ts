@@ -20,7 +20,9 @@ class InstancesClient extends ApiClient {
 		parameters: any[],
 	): Promise<T> {
 		const response = await this.httpClient
-			.post<QueryResponse<T>>(`/${instance}/query`, { query, parameters })
+			.post<
+				QueryResponse<T>
+			>(`/api/instances/${instance}/query`, { query, parameters })
 			.catch((error) => {
 				if (error.response?.data?.message) {
 					throw new Error(error.response.data.message);

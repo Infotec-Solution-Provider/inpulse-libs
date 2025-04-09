@@ -16,7 +16,7 @@ export default class AuthClient extends ApiClient {
      */
     public async login(instance: string, username: string, password: string): Promise<DataResponse<LoginData>> {
         const response = await this.httpClient.post<DataResponse<LoginData>>(
-            `/auth/login`,
+            `/api/auth/login`,
             { LOGIN: username, SENHA: password, instance },
         );
 
@@ -30,7 +30,7 @@ export default class AuthClient extends ApiClient {
      */
     public async fetchSessionData(authToken: string): Promise<DataResponse<SessionData>> {
         const response = await this.httpClient
-            .get<DataResponse<SessionData>>(`/auth/session`, {
+            .get<DataResponse<SessionData>>(`/api/auth/session`, {
                 headers: {
                     authorization: authToken,
                 },

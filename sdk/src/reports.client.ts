@@ -4,7 +4,7 @@ import { DataResponse, MessageResponse } from "./types/response.types";
 
 export default class ReportsClient extends ApiClient {
 	public async getChatsReports() {
-		const url = `/reports/chats`;
+		const url = `/api/reports/chats`;
 		const response =
 			await this.httpClient.get<DataResponse<Array<ChatsReport>>>(url);
 
@@ -12,7 +12,7 @@ export default class ReportsClient extends ApiClient {
 	}
 
 	public async generateChatsReport(body: GenerateChatsReportOptions) {
-		const url = `/reports/chats`;
+		const url = `/api/reports/chats`;
 		const response = await this.httpClient.post<DataResponse<ChatsReport>>(
 			url,
 			body,
@@ -22,7 +22,7 @@ export default class ReportsClient extends ApiClient {
 	}
 
 	public async deleteChatsReport(chatsReportId: number) {
-		const url = `/reports/chats/${chatsReportId}`;
+		const url = `/api/reports/chats/${chatsReportId}`;
 		const response = await this.httpClient.delete<MessageResponse>(url);
 
 		return response.data;

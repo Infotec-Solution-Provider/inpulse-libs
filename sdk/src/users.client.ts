@@ -6,69 +6,76 @@ import ApiClient from "./api-client";
  * SDK para operações de usuários.
  */
 export default class UsersClient extends ApiClient {
-    /**
-     * Obtém a lista de usuários.
-     * @returns Uma resposta paginada contendo os usuários.
-     */
-    public async getUsers() {
-        const response = await this.httpClient.get<PaginatedResponse<User>>(`/users`);
+	/**
+	 * Obtém a lista de usuários.
+	 * @returns Uma resposta paginada contendo os usuários.
+	 */
+	public async getUsers() {
+		const response =
+			await this.httpClient.get<PaginatedResponse<User>>(`/api/users`);
 
-        return response.data;
-    }
+		return response.data;
+	}
 
-    /**
-     * Obtém um usuário pelo ID.
-     * @param userId - O ID do usuário.
-     * @returns Uma resposta contendo os dados do usuário.
-     */
-    public async getUserById(userId: number) {
-        const response = await this.httpClient.get<DataResponse<User>>(`/users/${userId}`);
+	/**
+	 * Obtém um usuário pelo ID.
+	 * @param userId - O ID do usuário.
+	 * @returns Uma resposta contendo os dados do usuário.
+	 */
+	public async getUserById(userId: number) {
+		const response = await this.httpClient.get<DataResponse<User>>(
+			`/api/users/${userId}`,
+		);
 
-        return response.data;
-    }
+		return response.data;
+	}
 
-    /**
-     * Cria um novo usuário.
-     * @param data - Os dados para criação do usuário.
-     * @returns Uma resposta contendo os dados do usuário criado.
-     * @throws Um erro se a criação do usuário falhar.
-     */
-    public async createUser(data: CreateUserDTO) {
-        try {
-            const response = await this.httpClient.post<DataResponse<User>>(`/users`, data);
+	/**
+	 * Cria um novo usuário.
+	 * @param data - Os dados para criação do usuário.
+	 * @returns Uma resposta contendo os dados do usuário criado.
+	 * @throws Um erro se a criação do usuário falhar.
+	 */
+	public async createUser(data: CreateUserDTO) {
+		try {
+			const response = await this.httpClient.post<DataResponse<User>>(
+				`/api/users`,
+				data,
+			);
 
-            return response.data;
-        } catch (error) {
-            throw new Error("Failed to create user", { cause: error });
-        }
-    }
+			return response.data;
+		} catch (error) {
+			throw new Error("Failed to create user", { cause: error });
+		}
+	}
 
-    /**
-     * Atualiza um usuário existente.
-     * @param userId - O ID do usuário.
-     * @param data - Os dados para atualização do usuário.
-     * @returns Uma resposta contendo os dados do usuário atualizado.
-     * @throws Um erro se a atualização do usuário falhar.
-     */
-    public async updateUser(userId: string, data: UpdateUserDTO) {
-        try {
-            const response = await this.httpClient.patch<DataResponse<User>>(
-                `/users/${userId}`,
-                data,
-            );
+	/**
+	 * Atualiza um usuário existente.
+	 * @param userId - O ID do usuário.
+	 * @param data - Os dados para atualização do usuário.
+	 * @returns Uma resposta contendo os dados do usuário atualizado.
+	 * @throws Um erro se a atualização do usuário falhar.
+	 */
+	public async updateUser(userId: string, data: UpdateUserDTO) {
+		try {
+			const response = await this.httpClient.patch<DataResponse<User>>(
+				`/api/users/${userId}`,
+				data,
+			);
 
-            return response.data;
-        } catch (error) {
-            throw new Error("Failed to update user", { cause: error });
-        }
-    }
+			return response.data;
+		} catch (error) {
+			throw new Error("Failed to update user", { cause: error });
+		}
+	}
 
-    /**
-     * Sets the authorization token for HTTP requests.
-     *
-     * @param token - The authentication token to be used in the `Authorization` header.
-     */
-    public setAuth(token: string) {
-        this.httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
+	/**
+	 * Sets the authorization token for HTTP requests.
+	 *
+	 * @param token - The authentication token to be used in the `Authorization` header.
+	 */
+	public setAuth(token: string) {
+		this.httpClient.defaults.headers.common["Authorization"] =
+			`Bearer ${token}`;
+	}
 }
