@@ -1,51 +1,12 @@
-import { AxiosInstance } from "axios";
-import { User } from "./user";
 import { sanitizeErrorMessage } from "@in.pulse-crm/utils";
-import { DataResponse } from "./response";
-
-export interface LoginData {
-    /**
-     * Token de autenticação.
-     */
-    token: string;
-    /**
-     * Dados do usuário.
-     */
-    user: User;
-}
-
-export interface SessionData {
-    /**
-     * ID do usuário.
-     */
-    userId: number;
-    /**
-     * ID do setor do usuário.
-     */
-    sectorId: number
-    /**
-     * Papel do usuário.
-     */
-    role: string;
-    /**
-     * Nome da instância.
-     */
-    instance: string;
-}
+import { DataResponse } from "./types/response.types";
+import ApiClient from "./api-client";
+import { LoginData, SessionData } from "./types/auth.types";
 
 /**
  * Classe AuthSDK para interagir com a API de autenticação.
  */
-export default class AuthSDK {
-
-    /**
-     * Cria uma instância do SDK de autenticação.
-     * @param {AxiosInstance} httpClient A instância do cliente HTTP a ser usada para fazer requisições à API.
-     */
-    constructor(private readonly httpClient: AxiosInstance) {
-
-    }
-
+export default class AuthClient extends ApiClient {
     /**
      * Realiza o login do usuário.
      * @param {string} instance Nome da instância do Inpulse.

@@ -1,15 +1,11 @@
 import { AxiosInstance } from "axios";
-import { QueryResponse } from "./response";
+import { QueryResponse } from "./types/response.types";
+import ApiClient from "./api-client";
 
 /**
  * Classe InstanceSDK para interagir com a API de instâncias.
  */
-class InstanceSDK {
-	/**
-	 * Cria uma instância do SDK de instância.
-	 * @param {AxiosInstance} httpClient A instância do cliente HTTP a ser usada para fazer requisições à API.
-	 */
-	constructor(private readonly httpClient: AxiosInstance) { }
+class InstancesClient extends ApiClient {
 
 	/**
 	 * Executa uma consulta na instância especificada.
@@ -41,4 +37,4 @@ class InstanceSDK {
 	}
 }
 
-export default InstanceSDK;
+export default InstancesClient;
