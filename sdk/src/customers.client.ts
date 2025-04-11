@@ -51,7 +51,7 @@ class CustomersClient extends ApiClient {
 	 * @todo Implementar tipagem para os filtros.
 	 * @returns Uma Promise que resolve para uma lista de clientes.
 	 */
-	public async getAllCustomers(filters: RequestFilters<Customer>) {
+	public async getCustomers(filters?: RequestFilters<Customer>) {
 		let baseUrl = `/api/customers`;
 		const params = new URLSearchParams(filters);
 
@@ -59,7 +59,7 @@ class CustomersClient extends ApiClient {
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const response = await this.httpClient.get(`/api/customers`);
+		const response = await this.httpClient.get(baseUrl);
 
 		return response.data;
 	}

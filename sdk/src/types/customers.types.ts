@@ -71,7 +71,7 @@ export type CreateCustomerDTO = Pick<
 	| "CPF_CNPJ"
 	| "PESSOA"
 	| "CIDADE"
-	| "ESTADO"
+	| "ATIVO"
 	| "COD_ERP"
 >;
 export type UpdateCustomerDTO = Partial<CreateCustomerDTO>;
