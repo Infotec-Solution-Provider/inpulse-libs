@@ -29,3 +29,9 @@ export interface SessionData {
      */
     instance: string;
 }
+
+export interface UserOnlineSession {
+    data: SessionData;
+    isPaused: boolean;
+    onlineTokens: Array<string>;
+}

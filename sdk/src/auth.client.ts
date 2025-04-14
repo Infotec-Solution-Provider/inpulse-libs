@@ -1,7 +1,7 @@
 import { sanitizeErrorMessage } from "@in.pulse-crm/utils";
 import { DataResponse } from "./types/response.types";
 import ApiClient from "./api-client";
-import { LoginData, SessionData } from "./types/auth.types";
+import { LoginData, SessionData, UserOnlineSession } from "./types/auth.types";
 
 /**
  * Classe AuthSDK para interagir com a API de autenticação.
@@ -92,6 +92,18 @@ export default class AuthClient extends ApiClient {
 		}
 	}
 
+	public async getOnlineSessions(instance: string) {
+		const response = await this.httpClient.get<
+			DataResponse<UserOnlineSession[]>
+		>("/api/online-sessions", {
+			params: {
+				instance,
+			},
+		});
+
+		return response.data.data;
+	}
+
 	public async initOnlineSession(authToken: string) {
 		await this.httpClient.post(
 			"/api/online-sessions",
@@ -104,11 +116,11 @@ export default class AuthClient extends ApiClient {
 		);
 	}
 
-    public async finishOnlineSession(authToken: string) {
-        await this.httpClient.delete("/api/online-sessions", {
-            headers: {
-                Authorization: authToken,
-            },
-        });
-    }
+	public async finishOnlineSession(authToken: string) {
+		await this.httpClient.delete("/api/online-sessions", {
+			headers: {
+				Authorization: authToken,
+			},
+		});
+	}
 }
