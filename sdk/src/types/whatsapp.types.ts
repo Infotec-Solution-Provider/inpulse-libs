@@ -15,10 +15,10 @@ export interface WppMessage {
 	quotedId: string | null;
 	chatId: number | null;
 	body: string;
-	timestamp: bigint;
+	timestamp: string;
 	status: WppMessageStatus;
 	fileId: number | null;
 	fileName: string | null;
 	fileType: string | null;
-	fileSize: bigint | null;
+	fileSize: string | null;
 }

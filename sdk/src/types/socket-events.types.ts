@@ -5,7 +5,7 @@ import {
 	SocketServerRoom,
 } from "./socket-rooms.types";
 import { MessageResponse } from "./response.types";
-import { WppMessage } from "./whatsapp.types";
+import { WppMessageStatus } from "./whatsapp.types";
 
 export enum SocketEventType {
 	WppChatStarted = "wpp_chat_started",
@@ -112,13 +112,23 @@ export interface WWEBJSAuthEventData {
 	message?: string;
 }
 
-export interface WppChatStartedEventData {}
-export interface WppChatFinishedEventData {}
-export interface WppMessageEventData {
-	message: WppMessage;
+export interface WppChatStartedEventData {
+	chatId: number;
 }
-export interface WppMessageStatusEventData {}
-export interface WppMessageReactionEventData {}
+export interface WppChatFinishedEventData {
+	chatId: number;
+}
+export interface WppMessageEventData {
+	messageId: number;
+}
+export interface WppMessageStatusEventData {
+	messageId: number;
+	status: WppMessageStatus;
+}
+export interface WppMessageReactionEventData {
+	messageId: number;
+	reaction: string;
+}
 
 export type ReportStatusEventData = {
 	id: number;

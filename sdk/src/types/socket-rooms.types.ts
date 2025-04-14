@@ -1,5 +1,9 @@
 type ReportType = "chats";
 type PhoneNumber = string;
+type WalletId = number;
+type UserId = number;
+type SectorId = number;
+type InstanceName = string;
 
 /* 
     Salas de Socket do lado do cliente;
@@ -10,18 +14,22 @@ export type SocketClientChatRoom = `chat:${PhoneNumber}`;
 export type SocketClientAdminRoom = "admin";
 export type SocketClientMonitorRoom = `monitor`;
 export type SocketClientReportsRoom = `reports:${ReportType}`;
+export type SocketClientWalletRoom = `wallet:${WalletId}`;
+export type SocketClientUserRoom = `user:${UserId}`;
 export type SocketClientRoom =
 	| SocketClientChatRoom
 	| SocketClientAdminRoom
 	| SocketClientReportsRoom
-	| SocketClientMonitorRoom;
+	| SocketClientMonitorRoom
+	| SocketClientWalletRoom
+	| SocketClientUserRoom;
 
 // Interface que incluí o nome da instancia na sala de socket;
-type SocketRoomWithInstance<T extends string> = `${string}:${T}`;
+type SocketRoomWithInstance<T extends string> = `${InstanceName}:${T}`;
 
 // Interface que incluí o nome da instancia e o id do setor na sala de socket;
 type SocketRoomWithSector<T extends string> =
-	SocketRoomWithInstance<`${number}:${T}`>;
+	SocketRoomWithInstance<`${SectorId}:${T}`>;
 
 /* 
     Salas de Socket do lado do servidor;
@@ -35,11 +43,15 @@ export type SocketServerMonitorRoom =
 export type SocketServerReportsRoom =
 	SocketRoomWithSector<SocketClientReportsRoom>;
 export type SocketServerChatRoom = SocketRoomWithInstance<SocketClientChatRoom>;
+export type SocketServerWalletRoom = SocketRoomWithInstance<SocketClientWalletRoom>;
+export type SocketServerUserRoom = SocketRoomWithInstance<SocketClientUserRoom>;
 export type SocketServerRoom =
 	| SocketServerChatRoom
 	| SocketServerAdminRoom
 	| SocketServerMonitorRoom
-	| SocketServerReportsRoom;
+	| SocketServerReportsRoom
+	| SocketServerWalletRoom
+	| SocketServerUserRoom;
 
 export interface JoinRoomFn {
 	(room: SocketClientRoom): void;
