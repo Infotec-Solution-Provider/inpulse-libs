@@ -1,19 +1,24 @@
-export enum WppMessageStatus {
-	PENDING = "PENDING",
-	SENT = "SENT",
-	RECEIVED = "RECEIVED",
-	READ = "READ",
-	DOWNLOADED = "DOWNLOADED",
-	ERROR = "ERROR",
-}
-
+export type WppMessageStatus =
+	| "PENDING"
+	| "SENT"
+	| "RECEIVED"
+	| "READ"
+	| "DOWNLOADED"
+	| "ERROR";
+    
 export interface WppMessage {
+	instanceName: string;
 	id: string;
 	from: string;
+	to: string;
 	type: string;
-	chatId: number;
-	quotedId?: string;
+	quotedId: string | null;
+	chatId: number | null;
 	body: string;
 	timestamp: bigint;
 	status: WppMessageStatus;
+	fileId: number | null;
+	fileName: string | null;
+	fileType: string | null;
+	fileSize: bigint | null;
 }
