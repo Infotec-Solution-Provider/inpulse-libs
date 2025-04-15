@@ -7,3 +7,4 @@ export { default as ReportsClient } from "./reports.client";
 export { default as SocketServerClient } from "./socket-server.client";
 export { default as SocketClient } from "./socket.client";
 export { default as UsersClient } from "./users.client";
+export { default as WhatsappClient } from "./whatsapp.client";

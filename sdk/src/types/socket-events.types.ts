@@ -119,7 +119,7 @@ export interface WppChatFinishedEventData {
 	chatId: number;
 }
 export interface WppMessageEventData {
-	messageId: number;
+	messageId: string;
 }
 export interface WppMessageStatusEventData {
 	messageId: number;
