@@ -1,6 +1,7 @@
 import { DataResponse, PaginatedResponse } from "./types/response.types";
 import { CreateUserDTO, UpdateUserDTO, User } from "./types/user.types";
 import ApiClient from "./api-client";
+import { RequestFilters } from "./types";
 
 /**
  * SDK para operações de usuários.
@@ -8,9 +9,16 @@ import ApiClient from "./api-client";
 export default class UsersClient extends ApiClient {
 	/**
 	 * Obtém a lista de usuários.
+	 * @param filters - Filtros opcionais para a query.
 	 * @returns Uma resposta paginada contendo os usuários.
 	 */
-	public async getUsers() {
+	public async getUsers(filters?: RequestFilters<User>) {
+		let baseUrl = `/api/users`;
+		const params = new URLSearchParams(filters);
+		if (params.toString()) {
+			baseUrl += `?${params.toString()}`;
+		}
+
 		const response =
 			await this.httpClient.get<PaginatedResponse<User>>(`/api/users`);
 
