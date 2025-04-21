@@ -11,10 +11,18 @@ type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
 type GetMessageResponse = DataResponse<WppMessage>;
 
 export default class WhatsappClient extends ApiClient {
-	public async getChatsWithMessages() {
-		const { data } = await this.httpClient.get<GetChatsResponse>(
-			"/api/whatsapp/chats",
-		);
+	public async getChatsBySession(
+		token: string,
+		messages = false,
+		contact = false,
+	) {
+		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
+
+		const { data } = await this.httpClient.get<GetChatsResponse>(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 
 		return data;
 	}
