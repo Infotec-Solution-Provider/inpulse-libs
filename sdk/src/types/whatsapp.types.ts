@@ -93,3 +93,15 @@ export type WppChatsAndMessages = {
 export type WppChatWithDetailsAndMessages = WppChatWithDetails & {
 	messages: WppMessage[];
 };
+
+export interface SendMessageData {
+	sendAsChatOwner?: boolean;
+	sendAsAudio?: boolean;
+	sendAsDocument?: boolean;
+	contactId: number;
+	quotedId?: number | null;
+	chatId?: number | null;
+	text?: string | null;
+	file?: File;
+	fileId?: number;
+}

@@ -1,6 +1,7 @@
 import ApiClient from "./api-client";
 import { DataResponse } from "./types/response.types";
 import {
+	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
 	WppMessage,
@@ -58,6 +59,28 @@ export default class WhatsappClient extends ApiClient {
 		const body = { contactId };
 		const { data: res } =
 			await this.httpClient.patch<MarkChatAsReadResponse>(url, body);
+
+		return res.data;
+	}
+
+	public async sendMessage(to: string, data: SendMessageData) {
+		const url = "/api/whatsapp/messages";
+
+		const formData = new FormData();
+		formData.append("to", to);
+		data.text && formData.append("text", data.text);
+		data.file && formData.append("file", data.file);
+		data.quotedId && formData.append("quotedId", String(data.quotedId));
+		data.chatId && formData.append("chatId", String(data.chatId));
+		data.contactId && formData.append("contactId", String(data.contactId));
+		data.sendAsAudio && formData.append("sendAsAudio", "true");
+		data.sendAsDocument && formData.append("sendAsDocument", "true");
+		data.sendAsChatOwner &&
+			formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
+
+		const { data: res } = await this.httpClient.post<
+			DataResponse<WppMessage>
+		>(url, formData);
 
 		return res.data;
 	}
