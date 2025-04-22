@@ -20,10 +20,9 @@ export default class UsersClient extends ApiClient {
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const { data: res } =
-			await this.httpClient.get<PaginatedResponse<User>>(baseUrl);
+		const response = await this.httpClient.get(baseUrl);
 
-		return res.data;
+		return response.data;
 	}
 
 	/**

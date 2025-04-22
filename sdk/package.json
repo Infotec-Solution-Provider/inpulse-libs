@@ -1,6 +1,6 @@
 {
 	"name": "@in.pulse-crm/sdk",
-	"version": "2.3.92",
+	"version": "2.3.93",
 	"description": "SDKs for abstraction of api consumption of in.pulse-crm application",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
