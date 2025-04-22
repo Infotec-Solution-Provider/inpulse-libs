@@ -35,7 +35,7 @@ class FilesClient extends ApiClient {
 		const form = new FormData();
 		form.append("instance", props.instance);
 		form.append("dirType", props.dirType);
-		form.append("file", new Blob([props.buffer]), props.fileName);
+		form.append("file", new Blob([props.buffer], { type: props.mimeType }), props.fileName);
 
 		const response = await this.httpClient.post<DataResponse<File>>(
 			"/api/files",
