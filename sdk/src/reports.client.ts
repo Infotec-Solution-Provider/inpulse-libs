@@ -16,10 +16,10 @@ export default class ReportsClient extends ApiClient {
 	 */
 	public async getChatsReports() {
 		const url = `/api/reports/chats`;
-		const response =
+		const { data: res } =
 			await this.httpClient.get<DataResponse<Array<ChatsReport>>>(url);
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
@@ -30,25 +30,21 @@ export default class ReportsClient extends ApiClient {
 	 */
 	public async generateChatsReport(body: GenerateChatsReportOptions) {
 		const url = `/api/reports/chats`;
-		const response = await this.httpClient.post<DataResponse<ChatsReport>>(
-			url,
-			body,
-		);
+		const { data: res } = await this.httpClient.post<
+			DataResponse<ChatsReport>
+		>(url, body);
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
 	 * Deletes a chat report by its unique identifier.
 	 *
 	 * @param chatsReportId - The unique identifier of the chat report to be deleted.
-	 * @returns A promise that resolves to a `MessageResponse` object containing the result of the deletion operation.
 	 */
 	public async deleteChatsReport(chatsReportId: number) {
 		const url = `/api/reports/chats/${chatsReportId}`;
-		const response = await this.httpClient.delete<MessageResponse>(url);
-
-		return response.data;
+		await this.httpClient.delete<MessageResponse>(url);
 	}
 
 	/**

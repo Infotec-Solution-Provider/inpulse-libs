@@ -9,33 +9,26 @@ import { LoginData, SessionData, UserOnlineSession } from "./types/auth.types";
 export default class AuthClient extends ApiClient {
 	/**
 	 * Realiza o login do usuário.
-	 * @param {string} instance Nome da instância do Inpulse.
-	 * @param {string} username Nome de usuário.
-	 * @param {string} password Senha do usuário.
-	 * @returns {Promise<DataResponse<LoginData>>} Dados de login.
+	 * @param instance Nome da instância do Inpulse.
+	 * @param username Nome de usuário.
+	 * @param password Senha do usuário.
+	 * @returns  Dados de login.
 	 */
-	public async login(
-		instance: string,
-		username: string,
-		password: string,
-	): Promise<DataResponse<LoginData>> {
-		const response = await this.httpClient.post<DataResponse<LoginData>>(
-			`/api/auth/login`,
-			{ LOGIN: username, SENHA: password, instance },
-		);
+	public async login(instance: string, username: string, password: string) {
+		const { data: res } = await this.httpClient.post<
+			DataResponse<LoginData>
+		>(`/api/auth/login`, { LOGIN: username, SENHA: password, instance });
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
 	 * Busca os dados da sessão.
-	 * @param {string} authToken Token de autenticação.
-	 * @returns {Promise<DataResponse<AuthTypes.SessionData>>} Dados da sessão.
+	 * @param authToken Token de autenticação.
+	 * @returns Dados da sessão.
 	 */
-	public async fetchSessionData(
-		authToken: string,
-	): Promise<DataResponse<SessionData>> {
-		const response = await this.httpClient
+	public async fetchSessionData(authToken: string) {
+		const { data: res } = await this.httpClient
 			.get<DataResponse<SessionData>>(`/api/auth/session`, {
 				headers: {
 					authorization: authToken,
@@ -46,23 +39,23 @@ export default class AuthClient extends ApiClient {
 				throw new Error("Failed to fetch session data! " + message);
 			});
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
 	 * Verifica se o usuário está autenticado.
-	 * @param {string} instanceName Nome da instância do Inpulse.
-	 * @param {string} authToken Token de autenticação.
-	 * @returns {Promise<boolean>} Verdadeiro se o usuário estiver autenticado, falso caso contrário.
+	 * @param instanceName Nome da instância do Inpulse.
+	 * @param authToken Token de autenticação.
+	 * @returns Verdadeiro se o usuário estiver autenticado, falso caso contrário.
 	 */
 	public async isAuthenticated(
 		instanceName: string,
 		authToken: string,
 	): Promise<boolean> {
 		try {
-			const { data } = await this.fetchSessionData(authToken);
+			const session = await this.fetchSessionData(authToken);
 
-			return !!data.userId && data.instance === instanceName;
+			return !!session.userId && session.instance === instanceName;
 		} catch {
 			return false;
 		}
@@ -70,22 +63,22 @@ export default class AuthClient extends ApiClient {
 
 	/**
 	 * Verifica se o usuário está autorizado.
-	 * @param {string} instanceName Nome da instância do Inpulse.
-	 * @param {string} authToken Token de autenticação.
-	 * @param {string[]} authorizedRoles Lista de papéis autorizados.
-	 * @returns {Promise<boolean>} Verdadeiro se o usuário estiver autorizado, falso caso contrário.
+	 * @param instanceName Nome da instância do Inpulse.
+	 * @param authToken Token de autenticação.
+	 * @param authorizedRoles Lista de papéis autorizados.
+	 * @returns Verdadeiro se o usuário estiver autorizado, falso caso contrário.
 	 */
 	public async isAuthorized(
 		instanceName: string,
 		authToken: string,
 		authorizedRoles: string[],
-	): Promise<boolean> {
+	) {
 		try {
-			const { data } = await this.fetchSessionData(authToken);
+			const session = await this.fetchSessionData(authToken);
 
 			return (
-				authorizedRoles.includes(data.role) &&
-				data.instance === instanceName
+				authorizedRoles.includes(session.role) &&
+				session.instance === instanceName
 			);
 		} catch {
 			return false;
@@ -93,7 +86,7 @@ export default class AuthClient extends ApiClient {
 	}
 
 	public async getOnlineSessions(instance: string) {
-		const response = await this.httpClient.get<
+		const { data: res } = await this.httpClient.get<
 			DataResponse<UserOnlineSession[]>
 		>("/api/online-sessions", {
 			params: {
@@ -101,7 +94,7 @@ export default class AuthClient extends ApiClient {
 			},
 		});
 
-		return response.data.data;
+		return res.data;
 	}
 
 	public async initOnlineSession(authToken: string) {

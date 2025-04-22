@@ -19,10 +19,10 @@ export default class UsersClient extends ApiClient {
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const response =
+		const { data: res } =
 			await this.httpClient.get<PaginatedResponse<User>>(`/api/users`);
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
@@ -31,11 +31,11 @@ export default class UsersClient extends ApiClient {
 	 * @returns Uma resposta contendo os dados do usuário.
 	 */
 	public async getUserById(userId: number) {
-		const response = await this.httpClient.get<DataResponse<User>>(
+		const { data: res } = await this.httpClient.get<DataResponse<User>>(
 			`/api/users/${userId}`,
 		);
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
@@ -46,12 +46,11 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async createUser(data: CreateUserDTO) {
 		try {
-			const response = await this.httpClient.post<DataResponse<User>>(
-				`/api/users`,
-				data,
-			);
+			const { data: res } = await this.httpClient.post<
+				DataResponse<User>
+			>(`/api/users`, data);
 
-			return response.data;
+			return res.data;
 		} catch (error) {
 			throw new Error("Failed to create user", { cause: error });
 		}
@@ -66,12 +65,11 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async updateUser(userId: string, data: UpdateUserDTO) {
 		try {
-			const response = await this.httpClient.patch<DataResponse<User>>(
-				`/api/users/${userId}`,
-				data,
-			);
+			const { data: res } = await this.httpClient.patch<
+				DataResponse<User>
+			>(`/api/users/${userId}`, data);
 
-			return response.data;
+			return res.data;
 		} catch (error) {
 			throw new Error("Failed to update user", { cause: error });
 		}
