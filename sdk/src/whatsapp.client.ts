@@ -53,11 +53,11 @@ export default class WhatsappClient extends ApiClient {
 		return res.data;
 	}
 
-	public async markChatAsRead(chatId: number) {
+	public async markContactMessagesAsRead(contactId: number) {
 		const url = "/api/whatsapp/messages/mark-as-read";
-		const body = { chatId };
+		const body = { contactId };
 		const { data: res } =
-			await this.httpClient.post<MarkChatAsReadResponse>(url, body);
+			await this.httpClient.patch<MarkChatAsReadResponse>(url, body);
 
 		return res.data;
 	}

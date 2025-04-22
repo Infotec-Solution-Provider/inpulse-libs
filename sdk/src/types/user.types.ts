@@ -27,7 +27,7 @@ export interface User {
     /** Login do usuário */
     LOGIN: string;
     /** Email do usuário */
-    EMAIl: string;
+    EMAIL: string;
     /** Nível de acesso do usuário */
     NIVEL: UserRole | null;
     /** Horário de trabalho do usuário */

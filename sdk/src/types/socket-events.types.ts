@@ -13,6 +13,7 @@ export enum SocketEventType {
 	WppMessage = "wpp_message",
 	WppMessageStatus = "wpp_message_status",
 	WppMessageReaction = "wpp_message_reaction",
+	WppContactMessagesRead = "wpp_contact_messages_read",
 	WwebjsQr = "wwebjs_qr",
 	WwebjsAuth = "wwebjs_auth",
 	ReportStatus = "report_status",
@@ -48,6 +49,11 @@ export interface EmitSocketEventFn {
 		type: SocketEventType.WppMessageStatus,
 		room: SocketServerChatRoom,
 		data: WppMessageStatusEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.WppContactMessagesRead,
+		room: SocketServerChatRoom,
+		data: WppContactMessagesReadEventData,
 	): Promise<MessageResponse>;
 	(
 		type: SocketEventType.WppMessageReaction,
@@ -87,6 +93,10 @@ export interface ListenSocketEventFn {
 		callback: (data: WppMessageStatusEventData) => void,
 	): void;
 	(
+		type: SocketEventType.WppContactMessagesRead,
+		callback: (data: WppContactMessagesReadEventData) => void,
+	): void;
+	(
 		type: SocketEventType.WppMessageReaction,
 		callback: (data: WppMessageReactionEventData) => void,
 	): void;
@@ -117,6 +127,9 @@ export interface WppChatStartedEventData {
 }
 export interface WppChatFinishedEventData {
 	chatId: number;
+}
+export interface WppContactMessagesReadEventData {
+	contactId: number;
 }
 export interface WppMessageEventData {
 	message: WppMessage;
