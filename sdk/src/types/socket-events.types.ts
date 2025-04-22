@@ -136,6 +136,7 @@ export interface WppMessageEventData {
 }
 export interface WppMessageStatusEventData {
 	messageId: number;
+	contactId: number;
 	status: WppMessageStatus;
 }
 export interface WppMessageReactionEventData {
