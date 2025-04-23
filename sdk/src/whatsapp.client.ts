@@ -7,6 +7,7 @@ import {
 	WppMessage,
 	WppWallet,
 } from "./types/whatsapp.types";
+import FormData from "form-data";
 
 type GetChatsResponse = DataResponse<WppChatsAndMessages>;
 type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
