@@ -13,21 +13,21 @@ export interface WppContact {
 export interface WppMessage {
 	id: number;
 	instance: string;
-	wwebjsId?: string;
-	wabaId?: string;
+	wwebjsId?: string | null;
+	wabaId?: string | null;
 	from: string;
 	to: string;
 	type: string;
-	quotedId?: string;
-	chatId?: number;
-	contactId?: number;
+	quotedId?: number | null;
+	chatId?: number | null;
+	contactId?: number | null;
 	body: string;
 	timestamp: string;
 	status: WppMessageStatus;
-	fileId?: number;
-	fileName?: string;
-	fileType?: string;
-	fileSize?: string;
+	fileId?: number | null;
+	fileName?: string | null;
+	fileType?: string | null;
+	fileSize?: string | null;
 }
 
 export interface WppChat {
@@ -62,14 +62,14 @@ export interface WppWallet {
 }
 
 // Enums
-export enum WppMessageStatus {
-	PENDING = "PENDING",
-	SENT = "SENT",
-	RECEIVED = "RECEIVED",
-	READ = "READ",
-	DOWNLOADED = "DOWNLOADED",
-	ERROR = "ERROR",
-}
+export type WppMessageStatus =
+	| "PENDING"
+	| "SENT"
+	| "RECEIVED"
+	| "READ"
+	| "DOWNLOADED"
+	| "ERROR"
+	| "REVOKED";
 
 export enum WppChatType {
 	RECEPTIVE = "RECEPTIVE",
@@ -95,3 +95,15 @@ export type WppChatsAndMessages = {
 export type WppChatWithDetailsAndMessages = WppChatWithDetails & {
 	messages: WppMessage[];
 };
+
+export interface SendMessageData {
+	sendAsChatOwner?: boolean;
+	sendAsAudio?: boolean;
+	sendAsDocument?: boolean;
+	contactId: number;
+	quotedId?: number | null;
+	chatId?: number | null;
+	text?: string | null;
+	file?: File;
+	fileId?: number;
+}

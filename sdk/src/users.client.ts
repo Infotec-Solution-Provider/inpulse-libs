@@ -1,6 +1,7 @@
 import { DataResponse, PaginatedResponse } from "./types/response.types";
 import { CreateUserDTO, UpdateUserDTO, User } from "./types/user.types";
 import ApiClient from "./api-client";
+import { RequestFilters } from "./types";
 
 /**
  * SDK para operações de usuários.
@@ -8,11 +9,18 @@ import ApiClient from "./api-client";
 export default class UsersClient extends ApiClient {
 	/**
 	 * Obtém a lista de usuários.
+	 * @param filters - Filtros opcionais para a query.
 	 * @returns Uma resposta paginada contendo os usuários.
 	 */
-	public async getUsers() {
-		const response =
-			await this.httpClient.get<PaginatedResponse<User>>(`/api/users`);
+	public async getUsers(filters?: RequestFilters<User>) {
+		let baseUrl = `/api/users`;
+		
+		if (filters) {
+			const params = new URLSearchParams(filters);
+			baseUrl += `?${params.toString()}`;
+		}
+
+		const response = await this.httpClient.get(baseUrl);
 
 		return response.data;
 	}
@@ -23,11 +31,11 @@ export default class UsersClient extends ApiClient {
 	 * @returns Uma resposta contendo os dados do usuário.
 	 */
 	public async getUserById(userId: number) {
-		const response = await this.httpClient.get<DataResponse<User>>(
+		const { data: res } = await this.httpClient.get<DataResponse<User>>(
 			`/api/users/${userId}`,
 		);
 
-		return response.data;
+		return res.data;
 	}
 
 	/**
@@ -38,12 +46,11 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async createUser(data: CreateUserDTO) {
 		try {
-			const response = await this.httpClient.post<DataResponse<User>>(
-				`/api/users`,
-				data,
-			);
+			const { data: res } = await this.httpClient.post<
+				DataResponse<User>
+			>(`/api/users`, data);
 
-			return response.data;
+			return res.data;
 		} catch (error) {
 			throw new Error("Failed to create user", { cause: error });
 		}
@@ -58,12 +65,11 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async updateUser(userId: string, data: UpdateUserDTO) {
 		try {
-			const response = await this.httpClient.patch<DataResponse<User>>(
-				`/api/users/${userId}`,
-				data,
-			);
+			const { data: res } = await this.httpClient.patch<
+				DataResponse<User>
+			>(`/api/users/${userId}`, data);
 
-			return response.data;
+			return res.data;
 		} catch (error) {
 			throw new Error("Failed to update user", { cause: error });
 		}

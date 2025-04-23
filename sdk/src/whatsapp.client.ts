@@ -1,38 +1,93 @@
 import ApiClient from "./api-client";
 import { DataResponse } from "./types/response.types";
 import {
+	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
 	WppMessage,
+	WppWallet,
 } from "./types/whatsapp.types";
+import FormData from "form-data";
 
 type GetChatsResponse = DataResponse<WppChatsAndMessages>;
 type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
 type GetMessageResponse = DataResponse<WppMessage>;
+type MarkChatAsReadResponse = DataResponse<WppMessage[]>;
 
 export default class WhatsappClient extends ApiClient {
-	public async getChatsWithMessages() {
-		const { data } = await this.httpClient.get<GetChatsResponse>(
-			"/api/whatsapp/chats",
-		);
+	public async getChatsBySession(
+		token: string,
+		messages = false,
+		contact = false,
+	) {
+		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
 
-		return data;
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		return res.data;
 	}
 
 	public async getChatById(id: number) {
-		const { data } = await this.httpClient.get<GetChatResponse>(
+		const { data: res } = await this.httpClient.get<GetChatResponse>(
 			`/api/whatsapp/chats/${id}`,
 		);
 
-		return data;
+		return res.data;
 	}
 
 	public async getMessageById(id: string) {
-		const { data } = await this.httpClient.get<GetMessageResponse>(
+		const { data: res } = await this.httpClient.get<GetMessageResponse>(
 			`/api/whatsapp/messages/${id}`,
 		);
 
-		return data;
+		return res.data;
+	}
+
+	public async getUserWallets(instance: string, userId: number) {
+		const { data: res } = await this.httpClient.get<
+			DataResponse<WppWallet[]>
+		>(`/api/wallets?instance=${instance}&userId=${userId}`);
+
+		return res.data;
+	}
+
+	public async markContactMessagesAsRead(contactId: number) {
+		const url = "/api/whatsapp/messages/mark-as-read";
+		const body = { contactId };
+		const { data: res } =
+			await this.httpClient.patch<MarkChatAsReadResponse>(url, body);
+
+		return res.data;
+	}
+
+	public async sendMessage(to: string, data: SendMessageData) {
+		const url = "/api/whatsapp/messages";
+
+		const formData = new FormData();
+		formData.append("to", to);
+		data.text && formData.append("text", data.text);
+		data.file && formData.append("file", data.file);
+		data.quotedId && formData.append("quotedId", String(data.quotedId));
+		data.chatId && formData.append("chatId", String(data.chatId));
+		data.contactId && formData.append("contactId", String(data.contactId));
+		data.sendAsAudio && formData.append("sendAsAudio", "true");
+		data.sendAsDocument && formData.append("sendAsDocument", "true");
+		data.sendAsChatOwner &&
+			formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
+
+		const { data: res } = await this.httpClient.post<
+			DataResponse<WppMessage>
+		>(url, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		return res.data;
 	}
 
 	public setAuth(token: string) {

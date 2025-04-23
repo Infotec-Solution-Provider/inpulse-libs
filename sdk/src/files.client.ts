@@ -18,6 +18,21 @@ class FilesClient extends ApiClient {
 	}
 
 	/**
+	 * Fetches the metadata of a file by its ID.
+	 *
+	 * @param id - The unique identifier of the file.
+	 * @returns A promise that resolves to the file metadata.
+	 * @throws Will throw an error if the HTTP request fails.
+	 */
+	public async fetchFileMetadata(id: number): Promise<File> {
+		const { data: res } = await this.httpClient.get<DataResponse<File>>(
+			`/api/files/${id}/metadata`,
+		);
+
+		return res.data;
+	}
+
+	/**
 	 * Obtém a URL de download de um arquivo.
 	 * @param {number} id - ID do arquivo.
 	 * @returns {string} URL de download do arquivo.
@@ -35,7 +50,11 @@ class FilesClient extends ApiClient {
 		const form = new FormData();
 		form.append("instance", props.instance);
 		form.append("dirType", props.dirType);
-		form.append("file", new Blob([props.buffer]), props.fileName);
+		form.append(
+			"file",
+			new Blob([props.buffer], { type: props.mimeType }),
+			props.fileName,
+		);
 
 		const response = await this.httpClient.post<DataResponse<File>>(
 			"/api/files",
