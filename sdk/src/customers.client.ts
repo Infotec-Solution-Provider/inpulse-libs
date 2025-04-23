@@ -53,9 +53,9 @@ class CustomersClient extends ApiClient {
 	 */
 	public async getCustomers(filters?: RequestFilters<Customer>) {
 		let baseUrl = `/api/customers`;
-		const params = new URLSearchParams(filters);
 
-		if (params.toString()) {
+		if (filters) {
+			const params = new URLSearchParams(filters);
 			baseUrl += `?${params.toString()}`;
 		}
 

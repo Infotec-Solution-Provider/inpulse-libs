@@ -14,9 +14,9 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async getUsers(filters?: RequestFilters<User>) {
 		let baseUrl = `/api/users`;
-		const params = new URLSearchParams(filters);
-
-		if (params.toString()) {
+		
+		if (filters) {
+			const params = new URLSearchParams(filters);
 			baseUrl += `?${params.toString()}`;
 		}
 

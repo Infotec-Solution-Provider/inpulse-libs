@@ -81,7 +81,11 @@ export default class WhatsappClient extends ApiClient {
 
 		const { data: res } = await this.httpClient.post<
 			DataResponse<WppMessage>
-		>(url, formData);
+		>(url, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
 
 		return res.data;
 	}

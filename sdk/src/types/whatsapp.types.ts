@@ -67,7 +67,8 @@ export type WppMessageStatus =
 	| "RECEIVED"
 	| "READ"
 	| "DOWNLOADED"
-	| "ERROR";
+	| "ERROR"
+	| "REVOKED";
 
 export enum WppChatType {
 	RECEPTIVE = "RECEPTIVE",
