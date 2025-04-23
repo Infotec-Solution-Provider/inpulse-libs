@@ -55,9 +55,10 @@ export interface WppSector {
 }
 
 export interface WppWallet {
-	instanceName: string;
+	instance: string;
 	id: number;
 	name: string;
+	userIds: number[]
 }
 
 // Enums

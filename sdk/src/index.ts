@@ -8,3 +8,4 @@ export { default as SocketServerClient } from "./socket-server.client";
 export { default as SocketClient } from "./socket.client";
 export { default as UsersClient } from "./users.client";
 export { default as WhatsappClient } from "./whatsapp.client";
+export { default as WalletsClient } from "./wallets.client";
