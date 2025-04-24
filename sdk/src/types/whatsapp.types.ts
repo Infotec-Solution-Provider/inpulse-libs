@@ -10,6 +10,15 @@ export interface WppContact {
 	isOnlyAdmin: boolean;
 }
 
+export interface WppSchedule {
+	id: number;
+	instance: string;
+	contactId: number;
+	scheduleDate: string;
+	scheduledBy: string;
+	scheduledFor: string;
+}
+
 export interface WppMessage {
 	id: number;
 	instance: string;
