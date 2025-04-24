@@ -8,7 +8,7 @@ export default class WalletsClient extends ApiClient {
         try {
             const response = await this.httpClient.post<DataResponse<Wallet>>(
                 `/api/wallets`,
-                { data: { instance, name } }
+                 { instance, name } 
             );
             return response.data.data
         } catch (error) {
