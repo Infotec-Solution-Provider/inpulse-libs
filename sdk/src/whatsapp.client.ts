@@ -1,5 +1,5 @@
 import ApiClient from "./api-client";
-import { DataResponse } from "./types/response.types";
+import { DataResponse, MessageResponse } from "./types/response.types";
 import {
 	SendMessageData,
 	WppChatsAndMessages,
@@ -86,6 +86,20 @@ export default class WhatsappClient extends ApiClient {
 				"Content-Type": "multipart/form-data",
 			},
 		});
+
+		return res.data;
+	}
+
+	public async finishChatById(id: number, resultId: number) {
+		const url = `/api/whatsapp/chats/${id}/finish`;
+		const body = { resultId };
+
+		await this.httpClient.post<MessageResponse>(url, body);
+	}
+
+	public async getResults() {
+		const url = `/api/whatsapp/results`;
+		const { data: res } = await this.httpClient.get<DataResponse<{ id: number, name: string }[]>>(url);
 
 		return res.data;
 	}
