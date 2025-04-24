@@ -10,6 +10,18 @@ export interface WppContact {
 	isOnlyAdmin: boolean;
 }
 
+export interface WppContactWithCustomer {
+	id: number;
+	name: string;
+	phone: string;
+	customerId?: number;
+	instance: string;
+	isBlocked: boolean;
+	isOnlyAdmin: boolean;
+	customer: Customer | null;
+	chatingWith: string | null;
+}
+
 export interface WppMessage {
 	id: number;
 	instance: string;
@@ -58,7 +70,7 @@ export interface WppWallet {
 	instance: string;
 	id: number;
 	name: string;
-	userIds: number[]
+	userIds: number[];
 }
 
 // Enums

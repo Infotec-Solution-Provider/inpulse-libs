@@ -4,6 +4,8 @@ import {
 	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
+	WppContact,
+	WppContactWithCustomer,
 	WppMessage,
 	WppWallet,
 } from "./types/whatsapp.types";
@@ -97,9 +99,83 @@ export default class WhatsappClient extends ApiClient {
 		await this.httpClient.post<MessageResponse>(url, body);
 	}
 
+	public async startChatByContactId(contactId: number) {
+		const url = `/api/whatsapp/chats`;
+		const body = { contactId };
+
+		const { data: res } = await this.httpClient.post<
+			DataResponse<WppChatWithDetailsAndMessages>
+		>(url, body);
+
+		return res.data;
+	}
+
 	public async getResults() {
 		const url = `/api/whatsapp/results`;
-		const { data: res } = await this.httpClient.get<DataResponse<{ id: number, name: string }[]>>(url);
+		const { data: res } =
+			await this.httpClient.get<
+				DataResponse<{ id: number; name: string }[]>
+			>(url);
+
+		return res.data;
+	}
+
+	public async getCustomerContacts(customerId: number) {
+		const url = `/api/whatsapp/customer/${customerId}/contacts`;
+		const { data: res } =
+			await this.httpClient.get<DataResponse<WppContact[]>>(url);
+
+		return res.data;
+	}
+
+	public async getContactsWithCustomer() {
+		const url = `/api/whatsapp/contacts`;
+		const { data: res } =
+			await this.httpClient.get<DataResponse<WppContactWithCustomer[]>>(
+				url,
+			);
+
+		return res.data;
+	}
+
+	public async createContact(
+		name: string,
+		phone: string,
+		customerId: number,
+	) {
+		const url = `/api/whatsapp/customers/${customerId}/contacts`;
+		const body = { name, phone };
+
+		const { data: res } = await this.httpClient.post<
+			DataResponse<WppContact>
+		>(url, body);
+
+		return res.data;
+	}
+
+	public async updateContact(contactId: number, name: string) {
+		const url = `/api/whatsapp/contacts/${contactId}`;
+		const body = { name };
+
+		const { data: res } = await this.httpClient.put<
+			DataResponse<WppContact>
+		>(url, body);
+
+		return res.data;
+	}
+
+	public async deleteContact(contactId: number) {
+		const url = `/api/whatsapp/contacts/${contactId}`;
+
+		await this.httpClient.delete<MessageResponse>(url);
+	}
+
+	public async getSectors() {
+		const url = `/api/whatsapp/sectors`;
+		const { data: res } =
+			await this.httpClient.get<
+				DataResponse<{ id: number; name: string }[]>
+			>(url);
 
 		return res.data;
 	}

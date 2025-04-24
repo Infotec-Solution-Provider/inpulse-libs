@@ -1,5 +1,5 @@
 import ApiClient from "./api-client";
-import { RequestFilters } from "./types";
+import { PaginatedResponse, RequestFilters } from "./types";
 import {
 	CreateCustomerDTO,
 	Customer,
@@ -59,7 +59,8 @@ class CustomersClient extends ApiClient {
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const response = await this.httpClient.get(baseUrl);
+		const response =
+			await this.httpClient.get<PaginatedResponse<Customer>>(baseUrl);
 
 		return response.data;
 	}
