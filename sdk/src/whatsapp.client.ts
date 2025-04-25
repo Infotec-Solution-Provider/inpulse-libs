@@ -18,17 +18,13 @@ type MarkChatAsReadResponse = DataResponse<WppMessage[]>;
 
 export default class WhatsappClient extends ApiClient {
 	public async getChatsBySession(
-		token: string,
 		messages = false,
 		contact = false,
 	) {
 		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
 
-		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		console.log(this.httpClient.defaults.headers.common["Authorization"]);
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
