@@ -19,6 +19,18 @@ export interface WppSchedule {
 	scheduledFor: string;
 }
 
+export interface WppContactWithCustomer {
+	id: number;
+	name: string;
+	phone: string;
+	customerId?: number;
+	instance: string;
+	isBlocked: boolean;
+	isOnlyAdmin: boolean;
+	customer: Customer | null;
+	chatingWith: string | null;
+}
+
 export interface WppMessage {
 	id: number;
 	instance: string;
@@ -64,9 +76,10 @@ export interface WppSector {
 }
 
 export interface WppWallet {
-	instanceName: string;
+	instance: string;
 	id: number;
 	name: string;
+	userIds: number[];
 }
 
 // Enums
@@ -76,7 +89,8 @@ export type WppMessageStatus =
 	| "RECEIVED"
 	| "READ"
 	| "DOWNLOADED"
-	| "ERROR";
+	| "ERROR"
+	| "REVOKED";
 
 export enum WppChatType {
 	RECEPTIVE = "RECEPTIVE",

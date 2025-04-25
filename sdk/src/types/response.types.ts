@@ -17,7 +17,7 @@ export interface PaginatedResponse<T> {
 	data: Array<T>;
 	page: {
 		current: number;
-		total: number;
+		totalRows: number;
 	};
 }
 

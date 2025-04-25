@@ -14,13 +14,14 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async getUsers(filters?: RequestFilters<User>) {
 		let baseUrl = `/api/users`;
-		const params = new URLSearchParams(filters);
 
-		if (params.toString()) {
+		if (filters) {
+			const params = new URLSearchParams(filters);
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const response = await this.httpClient.get(baseUrl);
+		const response =
+			await this.httpClient.get<PaginatedResponse<User>>(baseUrl);
 
 		return response.data;
 	}
