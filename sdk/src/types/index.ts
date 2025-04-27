@@ -8,3 +8,4 @@ export * from "./socket-events.types";
 export * from "./socket-rooms.types";
 export * from "./user.types";
 export * from "./whatsapp.types";
+export * from "./internal.types";

@@ -1,3 +1,4 @@
+// src/types/socket-rooms.types.ts
 type ReportType = "chats";
 type PhoneNumber = string;
 type WalletId = number;
