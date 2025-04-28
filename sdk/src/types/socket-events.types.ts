@@ -6,6 +6,7 @@ import {
 } from "./socket-rooms.types";
 import { MessageResponse } from "./response.types";
 import { WppMessage, WppMessageStatus } from "./whatsapp.types";
+import { InternalMessage, InternalMessageStatus } from "./internal.types";
 
 export enum SocketEventType {
 	WppChatStarted = "wpp_chat_started",
@@ -17,92 +18,132 @@ export enum SocketEventType {
 	WwebjsQr = "wwebjs_qr",
 	WwebjsAuth = "wwebjs_auth",
 	ReportStatus = "report_status",
+	InternalChatStarted = "internal_chat_started",
+	InternalChatFinished = "internal_chat_finished",
+	InternalMessageStatus = "internal_chat_status",
+	InternalMessage = "internal_message",
 }
 
 export interface EmitSocketEventFn {
 	(
-		type: SocketEventType.WwebjsQr,
-		room: SocketServerAdminRoom,
-		data: WWEBJSQrEventData,
+			type: SocketEventType.WwebjsQr,
+			room: SocketServerAdminRoom,
+			data: WWEBJSQrEventData,
 	): Promise<MessageResponse>;
 	(
-		type: SocketEventType.WwebjsAuth,
-		room: SocketServerAdminRoom,
-		data: WWEBJSAuthEventData,
+			type: SocketEventType.WwebjsAuth,
+			room: SocketServerAdminRoom,
+			data: WWEBJSAuthEventData,
 	): Promise<MessageResponse>;
 	(
-		type: SocketEventType.WppChatStarted,
+			type: SocketEventType.WppChatStarted,
+			room: SocketServerRoom,
+			data: WppChatStartedEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.WppChatFinished,
+			room: SocketServerRoom,
+			data: WppChatFinishedEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.WppMessage,
+			room: SocketServerChatRoom,
+			data: WppMessageEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.WppMessageStatus,
+			room: SocketServerChatRoom,
+			data: WppMessageStatusEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.WppContactMessagesRead,
+			room: SocketServerChatRoom,
+			data: WppContactMessagesReadEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.WppMessageReaction,
+			room: SocketServerChatRoom,
+			data: WppMessageReactionEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.ReportStatus,
+			room: SocketServerReportsRoom,
+			data: ReportStatusEventData,
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.InternalMessage,
+			room: SocketServerChatRoom,
+			data: InternalMessageEventData,      
+	): Promise<MessageResponse>;
+	(
+			type: SocketEventType.InternalMessageStatus,
+			room: SocketServerChatRoom,
+			data: InternalMessageEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.InternalChatStarted,
 		room: SocketServerRoom,
-		data: WppChatStartedEventData,
+		data: InternalChatStartedEventData,
 	): Promise<MessageResponse>;
 	(
-		type: SocketEventType.WppChatFinished,
+		type: SocketEventType.InternalChatFinished,
 		room: SocketServerRoom,
-		data: WppChatFinishedEventData,
-	): Promise<MessageResponse>;
-	(
-		type: SocketEventType.WppMessage,
-		room: SocketServerChatRoom,
-		data: WppMessageEventData,
-	): Promise<MessageResponse>;
-	(
-		type: SocketEventType.WppMessageStatus,
-		room: SocketServerChatRoom,
-		data: WppMessageStatusEventData,
-	): Promise<MessageResponse>;
-	(
-		type: SocketEventType.WppContactMessagesRead,
-		room: SocketServerChatRoom,
-		data: WppContactMessagesReadEventData,
-	): Promise<MessageResponse>;
-	(
-		type: SocketEventType.WppMessageReaction,
-		room: SocketServerChatRoom,
-		data: WppMessageReactionEventData,
-	): Promise<MessageResponse>;
-	(
-		type: SocketEventType.ReportStatus,
-		room: SocketServerReportsRoom,
-		data: ReportStatusEventData,
+		data: InternalChatFinishedEventData,
 	): Promise<MessageResponse>;
 }
 
 export interface ListenSocketEventFn {
 	(
-		type: SocketEventType.WwebjsQr,
-		callback: (data: WWEBJSQrEventData) => void,
+			type: SocketEventType.WwebjsQr,
+			callback: (data: WWEBJSQrEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WwebjsAuth,
-		callback: (data: WWEBJSAuthEventData) => void,
+			type: SocketEventType.WwebjsAuth,
+			callback: (data: WWEBJSAuthEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppChatStarted,
-		callback: (data: WppChatStartedEventData) => void,
+			type: SocketEventType.WppChatStarted,
+			callback: (data: WppChatStartedEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppChatFinished,
-		callback: (data: WppChatFinishedEventData) => void,
+			type: SocketEventType.WppChatFinished,
+			callback: (data: WppChatFinishedEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppMessage,
-		callback: (data: WppMessageEventData) => void,
+			type: SocketEventType.WppMessage,
+			callback: (data: WppMessageEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppMessageStatus,
-		callback: (data: WppMessageStatusEventData) => void,
+			type: SocketEventType.WppMessageStatus,
+			callback: (data: WppMessageStatusEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppContactMessagesRead,
-		callback: (data: WppContactMessagesReadEventData) => void,
+			type: SocketEventType.WppContactMessagesRead,
+			callback: (data: WppContactMessagesReadEventData) => void,
 	): void;
 	(
-		type: SocketEventType.WppMessageReaction,
-		callback: (data: WppMessageReactionEventData) => void,
+			type: SocketEventType.WppMessageReaction,
+			callback: (data: WppMessageReactionEventData) => void,
 	): void;
 	(
-		type: SocketEventType.ReportStatus,
-		callback: (data: ReportStatusEventData) => void,
+			type: SocketEventType.ReportStatus,
+			callback: (data: ReportStatusEventData) => void,
+	): void;
+	(
+		type: SocketEventType.InternalChatStarted,
+		callback: (data: InternalChatStartedEventData) => void,
+	): void;
+	(
+			type: SocketEventType.InternalChatFinished,
+			callback: (data: InternalChatFinishedEventData) => void,
+	): void;
+	(
+			type: SocketEventType.InternalMessage,
+			callback: (data: InternalMessageEventData) => void,
+	): void;
+	(
+			type: SocketEventType.InternalMessageStatus,
+			callback: (data: InternalMessageStatusEventData) => void,
 	): void;
 }
 
@@ -110,18 +151,16 @@ export interface UnlistenSocketEventFn {
 	(type: SocketEventType): void;
 }
 
-// EventData
+// EventData types
 export interface WWEBJSQrEventData {
 	qr: string;
 	phone: string;
 }
-
 export interface WWEBJSAuthEventData {
 	phone: string;
 	success: boolean;
 	message?: string;
 }
-
 export interface WppChatStartedEventData {
 	chatId: number;
 }
@@ -143,7 +182,23 @@ export interface WppMessageReactionEventData {
 	messageId: number;
 	reaction: string;
 }
-
+export interface InternalChatStartedEventData {
+	chatId: number;
+}
+export interface InternalChatFinishedEventData {
+	chatId: number;
+}
+export interface InternalContactMessagesReadEventData {
+	contactId: number;
+}
+export interface InternalMessageEventData {
+	message: InternalMessage;
+}
+export interface InternalMessageStatusEventData {
+	messageId: number;
+	contactId: number;
+	status: InternalMessageStatus;
+}
 export type ReportStatusEventData = {
 	id: number;
 	type: string;
