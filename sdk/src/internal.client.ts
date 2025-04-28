@@ -68,12 +68,11 @@ export default class InternalChatClient extends ApiClient {
 
 	public async updateGroupMembers(
 		groupId: number,
-		add: number[],
-		remove: number[],
+		{ name, participants }: { name: string; participants: number[] },
 	) {
 		const { data: res } = await this.httpClient.put<DataResponse<any>>(
 			`/api/internal/chats/group/${groupId}/members`,
-			{ add, remove },
+			{ name, participants },
 		);
 		return res.data;
 	}
