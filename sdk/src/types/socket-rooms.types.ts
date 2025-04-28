@@ -1,6 +1,7 @@
 // src/types/socket-rooms.types.ts
 type ReportType = "chats";
-type PhoneNumber = string;
+type ChatId = number;
+type InternalChatId = number;
 type WalletId = number;
 type UserId = number;
 type SectorId = number;
@@ -11,19 +12,21 @@ type InstanceName = string;
     Essas salas omitem o nome da instancia e/ou id do setor,
     pois isso é controlado pelo servidor;
 */
-export type SocketClientChatRoom = `chat:${PhoneNumber}`;
+export type SocketClientChatRoom = `chat:${ChatId}`;
 export type SocketClientAdminRoom = "admin";
 export type SocketClientMonitorRoom = `monitor`;
 export type SocketClientReportsRoom = `reports:${ReportType}`;
 export type SocketClientWalletRoom = `wallet:${WalletId}`;
 export type SocketClientUserRoom = `user:${UserId}`;
+export type SocketClientInternalChatRoom = `internal-chat:${InternalChatId}`;
 export type SocketClientRoom =
 	| SocketClientChatRoom
 	| SocketClientAdminRoom
 	| SocketClientReportsRoom
 	| SocketClientMonitorRoom
 	| SocketClientWalletRoom
-	| SocketClientUserRoom;
+	| SocketClientUserRoom
+	| SocketClientInternalChatRoom;
 
 // Interface que incluí o nome da instancia na sala de socket;
 type SocketRoomWithInstance<T extends string> = `${InstanceName}:${T}`;
@@ -44,15 +47,19 @@ export type SocketServerMonitorRoom =
 export type SocketServerReportsRoom =
 	SocketRoomWithSector<SocketClientReportsRoom>;
 export type SocketServerChatRoom = SocketRoomWithInstance<SocketClientChatRoom>;
-export type SocketServerWalletRoom = SocketRoomWithInstance<SocketClientWalletRoom>;
+export type SocketServerWalletRoom =
+	SocketRoomWithInstance<SocketClientWalletRoom>;
 export type SocketServerUserRoom = SocketRoomWithInstance<SocketClientUserRoom>;
+export type SocketServerInternalChatRoom =
+	SocketRoomWithInstance<SocketClientInternalChatRoom>;
 export type SocketServerRoom =
 	| SocketServerChatRoom
 	| SocketServerAdminRoom
 	| SocketServerMonitorRoom
 	| SocketServerReportsRoom
 	| SocketServerWalletRoom
-	| SocketServerUserRoom;
+	| SocketServerUserRoom
+	| SocketServerInternalChatRoom;
 
 export interface JoinRoomFn {
 	(room: SocketClientRoom): void;

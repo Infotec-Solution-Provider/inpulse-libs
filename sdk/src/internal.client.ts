@@ -1,77 +1,97 @@
 import ApiClient from "./api-client";
 import { DataResponse } from "./types/response.types";
-import { InternalChat, InternalChatsAndMessages, InternalChatWithDetailsAndMessages, InternalContactWithUser } from "./types/internal.types";
+import {
+	InternalChat,
+	InternalMessage,
+	InternalSendMessageData,
+} from "./types/internal.types";
+import FormData from "form-data";
 
-type GetChatsResponse = DataResponse<InternalChatsAndMessages>;
+type GetChatsResponse = DataResponse<{
+	chats: (InternalChat & { participants: number[] })[];
+	messages: InternalMessage[];
+}>;
+type StartChatResponse = DataResponse<{
+	chat: InternalChat & { messages: InternalMessage[] };
+}>;
 
-	export default class InternalChatClient extends ApiClient {
-		public async getChatsBySession(
-			messages = false,
-			contact = false,
-		) {
-			const url = `/api/internal/session/chats?messages=${messages}&contact=${contact}`;
-	
-			console.log(this.httpClient.defaults.headers.common["Authorization"]);
-			const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
-	
-			return res.data;
-		}
-		public async getChatsForUser(userId: number, instance: string) {
-			const url = `/api/internal/chats?userId=${userId}&instance=${instance}`;
-			const { data: res } = await this.httpClient.get<DataResponse<InternalChat[]>>(url);
-			return res.data;
-		}
-	
-		public async getChatById(id: number) {
-			const { data: res } = await this.httpClient.get<DataResponse<InternalChat>>(`/api/internal/chats/${id}`);
-			return res.data;
-		}
-	
-		public async sendMessageToChat(chatId: number, userId: number, content: string) {
-			const { data: res } = await this.httpClient.post(`/api/internal/chats/${chatId}/messages?userId=${userId}`, {
-				content,
-			});
-			return res;
-		}
-	
-		public async createGroup(name: string, participantIds: number[], userId: number) {
-			const { data: res } = await this.httpClient.post<DataResponse<InternalChat>>(
-				`/api/internal/chats/group?userId=${userId}`,
-				{ name, participantIds }
-			);
-			return res.data;
-		}
-	
-		public async updateGroupMembers(groupId: number, add: number[], remove: number[]) {
-			const { data: res } = await this.httpClient.put<DataResponse<any>>(
-				`/api/internal/chats/group/${groupId}/members`,
-				{ add, remove }
-			);
-			return res.data;
-		}
-		
-		public async getContactsWithUser() {
-			const url = `/api/internal/contacts`;
-			const { data: res } =
-				await this.httpClient.get<DataResponse<InternalContactWithUser[]>>(
-					url,
-				);
-	
-			return res.data;
-		}
-		public async startChatByContactId(contactId: number) {
-			const url = `/api/internal/chats`;
-			const body = { contactId };
+export default class InternalChatClient extends ApiClient {
+	public async createInternalChat(
+		participants: number[],
+		isGroup: boolean = false,
+		groupName: string = "",
+	) {
+		const body = { participants, isGroup, groupName };
 
-			const { data: res } = await this.httpClient.post<
-				DataResponse<InternalChatWithDetailsAndMessages>
-			>(url, body);
+		const { data: res } = await this.httpClient.post<
+			DataResponse<InternalChat>
+		>(`/api/internal/chats`, body);
 
-			return res.data;
-		}
+		return res.data;
+	}
+	public async getInternalChatsBySession(token: string | null = null) {
+		const url = `/api/internal/session/chats`;
 
-		public setAuth(token: string) {
-			this.httpClient.defaults.headers.common["Authorization"] =
-				`Bearer ${token}`;
-		}
+		const headers = token
+			? { Authorization: `Bearer ${token}` }
+			: undefined;
+
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+			headers,
+		});
+
+		return res.data;
+	}
+
+	public async sendMessageToChat(data: InternalSendMessageData) {
+		const url = `/api/internal/chats/${data.chatId}/messages`;
+		const formData = new FormData();
+
+		formData.append("chatId", data.chatId.toString());
+		formData.append("text", data.text);
+		data.quotedId && formData.append("quotedId", data.quotedId.toString());
+		data.sendAsAudio && formData.append("sendAsAudio", "true");
+		data.sendAsDocument && formData.append("sendAsDocument", "true");
+		data.file && formData.append("file", data.file);
+		data.fileId && formData.append("fileId", data.fileId.toString());
+
+		await this.httpClient.post<DataResponse<InternalMessage>>(
+			url,
+			formData,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			},
+		);
+	}
+
+	public async updateGroupMembers(
+		groupId: number,
+		add: number[],
+		remove: number[],
+	) {
+		const { data: res } = await this.httpClient.put<DataResponse<any>>(
+			`/api/internal/chats/group/${groupId}/members`,
+			{ add, remove },
+		);
+		return res.data;
+	}
+
+	public async startChatByContactId(contactId: number) {
+		const url = `/api/internal/chats`;
+		const body = { contactId };
+
+		const { data: res } = await this.httpClient.post<StartChatResponse>(
+			url,
+			body,
+		);
+
+		return res.data;
+	}
+
+	public setAuth(token: string) {
+		this.httpClient.defaults.headers.common["Authorization"] =
+			`Bearer ${token}`;
+	}
 }

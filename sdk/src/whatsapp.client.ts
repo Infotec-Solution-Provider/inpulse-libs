@@ -20,11 +20,16 @@ export default class WhatsappClient extends ApiClient {
 	public async getChatsBySession(
 		messages = false,
 		contact = false,
+		token: string | null = null,
 	) {
+		const headers = token
+			? { Authorization: `Bearer ${token}` }
+			: undefined;
 		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
-
-		console.log(this.httpClient.defaults.headers.common["Authorization"]);
-		const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
+		
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+			headers,
+		});
 
 		return res.data;
 	}
@@ -64,8 +69,8 @@ export default class WhatsappClient extends ApiClient {
 
 	public async sendMessage(to: string, data: SendMessageData) {
 		const url = "/api/whatsapp/messages";
-
 		const formData = new FormData();
+
 		formData.append("to", to);
 		data.text && formData.append("text", data.text);
 		data.file && formData.append("file", data.file);
