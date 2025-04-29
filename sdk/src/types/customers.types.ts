@@ -64,9 +64,15 @@ export interface Customer {
 	SETOR: number;
 }
 
-export type CreateCustomerDTO = Pick<
-	Customer,
-	| "RAZAO"
-	| "CPF_CNPJ"
->;
+export interface CreateCustomerDTO {
+	RAZAO: string;
+	CPF_CNPJ: string;
+	FANTASIA?: string | null;
+	PESSOA?: "FIS" | "JUR" | null;
+	ATIVO?: "SIM" | "NAO" | null;
+	CIDADE?: string | null;
+	ESTADO?: string | null;
+	COD_ERP?: string | null;
+	SETOR?: number | null;
+}
 export type UpdateCustomerDTO = Partial<CreateCustomerDTO>;
