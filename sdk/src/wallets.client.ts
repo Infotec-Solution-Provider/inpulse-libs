@@ -4,11 +4,11 @@ import { Wallet } from "./types/wallet.types";
 
 export default class WalletsClient extends ApiClient {
 
-    public async createWallet(instance: string, name: string) {
+    public async createWallet(name: string) {
         try {
             const response = await this.httpClient.post<DataResponse<Wallet>>(
                 `/api/wallets`,
-                 { instance, name } 
+                { name }
             );
             return response.data.data
         } catch (error) {
