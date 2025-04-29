@@ -185,4 +185,26 @@ export default class WhatsappClient extends ApiClient {
 		this.httpClient.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
+	public async getChatsMonitor(
+		messages = false,
+		contact = false,
+		token: string | null = null,
+	) {
+		const headers = token
+			? { Authorization: `Bearer ${token}` }
+			: undefined;
+		const url = `/api/whatsapp/session/monitor?messages=${messages}&contact=${contact}`;
+		
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+			headers,
+		});
+
+		return res.data;
+	}
+	public async tranferAttendance(id: number, userId: number) {
+		const url = `/api/whatsapp/chats/${id}/transfer`;
+		const body = { userId };
+
+		await this.httpClient.post<MessageResponse>(url, body);
+	}
 }
