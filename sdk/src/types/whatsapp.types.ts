@@ -128,3 +128,15 @@ export interface SendMessageData {
 	file?: File;
 	fileId?: number;
 }
+export interface MonitorChat {
+  id: string;
+  erpCode: string;
+  companyName: string;
+  contactName: string;
+  whatsappNumber: string;
+  sectorName: string;
+  attendantName: string;
+  startDate: string;
+  endDate: string;
+  result: string;
+}
