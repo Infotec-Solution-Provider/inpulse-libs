@@ -201,7 +201,7 @@ export default class WhatsappClient extends ApiClient {
 
 		return res.data;
 	}
-	public async tranferAttendance(id: number, userId: number) {
+	public async transferAttendance(id: number, userId: number) {
 		const url = `/api/whatsapp/chats/${id}/transfer`;
 		const body = { userId };
 
