@@ -2,6 +2,7 @@ import ApiClient from "./api-client";
 import { DataResponse } from "./types/response.types";
 import {
 	InternalChat,
+	InternalGroup,
 	InternalMessage,
 	InternalSendMessageData,
 } from "./types/internal.types";
@@ -29,6 +30,7 @@ export default class InternalChatClient extends ApiClient {
 
 		return res.data;
 	}
+
 	public async getInternalChatsBySession(token: string | null = null) {
 		const url = `/api/internal/session/chats`;
 
@@ -43,7 +45,15 @@ export default class InternalChatClient extends ApiClient {
 		return res.data;
 	}
 
-	public async sendMessageToChat(data: InternalSendMessageData) {
+	public async getInternalGroups() {
+		const url = `/api/internal/groups`;
+		const { data: res } =
+			await this.httpClient.get<DataResponse<InternalGroup[]>>(url);
+
+		return res.data;
+	}
+
+	public async sendMessageToInternalChat(data: InternalSendMessageData) {
 		const url = `/api/internal/chats/${data.chatId}/messages`;
 		const formData = new FormData();
 
@@ -66,26 +76,16 @@ export default class InternalChatClient extends ApiClient {
 		);
 	}
 
-	public async updateGroupMembers(
+	public async updateInternalGroup(
 		groupId: number,
 		{ name, participants }: { name: string; participants: number[] },
 	) {
-		const { data: res } = await this.httpClient.put<DataResponse<any>>(
-			`/api/internal/chats/group/${groupId}/members`,
-			{ name, participants },
-		);
-		return res.data;
-	}
-
-	public async startChatByContactId(contactId: number) {
-		const url = `/api/internal/chats`;
-		const body = { contactId };
-
-		const { data: res } = await this.httpClient.post<StartChatResponse>(
-			url,
-			body,
-		);
-
+		const { data: res } = await this.httpClient.put<
+			DataResponse<InternalGroup>
+		>(`/api/internal/groups/${groupId}`, {
+			name,
+			participants,
+		});
 		return res.data;
 	}
 
