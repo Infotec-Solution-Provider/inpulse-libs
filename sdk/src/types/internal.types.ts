@@ -30,6 +30,26 @@ export interface InternalChat {
 	groupDescription: string | null;
 }
 
+export interface InternalGroup {
+	id: number;
+	instance: string;
+	creatorId: number | null;
+	sectorId: number | null;
+	isFinished: true;
+	startedAt: Date;
+	finishedAt: Date | null;
+	finishedBy: number | null;
+	isGroup: boolean;
+	groupName: string | null;
+	groupDescription: string | null;
+	participants: {
+		userId: number;
+		joinedAt: Date;
+		lastReadAt: Date | null;
+		internalChatId: number;
+	}[];
+}
+
 export interface InternalChatMember {
 	internalchatId: number;
 	internalcontactId: number;
