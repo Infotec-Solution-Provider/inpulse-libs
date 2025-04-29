@@ -67,11 +67,6 @@ export interface Customer {
 export type CreateCustomerDTO = Pick<
 	Customer,
 	| "RAZAO"
-	| "FANTASIA"
 	| "CPF_CNPJ"
-	| "PESSOA"
-	| "CIDADE"
-	| "ATIVO"
-	| "COD_ERP"
 >;
 export type UpdateCustomerDTO = Partial<CreateCustomerDTO>;
