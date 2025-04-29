@@ -1,6 +1,7 @@
 import ApiClient from "./api-client";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
+	MonitorChat,
 	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
@@ -15,6 +16,7 @@ type GetChatsResponse = DataResponse<WppChatsAndMessages>;
 type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
 type GetMessageResponse = DataResponse<WppMessage>;
 type MarkChatAsReadResponse = DataResponse<WppMessage[]>;
+type GetMonitorChatsResponse = DataResponse<MonitorChat[]>;
 
 export default class WhatsappClient extends ApiClient {
 	public async getChatsBySession(
@@ -184,5 +186,19 @@ export default class WhatsappClient extends ApiClient {
 	public setAuth(token: string) {
 		this.httpClient.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
+	}
+	public async getChatsMonitor(
+	) {
+		const url = `/api/whatsapp/session/monitor`;
+		
+		const { data: res } = await this.httpClient.get<GetMonitorChatsResponse>(url,);
+
+		return res.data;
+	}
+	public async transferAttendance(id: number, userId: number) {
+		const url = `/api/whatsapp/chats/${id}/transfer`;
+		const body = { userId };
+
+		await this.httpClient.post<MessageResponse>(url, body);
 	}
 }
