@@ -60,13 +60,13 @@ export default class SocketClient {
 	 * @returns A function that, when called, removes the event listener for the specified event.
 	 */
 	public on: ListenSocketEventFn = (event, callback) => {
-		if (!this.listeners.get(event)) {
-			this.ws.on(event, (data) => {
-				callback(data);
-			});
-
-			this.listeners.set(event, callback);
+		const oldListener = this.listeners.get(event);
+		if (oldListener) {
+			this.ws.off(event, oldListener);
 		}
+
+		this.ws.on(event, callback);
+		this.listeners.set(event, callback);
 	};
 
 	/**
