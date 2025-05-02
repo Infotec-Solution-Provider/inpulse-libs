@@ -184,7 +184,7 @@ export interface WppMessageReactionEventData {
 	reaction: string;
 }
 export interface InternalChatStartedEventData {
-	chat: InternalChat & { participants: number[] };
+	chat: InternalChat & { participants: number[], messages: InternalMessage[] };
 }
 export interface InternalChatFinishedEventData {
 	chatId: number;
