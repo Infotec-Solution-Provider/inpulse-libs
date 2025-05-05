@@ -1,6 +1,8 @@
 import ApiClient from "./api-client";
+import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
+	CreateScheduleDTO,
 	MonitorChat,
 	SendMessageData,
 	WppChatsAndMessages,
@@ -8,6 +10,7 @@ import {
 	WppContact,
 	WppContactWithCustomer,
 	WppMessage,
+	WppSchedule,
 	WppWallet,
 } from "./types/whatsapp.types";
 import FormData from "form-data";
@@ -28,7 +31,7 @@ export default class WhatsappClient extends ApiClient {
 			? { Authorization: `Bearer ${token}` }
 			: undefined;
 		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
-		
+
 		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
 			headers,
 		});
@@ -187,11 +190,11 @@ export default class WhatsappClient extends ApiClient {
 		this.httpClient.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
-	public async getChatsMonitor(
-	) {
+	public async getChatsMonitor() {
 		const url = `/api/whatsapp/session/monitor`;
-		
-		const { data: res } = await this.httpClient.get<GetMonitorChatsResponse>(url,);
+
+		const { data: res } =
+			await this.httpClient.get<GetMonitorChatsResponse>(url);
 
 		return res.data;
 	}
@@ -200,5 +203,85 @@ export default class WhatsappClient extends ApiClient {
 		const body = { userId };
 
 		await this.httpClient.post<MessageResponse>(url, body);
+	}
+
+	/**
+	 * Obtém os detalhes de um agendamento.
+	 * @param filters - keys de WppSchedule.
+	 * @param userId/sectorId filtrar por usúario/setor
+	 * @returns Uma Promise que resolve para um array de objetos wppSchedule.
+	 */
+	public async getSchedules(
+		userId?: string,
+		sectorId?: string,
+		filters?: RequestFilters<WppSchedule>,
+	) {
+		let baseUrl = `/api/whatsapp/schedules`;
+		const params = new URLSearchParams(filters);
+
+		if (params.toString()) {
+			if (userId && sectorId) {
+				baseUrl += `?userId=${userId}&sectorId=${sectorId}&${params.toString()}`;
+			} else if (userId) {
+				baseUrl += `?userId=${userId}&${params.toString()}`;
+			} else if (sectorId) {
+				baseUrl += `?sectorId=${sectorId}&${params.toString()}`;
+			} else {
+				baseUrl += `?${params.toString()}`;
+			}
+		} else if (userId || sectorId) {
+			if (userId && sectorId) {
+				baseUrl += `?userId=${userId}&sectorId=${sectorId}`;
+			} else if (userId) {
+				baseUrl += `?userId=${userId}`;
+			} else if (sectorId) {
+				baseUrl += `?sectorId=${sectorId}`;
+			}
+		}
+
+		const response = await this.httpClient.get(baseUrl);
+		return response.data;
+	}
+
+	/**
+	 * Cria um novo agendamento.
+	 * @param scheduleData - Os dados do agendamento, keys de wppSchedule.
+	 * @returns Uma Promise que resolve para um objeto wppSchedule.
+	 */
+	public async createSchedule(data: CreateScheduleDTO) {
+		const response = await this.httpClient.post(
+			`/api/whatsapp/schedules`,
+			data,
+		);
+		return response.data;
+	}
+
+	/**
+	 * Edita um agendamento existente.
+	 * @param scheduleId - O ID do agendamento a ser editado.
+	 * @param updatedData - Os dados atualizados do agendamento.
+	 * @returns Uma Promise que resolve para um objeto wppSchedule.
+	 */
+	public async updateSchedule(
+		scheduleId: number,
+		updatedData: Record<string, WppSchedule>,
+	) {
+		const response = await this.httpClient.patch(
+			`/api/whatsapp/schedules/${scheduleId}`,
+			updatedData,
+		);
+		return response.data;
+	}
+
+	/**
+	 * Exclui um agendamento.
+	 * @param scheduleId - O ID do agendamento a ser excluído.
+	 * @returns Uma Promise que resolve para um objeto wppSchedule.
+	 */
+	public async deleteSchedule(scheduleId: number) {
+		const response = await this.httpClient.delete(
+			`/api/whatsapp/schedules/${scheduleId}`,
+		);
+		return response.data;
 	}
 }

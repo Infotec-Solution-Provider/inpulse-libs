@@ -129,14 +129,33 @@ export interface SendMessageData {
 	fileId?: number;
 }
 export interface MonitorChat {
-  id: string;
-  erpCode: string;
-  companyName: string;
-  contactName: string;
-  whatsappNumber: string;
-  sectorName: string;
-  attendantName: string;
-  startDate: string;
-  endDate: string;
-  result: string;
+	id: string;
+	erpCode: string;
+	companyName: string;
+	contactName: string;
+	whatsappNumber: string;
+	sectorName: string;
+	attendantName: string;
+	startDate: string;
+	endDate: string;
+	result: string;
+}
+
+export interface CreateScheduleDTO {
+	contactId: number;
+	date: Date;
+	scheduledFor: number;
+	sectorId: number;
+}
+
+export interface Schedule {
+	id: number;
+	instance: string;
+	sectorId: number;
+	description: string | null;
+	contactId: number;
+	scheduleDate: string;
+	scheduledBy: number;
+	scheduledFor: number;
+	contact: WppContact;
 }
