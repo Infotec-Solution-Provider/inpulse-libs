@@ -7,7 +7,7 @@ import {
 } from "./socket-rooms.types";
 import { MessageResponse } from "./response.types";
 import { WppMessage, WppMessageStatus } from "./whatsapp.types";
-import { InternalChat, InternalMessage } from "./internal.types";
+import { InternalChat, InternalChatMember, InternalMessage } from "./internal.types";
 
 export enum SocketEventType {
 	WppChatStarted = "wpp_chat_started",
@@ -184,7 +184,7 @@ export interface WppMessageReactionEventData {
 	reaction: string;
 }
 export interface InternalChatStartedEventData {
-	chat: InternalChat & { participants: number[], messages: InternalMessage[] };
+	chat: InternalChat & { participants: InternalChatMember[], messages: InternalMessage[] };
 }
 export interface InternalChatFinishedEventData {
 	chatId: number;
