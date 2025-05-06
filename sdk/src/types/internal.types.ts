@@ -51,10 +51,11 @@ export interface InternalGroup {
 }
 
 export interface InternalChatMember {
-	internalchatId: number;
-	internalcontactId: number;
+	internalChatId: number;
+	userId: number;
 	joinedAt: string;
 	lastReadAt?: string | null;
+	lastReadId?: number | null;
 }
 
 export interface InternalSendMessageData {

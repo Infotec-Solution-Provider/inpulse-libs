@@ -2,6 +2,7 @@ import ApiClient from "./api-client";
 import { DataResponse } from "./types/response.types";
 import {
 	InternalChat,
+	InternalChatMember,
 	InternalGroup,
 	InternalMessage,
 	InternalSendMessageData,
@@ -9,13 +10,9 @@ import {
 import FormData from "form-data";
 
 type GetChatsResponse = DataResponse<{
-	chats: (InternalChat & { participants: number[] })[];
+	chats: (InternalChat & { participants: InternalChatMember[] })[];
 	messages: InternalMessage[];
 }>;
-type StartChatResponse = DataResponse<{
-	chat: InternalChat & { messages: InternalMessage[] };
-}>;
-
 export default class InternalChatClient extends ApiClient {
 	public async createInternalChat(
 		participants: number[],
