@@ -89,6 +89,11 @@ export default class InternalChatClient extends ApiClient {
 		return res.data;
 	}
 
+	public async markChatMessagesAsRead(chatId: number) {
+		const url = `/api/internal/chat/${chatId}/mark-as-read`;
+		await this.httpClient.patch(url);
+	}
+
 	public setAuth(token: string) {
 		this.httpClient.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
