@@ -3,7 +3,6 @@ import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
 	CreateScheduleDTO,
-	MonitorChat,
 	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
@@ -19,7 +18,6 @@ type GetChatsResponse = DataResponse<WppChatsAndMessages>;
 type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
 type GetMessageResponse = DataResponse<WppMessage>;
 type MarkChatAsReadResponse = DataResponse<WppMessage[]>;
-type GetMonitorChatsResponse = DataResponse<MonitorChat[]>;
 
 export default class WhatsappClient extends ApiClient {
 	public async getChatsBySession(
