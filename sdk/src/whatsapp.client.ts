@@ -194,7 +194,7 @@ export default class WhatsappClient extends ApiClient {
 		const url = `/api/whatsapp/session/monitor`;
 
 		const { data: res } =
-			await this.httpClient.get<GetMonitorChatsResponse>(url);
+			await this.httpClient.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
