@@ -48,6 +48,7 @@ export interface InternalGroup {
 		lastReadAt: Date | null;
 		internalChatId: number;
 	}[];
+	wppGroupId: string | null;
 }
 
 export interface InternalChatMember {

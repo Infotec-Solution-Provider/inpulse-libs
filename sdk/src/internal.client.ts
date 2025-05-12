@@ -29,6 +29,11 @@ export default class InternalChatClient extends ApiClient {
 		return res.data;
 	}
 
+	public async deleteInternalChat(chatId: number) {
+		const url = `/api/internal/chats/${chatId}`;
+		await this.httpClient.delete<DataResponse<InternalChat>>(url);
+	}
+
 	public async getInternalChatsBySession(token: string | null = null) {
 		const url = `/api/internal/session/chats`;
 
@@ -76,14 +81,15 @@ export default class InternalChatClient extends ApiClient {
 
 	public async updateInternalGroup(
 		groupId: number,
-		{ name, participants }: { name: string; participants: number[] },
+		data: {
+			name: string;
+			participants: number[];
+			wppGroupId: string | null;
+		},
 	) {
 		const { data: res } = await this.httpClient.put<
 			DataResponse<InternalGroup>
-		>(`/api/internal/groups/${groupId}`, {
-			name,
-			participants,
-		});
+		>(`/api/internal/groups/${groupId}`, data);
 		return res.data;
 	}
 
