@@ -17,9 +17,10 @@ export default class InternalChatClient extends ApiClient {
 	public async createInternalChat(
 		participants: number[],
 		isGroup: boolean = false,
-		groupName: string = "",
+		groupName: string | null = null,
+		groupId: string | null = null,
 	) {
-		const body = { participants, isGroup, groupName };
+		const body = { participants, isGroup, groupName, groupId };
 
 		const { data: res } = await this.httpClient.post<
 			DataResponse<InternalChat>
@@ -92,8 +93,7 @@ export default class InternalChatClient extends ApiClient {
 	}
 	public async getInternalChatsMonitor() {
 		const url = `/api/internal/monitor/chats`;
-		const { data: res } =
-			await this.httpClient.get<GetChatsResponse>(url);
+		const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
