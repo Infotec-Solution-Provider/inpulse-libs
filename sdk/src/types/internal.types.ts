@@ -28,6 +28,7 @@ export interface InternalChat {
 	isGroup: boolean;
 	groupName: string | null;
 	groupDescription: string | null;
+	groupImageFileId: number | null;
 }
 
 export interface InternalGroup {
@@ -42,6 +43,7 @@ export interface InternalGroup {
 	isGroup: boolean;
 	groupName: string | null;
 	groupDescription: string | null;
+	groupImageFileId: number | null;
 	participants: {
 		userId: number;
 		joinedAt: Date;

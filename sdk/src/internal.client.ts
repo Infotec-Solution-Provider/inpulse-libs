@@ -19,12 +19,26 @@ export default class InternalChatClient extends ApiClient {
 		isGroup: boolean = false,
 		groupName: string | null = null,
 		groupId: string | null = null,
+		groupImage: File | null = null,
 	) {
-		const body = { participants, isGroup, groupName, groupId };
+		const form = new FormData();
+
+		if (groupImage) {
+			form.append("file", groupImage);
+		}
+
+		form.append(
+			"data",
+			JSON.stringify({ participants, isGroup, groupName, groupId }),
+		);
 
 		const { data: res } = await this.httpClient.post<
 			DataResponse<InternalChat>
-		>(`/api/internal/chats`, body);
+		>(`/api/internal/chats`, form, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
 
 		return res.data;
 	}
