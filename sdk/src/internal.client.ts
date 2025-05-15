@@ -93,6 +93,20 @@ export default class InternalChatClient extends ApiClient {
 		return res.data;
 	}
 
+	public async updateInternalGroupImage(groupId: number, file: File) {
+		const formData = new FormData();
+		formData.append("file", file);
+
+		const { data: res } = await this.httpClient.put<
+			DataResponse<InternalGroup>
+		>(`/api/internal/groups/${groupId}/image`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		return res.data;
+	}
+
 	public async markChatMessagesAsRead(chatId: number) {
 		const url = `/api/internal/chat/${chatId}/mark-as-read`;
 		await this.httpClient.patch(url);
