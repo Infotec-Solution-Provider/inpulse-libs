@@ -125,12 +125,14 @@ export default class InternalChatClient extends ApiClient {
 		const url = `/api/internal/chat/${chatId}/mark-as-read`;
 		await this.httpClient.patch(url);
 	}
+	
 	public async getInternalChatsMonitor() {
 		const url = `/api/internal/monitor/chats`;
 		const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
+	
 	public setAuth(token: string) {
 		this.httpClient.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;

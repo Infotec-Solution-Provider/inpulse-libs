@@ -101,6 +101,7 @@ export interface User {
 	CAMINHO_DATABASE: string | null;
 	/** ID da campanha WeOn */
 	IDCAMPANHA_WEON: string | null;
+	AVATAR_ID: number | null;
 }
 
 /**
@@ -153,6 +154,7 @@ export interface CreateUserDTO {
      * O código ERP do usuário (opcional).
      */
     CODIGO_ERP?: string;
+	AVATAR_ID?: number | null;
 }
 
 /**
