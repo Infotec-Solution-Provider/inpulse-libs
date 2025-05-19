@@ -1,4 +1,3 @@
-import { InternalChat } from './types/internal.types';
 export * from "./types";
 export { default as AuthClient } from "./auth.client";
 export { default as CustomersClient } from "./customers.client";
@@ -11,3 +10,4 @@ export { default as UsersClient } from "./users.client";
 export { default as WhatsappClient } from "./whatsapp.client";
 export { default as WalletsClient } from "./wallets.client";
 export { default as InternalChatClient } from "./internal.client";
+export { default as ReadyMessageClient} from "./ready-message.client"
