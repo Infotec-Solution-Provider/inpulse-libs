@@ -10,6 +10,7 @@ export default class ReadyMessageClient extends ApiClient {
 		File: File | null = null,
 		TITULO: string| null = null,
 		TEXTO_MENSAGEM: string| null = null,
+		SETOR: number | null = null,
 	) {
 		const form = new FormData();
 
@@ -19,7 +20,7 @@ export default class ReadyMessageClient extends ApiClient {
 
 		form.append(
 			"data",
-			JSON.stringify({ TITULO, TEXTO_MENSAGEM }),
+			JSON.stringify({ TITULO, TEXTO_MENSAGEM,SETOR }),
 		);
 
 		const { data: res } = await this.httpClient.post<
