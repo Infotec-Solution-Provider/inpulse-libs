@@ -1,5 +1,5 @@
 import ApiClient from "./api-client";
-import { ChatsReport, GenerateChatsReportOptions } from "./types/reports.types";
+import { ChatsReport, ExecuteSqlReportOptions, ExportSqlReportOptions, GenerateChatsReportOptions, SQLReportRow } from "./types/reports.types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 
 /**
@@ -46,6 +46,56 @@ export default class ReportsClient extends ApiClient {
 		const url = `/api/reports/chats/${chatsReportId}`;
 		await this.httpClient.delete<MessageResponse>(url);
 	}
+	/**
+	 * Desative a report sql by its unique identifier.
+	 *
+	 * @param reportId - The unique identifier of the chat report to be deleted.
+	 */
+
+	public async deleteHistoryReport(reportId: number) {
+		const url = `/api/reports-history/${reportId}`;
+		await this.httpClient.delete<MessageResponse>(url);
+	}
+		/**
+	 * Execute a report sql interactions based on the provided options.
+	 *
+	 * @param body - The options for execute the report sql.
+	 * @returns A promise that resolves to the data of the generated chats report.
+	 */
+
+		public async executeSqlReport(body: ExecuteSqlReportOptions) {
+			const url = `/api/execute-report-sql`;
+			const { data: res } = await this.httpClient.post<DataResponse<SQLReportRow[]>>(url, body);
+			return res.data;
+		}
+
+		/**
+	 * Retrieves chat reports from the server.
+	 *
+	 * @returns A promise that resolves to an array of chat reports wrapped in a `DataResponse` object.
+	 */
+	public async getSqlReportsHistory() {
+		const url = `/api/reports-history`;
+		const { data: res } =
+			await this.httpClient.get<DataResponse<Array<any>>>(url);
+
+		return res.data;
+	}
+			/**
+	 * Export a report sql interactions based on the provided options.
+	 *
+	 * @param body - The options for export the report sql.
+	 * @returns A promise that resolves to the data of the generated chats report.
+	 */
+
+		public async exportReportSql(body: ExportSqlReportOptions) {
+			const url = `/api/export-report-sql`;
+			const response = await this.httpClient.post(url, body, {
+				responseType: 'blob',
+			});
+			return response.data as Blob;
+		}
+
 
 	/**
 	 * Sets the authorization token for the HTTP client.
