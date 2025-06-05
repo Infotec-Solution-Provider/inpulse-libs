@@ -12,6 +12,7 @@ import { InternalChat, InternalChatMember, InternalMessage } from "./internal.ty
 export enum SocketEventType {
 	WppChatStarted = "wpp_chat_started",
 	WppChatFinished = "wpp_chat_finished",
+	WppChatTransfer = "wpp_chat_transfer",
 	WppMessage = "wpp_message",
 	WppMessageStatus = "wpp_message_status",
 	WppMessageReaction = "wpp_message_reaction",
@@ -45,6 +46,11 @@ export interface EmitSocketEventFn {
 		type: SocketEventType.WppChatFinished,
 		room: SocketServerRoom,
 		data: WppChatFinishedEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.WppChatTransfer,
+		room: SocketServerRoom,
+		data: WppChatTransferEventData,
 	): Promise<MessageResponse>;
 	(
 		type: SocketEventType.WppMessage,
@@ -110,6 +116,10 @@ export interface ListenSocketEventFn {
 		type: SocketEventType.WppChatFinished,
 		callback: (data: WppChatFinishedEventData) => void,
 	): void;
+		(
+		type: SocketEventType.WppChatTransfer,
+		callback: (data: WppChatTransferEventData) => void,
+	): void;
 	(
 		type: SocketEventType.WppMessage,
 		callback: (data: WppMessageEventData) => void,
@@ -168,6 +178,9 @@ export interface WppChatStartedEventData {
 export interface WppChatFinishedEventData {
 	chatId: number;
 }
+export interface WppChatTransferEventData {
+	chatId: number;
+}
 export interface WppContactMessagesReadEventData {
 	contactId: number;
 }
@@ -187,6 +200,9 @@ export interface InternalChatStartedEventData {
 	chat: InternalChat & { participants: InternalChatMember[], messages: InternalMessage[] };
 }
 export interface InternalChatFinishedEventData {
+	chatId: number;
+}
+export interface InternalChatTransferEventData {
 	chatId: number;
 }
 export interface InternalContactMessagesReadEventData {
