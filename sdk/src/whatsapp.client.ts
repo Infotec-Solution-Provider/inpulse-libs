@@ -153,9 +153,13 @@ export default class WhatsappClient extends ApiClient {
 	public async createContact(
 		name: string,
 		phone: string,
-		customerId: number,
+		customerId?: number,
 	) {
-		const url = `/api/whatsapp/customers/${customerId}/contacts`;
+		const baseUrl = `/api/whatsapp`;
+		const url = customerId
+			? `${baseUrl}/customers/${customerId}/contacts`
+			: `${baseUrl}/contacts`;		
+
 		const body = { name, phone };
 
 		const { data: res } = await this.httpClient.post<
