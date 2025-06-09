@@ -133,7 +133,7 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async getContactsWithCustomer() {
-		const url = `/api/whatsapp/contacts`;
+		const url = `/api/whatsapp/contacts/customer`;
 		const { data: res } =
 			await this.httpClient.get<DataResponse<WppContactWithCustomer[]>>(
 				url,
@@ -141,7 +141,15 @@ export default class WhatsappClient extends ApiClient {
 
 		return res.data;
 	}
+	public async getContacts() {
+		const url = `/api/whatsapp/contacts`;
+		const { data: res } =
+			await this.httpClient.get<DataResponse<WppContact[]>>(
+				url,
+			);
 
+		return res.data;
+	}
 	public async createContact(
 		name: string,
 		phone: string,
