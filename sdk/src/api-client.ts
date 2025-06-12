@@ -10,7 +10,7 @@ export default class ApiClient {
 
         this.httpClient = axios.create({
             baseURL: `${this.baseUrl}`,
-            timeout: 30000,
+            timeout: 60000,
             headers: {
                 'Content-Type': 'application/json',
             },
