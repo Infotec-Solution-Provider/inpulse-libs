@@ -64,6 +64,10 @@ export interface WppChat {
 	priority: WppChatPriority;
 	avatarUrl?: string;
 	isFinished: boolean;
+	startedAt: Date;
+	finishedAt?: Date | null;
+	finishedBy?: number | null;
+	isSchedule: boolean;
 }
 
 export interface WppSector {
