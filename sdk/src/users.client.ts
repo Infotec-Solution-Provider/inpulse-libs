@@ -21,7 +21,7 @@ export default class UsersClient extends ApiClient {
 		}
 
 		const response =
-			await this.httpClient.get<PaginatedResponse<User>>(baseUrl);
+			await this.ax.get<PaginatedResponse<User>>(baseUrl);
 
 		return response.data;
 	}
@@ -32,7 +32,7 @@ export default class UsersClient extends ApiClient {
 	 * @returns Uma resposta contendo os dados do usuário.
 	 */
 	public async getUserById(userId: number) {
-		const { data: res } = await this.httpClient.get<DataResponse<User>>(
+		const { data: res } = await this.ax.get<DataResponse<User>>(
 			`/api/users/${userId}`,
 		);
 
@@ -47,7 +47,7 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async createUser(data: CreateUserDTO) {
 		try {
-			const { data: res } = await this.httpClient.post<
+			const { data: res } = await this.ax.post<
 				DataResponse<User>
 			>(`/api/users`, data);
 
@@ -66,7 +66,7 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async updateUser(userId: string, data: UpdateUserDTO) {
 		try {
-			const { data: res } = await this.httpClient.patch<
+			const { data: res } = await this.ax.patch<
 				DataResponse<User>
 			>(`/api/users/${userId}`, data);
 
@@ -82,7 +82,7 @@ export default class UsersClient extends ApiClient {
 	 * @param token - The authentication token to be used in the `Authorization` header.
 	 */
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
+		this.ax.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
 }

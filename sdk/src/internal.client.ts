@@ -32,7 +32,7 @@ export default class InternalChatClient extends ApiClient {
 			JSON.stringify({ participants, isGroup, groupName, groupId }),
 		);
 
-		const { data: res } = await this.httpClient.post<
+		const { data: res } = await this.ax.post<
 			DataResponse<InternalChat>
 		>(`/api/internal/chats`, form, {
 			headers: {
@@ -45,7 +45,7 @@ export default class InternalChatClient extends ApiClient {
 
 	public async deleteInternalChat(chatId: number) {
 		const url = `/api/internal/chats/${chatId}`;
-		await this.httpClient.delete<DataResponse<InternalChat>>(url);
+		await this.ax.delete<DataResponse<InternalChat>>(url);
 	}
 
 	public async getInternalChatsBySession(token: string | null = null) {
@@ -55,7 +55,7 @@ export default class InternalChatClient extends ApiClient {
 			? { Authorization: `Bearer ${token}` }
 			: undefined;
 
-		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+		const { data: res } = await this.ax.get<GetChatsResponse>(url, {
 			headers,
 		});
 
@@ -65,7 +65,7 @@ export default class InternalChatClient extends ApiClient {
 	public async getInternalGroups() {
 		const url = `/api/internal/groups`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<InternalGroup[]>>(url);
+			await this.ax.get<DataResponse<InternalGroup[]>>(url);
 
 		return res.data;
 	}
@@ -82,7 +82,7 @@ export default class InternalChatClient extends ApiClient {
 		data.file && formData.append("file", data.file);
 		data.fileId && formData.append("fileId", data.fileId.toString());
 
-		await this.httpClient.post<DataResponse<InternalMessage>>(
+		await this.ax.post<DataResponse<InternalMessage>>(
 			url,
 			formData,
 			{
@@ -101,7 +101,7 @@ export default class InternalChatClient extends ApiClient {
 			wppGroupId: string | null;
 		},
 	) {
-		const { data: res } = await this.httpClient.put<
+		const { data: res } = await this.ax.put<
 			DataResponse<InternalGroup>
 		>(`/api/internal/groups/${groupId}`, data);
 		return res.data;
@@ -111,7 +111,7 @@ export default class InternalChatClient extends ApiClient {
 		const formData = new FormData();
 		formData.append("file", file);
 
-		const { data: res } = await this.httpClient.put<
+		const { data: res } = await this.ax.put<
 			DataResponse<InternalGroup>
 		>(`/api/internal/groups/${groupId}/image`, formData, {
 			headers: {
@@ -123,18 +123,18 @@ export default class InternalChatClient extends ApiClient {
 
 	public async markChatMessagesAsRead(chatId: number) {
 		const url = `/api/internal/chat/${chatId}/mark-as-read`;
-		await this.httpClient.patch(url);
+		await this.ax.patch(url);
 	}
 	
 	public async getInternalChatsMonitor() {
 		const url = `/api/internal/monitor/chats`;
-		const { data: res } = await this.httpClient.get<GetChatsResponse>(url);
+		const { data: res } = await this.ax.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
 	
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
+		this.ax.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
 }

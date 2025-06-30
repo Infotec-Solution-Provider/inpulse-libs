@@ -23,7 +23,7 @@ export default class ReadyMessageClient extends ApiClient {
 			JSON.stringify({ TITULO, TEXTO_MENSAGEM,SETOR }),
 		);
 
-		const { data: res } = await this.httpClient.post<
+		const { data: res } = await this.ax.post<
 			DataResponse<ReadyMessage>
 		>(`/api/ready-messages`, form, {
 			headers: {
@@ -36,13 +36,13 @@ export default class ReadyMessageClient extends ApiClient {
 
 	public async deleteReadyMessage(chatId: number) {
 		const url = `/api/ready-messages/${chatId}`;
-		await this.httpClient.delete<DataResponse<ReadyMessage>>(url);
+		await this.ax.delete<DataResponse<ReadyMessage>>(url);
 	}
 
 	public async getReadyMessages() {
 		const url = `/api/ready-messages`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<ReadyMessage[]>>(url);
+			await this.ax.get<DataResponse<ReadyMessage[]>>(url);
 
 		return res.data;
 	}
@@ -55,7 +55,7 @@ export default class ReadyMessageClient extends ApiClient {
 			JSON.stringify(ReadyMessage),
 		);
 
-		const { data: res } = await this.httpClient.put<
+		const { data: res } = await this.ax.put<
 			DataResponse<ReadyMessage>
 		>(`/api/ready-messages/${id}`, formData, {
 			headers: {
@@ -66,7 +66,7 @@ export default class ReadyMessageClient extends ApiClient {
 	}
 
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
+		this.ax.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
 }

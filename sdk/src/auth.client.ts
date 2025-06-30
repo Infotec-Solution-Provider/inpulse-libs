@@ -15,7 +15,7 @@ export default class AuthClient extends ApiClient {
 	 * @returns  Dados de login.
 	 */
 	public async login(instance: string, username: string, password: string) {
-		const { data: res } = await this.httpClient.post<
+		const { data: res } = await this.ax.post<
 			DataResponse<LoginData>
 		>(`/api/auth/login`, { LOGIN: username, SENHA: password, instance });
 
@@ -28,7 +28,7 @@ export default class AuthClient extends ApiClient {
 	 * @returns Dados da sessão.
 	 */
 	public async fetchSessionData(authToken: string) {
-		const { data: res } = await this.httpClient
+		const { data: res } = await this.ax
 			.get<DataResponse<SessionData>>(`/api/auth/session`, {
 				headers: {
 					authorization: authToken,
@@ -86,7 +86,7 @@ export default class AuthClient extends ApiClient {
 	}
 
 	public async getOnlineSessions(instance: string) {
-		const { data: res } = await this.httpClient.get<
+		const { data: res } = await this.ax.get<
 			DataResponse<UserOnlineSession[]>
 		>("/api/online-sessions", {
 			params: {
@@ -98,7 +98,7 @@ export default class AuthClient extends ApiClient {
 	}
 
 	public async initOnlineSession(authToken: string) {
-		await this.httpClient.post(
+		await this.ax.post(
 			"/api/online-sessions",
 			{},
 			{
@@ -110,7 +110,7 @@ export default class AuthClient extends ApiClient {
 	}
 
 	public async finishOnlineSession(authToken: string) {
-		await this.httpClient.delete("/api/online-sessions", {
+		await this.ax.delete("/api/online-sessions", {
 			headers: {
 				Authorization: authToken,
 			},

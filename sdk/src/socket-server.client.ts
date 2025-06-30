@@ -26,7 +26,7 @@ export default class SocketServerApi extends ApiClient {
      * @returns A promise that resolves with the response from the API call.
      */
     public emit: EmitSocketEventFn = (event, room, value) => {
-        return this.httpClient
+        return this.ax
 			.post<MessageResponse>(`/api/ws/emit/${room}/${event}`, value)
 			.then((res) => res.data);
     }

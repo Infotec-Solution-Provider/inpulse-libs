@@ -19,7 +19,7 @@ class InstancesClient extends ApiClient {
 		query: string,
 		parameters: any[],
 	): Promise<T> {
-		const response = await this.httpClient
+		const response = await this.ax
 			.post<
 				QueryResponse<T>
 			>(`/api/instances/${instance}/query`, { query, parameters })

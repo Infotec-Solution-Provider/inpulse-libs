@@ -30,7 +30,7 @@ export default class WhatsappClient extends ApiClient {
 			: undefined;
 		const url = `/api/whatsapp/session/chats?messages=${messages}&contact=${contact}`;
 
-		const { data: res } = await this.httpClient.get<GetChatsResponse>(url, {
+		const { data: res } = await this.ax.get<GetChatsResponse>(url, {
 			headers,
 		});
 
@@ -38,7 +38,7 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async getChatById(id: number) {
-		const { data: res } = await this.httpClient.get<GetChatResponse>(
+		const { data: res } = await this.ax.get<GetChatResponse>(
 			`/api/whatsapp/chats/${id}`,
 		);
 
@@ -46,7 +46,7 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async getMessageById(id: string) {
-		const { data: res } = await this.httpClient.get<GetMessageResponse>(
+		const { data: res } = await this.ax.get<GetMessageResponse>(
 			`/api/whatsapp/messages/${id}`,
 		);
 
@@ -54,9 +54,9 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async getUserWallets(instance: string, userId: number) {
-		const { data: res } = await this.httpClient.get<
-			DataResponse<WppWallet[]>
-		>(`/api/wallets?instance=${instance}&userId=${userId}`);
+		const { data: res } = await this.ax.get<DataResponse<WppWallet[]>>(
+			`/api/wallets?instance=${instance}&userId=${userId}`,
+		);
 
 		return res.data;
 	}
@@ -64,8 +64,10 @@ export default class WhatsappClient extends ApiClient {
 	public async markContactMessagesAsRead(contactId: number) {
 		const url = "/api/whatsapp/messages/mark-as-read";
 		const body = { contactId };
-		const { data: res } =
-			await this.httpClient.patch<MarkChatAsReadResponse>(url, body);
+		const { data: res } = await this.ax.patch<MarkChatAsReadResponse>(
+			url,
+			body,
+		);
 
 		return res.data;
 	}
@@ -85,13 +87,15 @@ export default class WhatsappClient extends ApiClient {
 		data.sendAsChatOwner &&
 			formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
 
-		const { data: res } = await this.httpClient.post<
-			DataResponse<WppMessage>
-		>(url, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
+		const { data: res } = await this.ax.post<DataResponse<WppMessage>>(
+			url,
+			formData,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
 			},
-		});
+		);
 
 		return res.data;
 	}
@@ -100,14 +104,14 @@ export default class WhatsappClient extends ApiClient {
 		const url = `/api/whatsapp/chats/${id}/finish`;
 		const body = { resultId };
 
-		await this.httpClient.post<MessageResponse>(url, body);
+		await this.ax.post<MessageResponse>(url, body);
 	}
 
 	public async startChatByContactId(contactId: number) {
 		const url = `/api/whatsapp/chats`;
 		const body = { contactId };
 
-		const { data: res } = await this.httpClient.post<
+		const { data: res } = await this.ax.post<
 			DataResponse<WppChatWithDetailsAndMessages>
 		>(url, body);
 
@@ -117,9 +121,9 @@ export default class WhatsappClient extends ApiClient {
 	public async getResults() {
 		const url = `/api/whatsapp/results`;
 		const { data: res } =
-			await this.httpClient.get<
-				DataResponse<{ id: number; name: string }[]>
-			>(url);
+			await this.ax.get<DataResponse<{ id: number; name: string }[]>>(
+				url,
+			);
 
 		return res.data;
 	}
@@ -127,7 +131,7 @@ export default class WhatsappClient extends ApiClient {
 	public async getCustomerContacts(customerId: number) {
 		const url = `/api/whatsapp/customer/${customerId}/contacts`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<WppContact[]>>(url);
+			await this.ax.get<DataResponse<WppContact[]>>(url);
 
 		return res.data;
 	}
@@ -135,18 +139,14 @@ export default class WhatsappClient extends ApiClient {
 	public async getContactsWithCustomer() {
 		const url = `/api/whatsapp/contacts/customer`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<WppContactWithCustomer[]>>(
-				url,
-			);
+			await this.ax.get<DataResponse<WppContactWithCustomer[]>>(url);
 
 		return res.data;
 	}
 	public async getContacts() {
 		const url = `/api/whatsapp/contacts`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<WppContact[]>>(
-				url,
-			);
+			await this.ax.get<DataResponse<WppContact[]>>(url);
 
 		return res.data;
 	}
@@ -158,13 +158,14 @@ export default class WhatsappClient extends ApiClient {
 		const baseUrl = `/api/whatsapp`;
 		const url = customerId
 			? `${baseUrl}/customers/${customerId}/contacts`
-			: `${baseUrl}/contacts`;		
+			: `${baseUrl}/contacts`;
 
 		const body = { name, phone };
 
-		const { data: res } = await this.httpClient.post<
-			DataResponse<WppContact>
-		>(url, body);
+		const { data: res } = await this.ax.post<DataResponse<WppContact>>(
+			url,
+			body,
+		);
 
 		return res.data;
 	}
@@ -173,9 +174,10 @@ export default class WhatsappClient extends ApiClient {
 		const url = `/api/whatsapp/contacts/${contactId}`;
 		const body = { name };
 
-		const { data: res } = await this.httpClient.put<
-			DataResponse<WppContact>
-		>(url, body);
+		const { data: res } = await this.ax.put<DataResponse<WppContact>>(
+			url,
+			body,
+		);
 
 		return res.data;
 	}
@@ -183,28 +185,26 @@ export default class WhatsappClient extends ApiClient {
 	public async deleteContact(contactId: number) {
 		const url = `/api/whatsapp/contacts/${contactId}`;
 
-		await this.httpClient.delete<MessageResponse>(url);
+		await this.ax.delete<MessageResponse>(url);
 	}
 
 	public async getSectors() {
 		const url = `/api/whatsapp/sectors`;
 		const { data: res } =
-			await this.httpClient.get<
-				DataResponse<{ id: number; name: string }[]>
-			>(url);
+			await this.ax.get<DataResponse<{ id: number; name: string }[]>>(
+				url,
+			);
 
 		return res.data;
 	}
 
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
-			`Bearer ${token}`;
+		this.ax.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 	}
 	public async getChatsMonitor() {
 		const url = `/api/whatsapp/session/monitor`;
 
-		const { data: res } =
-			await this.httpClient.get<GetChatsResponse>(url);
+		const { data: res } = await this.ax.get<GetChatsResponse>(url);
 
 		return res.data;
 	}
@@ -212,7 +212,7 @@ export default class WhatsappClient extends ApiClient {
 		const url = `/api/whatsapp/chats/${id}/transfer`;
 		const body = { userId };
 
-		await this.httpClient.post<MessageResponse>(url, body);
+		await this.ax.post<MessageResponse>(url, body);
 	}
 
 	/**
@@ -249,7 +249,7 @@ export default class WhatsappClient extends ApiClient {
 			}
 		}
 
-		const response = await this.httpClient.get(baseUrl);
+		const response = await this.ax.get(baseUrl);
 		return response.data;
 	}
 
@@ -259,10 +259,7 @@ export default class WhatsappClient extends ApiClient {
 	 * @returns Uma Promise que resolve para um objeto wppSchedule.
 	 */
 	public async createSchedule(data: CreateScheduleDTO) {
-		const response = await this.httpClient.post(
-			`/api/whatsapp/schedules`,
-			data,
-		);
+		const response = await this.ax.post(`/api/whatsapp/schedules`, data);
 		return response.data;
 	}
 
@@ -276,7 +273,7 @@ export default class WhatsappClient extends ApiClient {
 		scheduleId: number,
 		updatedData: Record<string, WppSchedule>,
 	) {
-		const response = await this.httpClient.patch(
+		const response = await this.ax.patch(
 			`/api/whatsapp/schedules/${scheduleId}`,
 			updatedData,
 		);
@@ -289,7 +286,7 @@ export default class WhatsappClient extends ApiClient {
 	 * @returns Uma Promise que resolve para um objeto wppSchedule.
 	 */
 	public async deleteSchedule(scheduleId: number) {
-		const response = await this.httpClient.delete(
+		const response = await this.ax.delete(
 			`/api/whatsapp/schedules/${scheduleId}`,
 		);
 		return response.data;

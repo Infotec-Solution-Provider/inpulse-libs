@@ -9,7 +9,7 @@ class FilesClient extends ApiClient {
 	 * @returns {Promise<Buffer>} Um buffer contendo os dados do arquivo.
 	 */
 	public async fetchFile(id: number): Promise<Buffer> {
-		const response = await this.httpClient.get(`/api/files/${id}`, {
+		const response = await this.ax.get(`/api/files/${id}`, {
 			responseType: "arraybuffer",
 		});
 		const buffer = Buffer.from(response.data, "binary");
@@ -25,7 +25,7 @@ class FilesClient extends ApiClient {
 	 * @throws Will throw an error if the HTTP request fails.
 	 */
 	public async fetchFileMetadata(id: number): Promise<File> {
-		const { data: res } = await this.httpClient.get<DataResponse<File>>(
+		const { data: res } = await this.ax.get<DataResponse<File>>(
 			`/api/files/${id}/metadata`,
 		);
 
@@ -38,7 +38,7 @@ class FilesClient extends ApiClient {
 	 * @returns {string} URL de download do arquivo.
 	 */
 	public getFileDownloadUrl(id: number): string {
-		return this.httpClient.defaults.baseURL + `/api/files/${id}`;
+		return this.ax.defaults.baseURL + `/api/files/${id}`;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class FilesClient extends ApiClient {
 			props.fileName,
 		);
 
-		const response = await this.httpClient.post<DataResponse<File>>(
+		const response = await this.ax.post<DataResponse<File>>(
 			"/api/files",
 			form,
 			{
@@ -73,7 +73,7 @@ class FilesClient extends ApiClient {
 	 * @returns {Promise<void>}
 	 */
 	public async deleteFile(id: number): Promise<void> {
-		await this.httpClient.delete(`/api/files/${id}`);
+		await this.ax.delete(`/api/files/${id}`);
 	}
 }
 

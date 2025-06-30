@@ -17,7 +17,7 @@ export default class ReportsClient extends ApiClient {
 	public async getChatsReports() {
 		const url = `/api/reports/chats`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<Array<ChatsReport>>>(url);
+			await this.ax.get<DataResponse<Array<ChatsReport>>>(url);
 
 		return res.data;
 	}
@@ -30,7 +30,7 @@ export default class ReportsClient extends ApiClient {
 	 */
 	public async generateChatsReport(body: GenerateChatsReportOptions) {
 		const url = `/api/reports/chats`;
-		const { data: res } = await this.httpClient.post<
+		const { data: res } = await this.ax.post<
 			DataResponse<ChatsReport>
 		>(url, body);
 
@@ -44,7 +44,7 @@ export default class ReportsClient extends ApiClient {
 	 */
 	public async deleteChatsReport(chatsReportId: number) {
 		const url = `/api/reports/chats/${chatsReportId}`;
-		await this.httpClient.delete<MessageResponse>(url);
+		await this.ax.delete<MessageResponse>(url);
 	}
 	/**
 	 * Desative a report sql by its unique identifier.
@@ -54,7 +54,7 @@ export default class ReportsClient extends ApiClient {
 
 	public async deleteHistoryReport(reportId: number) {
 		const url = `/api/reports-history/${reportId}`;
-		await this.httpClient.delete<MessageResponse>(url);
+		await this.ax.delete<MessageResponse>(url);
 	}
 		/**
 	 * Execute a report sql interactions based on the provided options.
@@ -65,7 +65,7 @@ export default class ReportsClient extends ApiClient {
 
 		public async executeSqlReport(body: ExecuteSqlReportOptions) {
 			const url = `/api/execute-report-sql`;
-			const { data: res } = await this.httpClient.post<DataResponse<SQLReportRow[]>>(url, body);
+			const { data: res } = await this.ax.post<DataResponse<SQLReportRow[]>>(url, body);
 			return res.data;
 		}
 
@@ -77,7 +77,7 @@ export default class ReportsClient extends ApiClient {
 	public async getSqlReportsHistory() {
 		const url = `/api/reports-history`;
 		const { data: res } =
-			await this.httpClient.get<DataResponse<Array<any>>>(url);
+			await this.ax.get<DataResponse<Array<any>>>(url);
 
 		return res.data;
 	}
@@ -90,7 +90,7 @@ export default class ReportsClient extends ApiClient {
 
 		public async exportReportSql(body: ExportSqlReportOptions) {
 			const url = `/api/export-report-sql`;
-			const response = await this.httpClient.post(url, body, {
+			const response = await this.ax.post(url, body, {
 				responseType: 'blob',
 			});
 			return response.data as Blob;
@@ -105,7 +105,7 @@ export default class ReportsClient extends ApiClient {
 	 *                of all HTTP requests made by the client.
 	 */
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
+		this.ax.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
 }

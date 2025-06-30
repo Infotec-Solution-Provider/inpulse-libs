@@ -2,13 +2,13 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ErrorResponse } from './types/response.types';
 
 export default class ApiClient {
-    protected readonly httpClient: AxiosInstance;
+    public readonly ax: AxiosInstance;
     private baseUrl: string;
 
     constructor(baseUrl: string) {
         this.baseUrl = baseUrl;
 
-        this.httpClient = axios.create({
+        this.ax = axios.create({
             baseURL: `${this.baseUrl}`,
             timeout: 60000,
             headers: {
@@ -20,7 +20,7 @@ export default class ApiClient {
     }
 
     private initializeResponseInterceptor() {
-        this.httpClient.interceptors.response.use(
+        this.ax.interceptors.response.use(
             null,
             this.handleError
         );

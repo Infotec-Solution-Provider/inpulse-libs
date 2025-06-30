@@ -13,7 +13,7 @@ class CustomersClient extends ApiClient {
 	 * @returns Uma Promise que resolve para o cliente criado.
 	 */
 	public async createCustomer(data: CreateCustomerDTO) {
-		const response = await this.httpClient.post(`/api/customers`, data);
+		const response = await this.ax.post(`/api/customers`, data);
 
 		return response.data;
 	}
@@ -24,7 +24,7 @@ class CustomersClient extends ApiClient {
 	 * @returns Uma Promise que resolve para o cliente obtido.
 	 */
 	public async getCustomerById(customerId: number) {
-		const response = await this.httpClient.get(
+		const response = await this.ax.get(
 			`/api/customers/${customerId}`,
 		);
 		return response.data;
@@ -37,7 +37,7 @@ class CustomersClient extends ApiClient {
 	 * @returns Uma Promise que resolve para o cliente atualizado.
 	 */
 	public async updateCustomer(customerId: number, data: UpdateCustomerDTO) {
-		const response = await this.httpClient.patch(
+		const response = await this.ax.patch(
 			`/api/customers/${customerId}`,
 			data,
 		);
@@ -60,7 +60,7 @@ class CustomersClient extends ApiClient {
 		}
 
 		const response =
-			await this.httpClient.get<PaginatedResponse<Customer>>(baseUrl);
+			await this.ax.get<PaginatedResponse<Customer>>(baseUrl);
 
 		return response.data;
 	}
@@ -70,7 +70,7 @@ class CustomersClient extends ApiClient {
 	 * @param token - O token de autenticação a ser definido.
 	 */
 	public setAuth(token: string) {
-		this.httpClient.defaults.headers.common["Authorization"] =
+		this.ax.defaults.headers.common["Authorization"] =
 			`Bearer ${token}`;
 	}
 }
