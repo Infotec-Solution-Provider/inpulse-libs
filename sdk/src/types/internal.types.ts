@@ -69,4 +69,10 @@ export interface InternalSendMessageData {
 	text: string;
 	file?: File;
 	fileId?: number;
+	mentions?: MentionData[];
+}
+export interface MentionData {
+  userId: number;
+  name: string;
+  phone: string;
 }

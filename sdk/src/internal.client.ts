@@ -81,7 +81,9 @@ export default class InternalChatClient extends ApiClient {
 		data.sendAsDocument && formData.append("sendAsDocument", "true");
 		data.file && formData.append("file", data.file);
 		data.fileId && formData.append("fileId", data.fileId.toString());
-
+		if (data.mentions && data.mentions.length > 0) {
+  		formData.append("mentions", JSON.stringify(data.mentions));
+		}
 		await this.ax.post<DataResponse<InternalMessage>>(
 			url,
 			formData,
