@@ -112,6 +112,7 @@ export enum WppChatPriority {
 export type WppChatWithDetails = WppChat & {
 	contact: WppContact | null;
 	customer: Customer | null;
+	schedule: WppSchedule | null;
 };
 export type WppChatsAndMessages = {
 	chats: WppChatWithDetails[];
@@ -161,5 +162,7 @@ export interface Schedule {
 	scheduleDate: string;
 	scheduledBy: number;
 	scheduledFor: number;
+	scheduledAt: string;
+	chatId: number | null;
 	contact: WppContact;
 }
