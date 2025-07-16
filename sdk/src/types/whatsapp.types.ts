@@ -10,15 +10,6 @@ export interface WppContact {
 	isOnlyAdmin: boolean;
 }
 
-export interface WppSchedule {
-	id: number;
-	instance: string;
-	contactId: number;
-	scheduleDate: string;
-	scheduledBy: string;
-	scheduledFor: string;
-}
-
 export interface WppContactWithCustomer {
 	id: number;
 	name: string;
@@ -153,7 +144,7 @@ export interface CreateScheduleDTO {
 	sectorId: number;
 }
 
-export interface Schedule {
+export interface WppSchedule {
 	id: number;
 	instance: string;
 	sectorId: number;
