@@ -223,9 +223,9 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async markAllAsReadNotification ()  {
-		const url = `/api/whatsapp/notifications/mark-all-read`;
+		const url = `/api/whatsapp/notifications/mark-all-read`;  
 		const { data: res } = 
-				await this.ax.get<DataResponse<any>>(url);
+				await this.ax.patch<DataResponse<any>>(url);
 
 		return res.data;
   };
