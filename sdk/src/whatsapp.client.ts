@@ -214,6 +214,21 @@ export default class WhatsappClient extends ApiClient {
 
 		await this.ax.post<MessageResponse>(url, body);
 	}
+	public async getNotifications() {
+		const url = `/api/whatsapp/notifications`;
+		const { data: res } =
+			await this.ax.get<DataResponse<any>>(url);
+
+		return res.data;
+	}
+
+	public async markAllAsReadNotification ()  {
+		const url = `/api/whatsapp/notifications/mark-all-read`;
+		const { data: res } = 
+				await this.ax.get<DataResponse<any>>(url);
+
+		return res.data;
+  };
 
 	/**
 	 * Obtém os detalhes de um agendamento.
