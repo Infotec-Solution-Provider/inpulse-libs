@@ -107,9 +107,9 @@ export default class WhatsappClient extends ApiClient {
 		await this.ax.post<MessageResponse>(url, body);
 	}
 
-	public async startChatByContactId(contactId: number) {
+	public async startChatByContactId(contactId: number, template?: any) {
 		const url = `/api/whatsapp/chats`;
-		const body = { contactId };
+		const body = { contactId, template };
 
 		const { data: res } = await this.ax.post<
 			DataResponse<WppChatWithDetailsAndMessages>
@@ -216,19 +216,17 @@ export default class WhatsappClient extends ApiClient {
 	}
 	public async getNotifications() {
 		const url = `/api/whatsapp/notifications`;
-		const { data: res } =
-			await this.ax.get<DataResponse<any>>(url);
+		const { data: res } = await this.ax.get<DataResponse<any>>(url);
 
 		return res.data;
 	}
 
-	public async markAllAsReadNotification ()  {
-		const url = `/api/whatsapp/notifications/mark-all-read`;  
-		const { data: res } = 
-				await this.ax.patch<DataResponse<any>>(url);
+	public async markAllAsReadNotification() {
+		const url = `/api/whatsapp/notifications/mark-all-read`;
+		const { data: res } = await this.ax.patch<DataResponse<any>>(url);
 
 		return res.data;
-  };
+	}
 
 	/**
 	 * Obtém os detalhes de um agendamento.
