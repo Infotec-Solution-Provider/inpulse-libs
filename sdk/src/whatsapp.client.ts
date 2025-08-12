@@ -170,9 +170,9 @@ export default class WhatsappClient extends ApiClient {
 		return res.data;
 	}
 
-	public async updateContact(contactId: number, name: string) {
+	public async updateContact(contactId: number, name: string, customerId: number | null) {
 		const url = `/api/whatsapp/contacts/${contactId}`;
-		const body = { name };
+		const body = { name, customerId };
 
 		const { data: res } = await this.ax.put<DataResponse<WppContact>>(
 			url,
