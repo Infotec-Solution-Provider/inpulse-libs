@@ -3,6 +3,7 @@ import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
 	CreateScheduleDTO,
+	ForwardMessagesData,
 	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
@@ -169,7 +170,13 @@ export default class WhatsappClient extends ApiClient {
 
 		return res.data;
 	}
+  public async forwardMessages(data: ForwardMessagesData) {
+    const url = "/api/whatsapp/messages/forward";
+    
+    const body = data;
 
+    await this.ax.post<MessageResponse>(url, body);
+  }
 	public async updateContact(contactId: number, name: string, customerId?: number | null) {
 		const url = `/api/whatsapp/contacts/${contactId}`;
 		const body: Record<string, any> = { name };

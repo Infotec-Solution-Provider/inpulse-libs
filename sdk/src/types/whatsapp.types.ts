@@ -41,6 +41,11 @@ export interface WppMessage {
 	fileType?: string | null;
 	fileSize?: string | null;
 }
+export interface ForwardMessagesData {
+  messageIds: number[];
+  whatsappTargets?: Array<{ id: string; isGroup: boolean }>;
+  internalTargets?: Array<{ id: number }>;
+}
 
 export interface WppChat {
 	id: number;
