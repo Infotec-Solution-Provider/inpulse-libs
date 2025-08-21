@@ -36,6 +36,7 @@ export interface WppMessage {
 	body: string;
 	timestamp: string;
 	status: WppMessageStatus;
+	isForwarded?: boolean;
 	fileId?: number | null;
 	fileName?: string | null;
 	fileType?: string | null;
