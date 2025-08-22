@@ -9,6 +9,7 @@ export interface InternalMessage {
 	internalChatId: number;
 	body: string;
 	timestamp: string;
+	isForwarded?: boolean;
 	status: WppMessageStatus;
 	fileId: number | null;
 	fileName: string | null;

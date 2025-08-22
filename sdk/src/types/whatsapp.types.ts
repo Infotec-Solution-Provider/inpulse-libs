@@ -43,6 +43,7 @@ export interface WppMessage {
 	fileSize?: string | null;
 }
 export interface ForwardMessagesData {
+	sourceType: 'whatsapp' | 'internal';
   messageIds: number[];
   whatsappTargets?: Array<{ id: string; isGroup: boolean }>;
   internalTargets?: Array<{ id: number }>;
