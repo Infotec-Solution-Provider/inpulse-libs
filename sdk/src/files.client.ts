@@ -37,8 +37,8 @@ class FilesClient extends ApiClient {
 	 * @param {number} id - ID do arquivo.
 	 * @returns {string} URL de download do arquivo.
 	 */
-	public getFileDownloadUrl(id: number): string {
-		return this.ax.defaults.baseURL + `/api/files/${id}`;
+	public getFileDownloadUrl(id: number, baseUrl?: string): string {
+		return (baseUrl || this.ax.defaults.baseURL) + `/api/files/${id}`;
 	}
 
 	/**

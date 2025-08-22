@@ -20,6 +20,12 @@ type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
 type GetMessageResponse = DataResponse<WppMessage>;
 type MarkChatAsReadResponse = DataResponse<WppMessage[]>;
 
+interface FetchMessagesFilters {
+	minDate: string;
+	maxDate: string;
+	userId?: number | null;
+}
+
 export default class WhatsappClient extends ApiClient {
 	public async getChatsBySession(
 		messages = false,
@@ -170,14 +176,18 @@ export default class WhatsappClient extends ApiClient {
 
 		return res.data;
 	}
-  public async forwardMessages(data: ForwardMessagesData) {
-    const url = "/api/whatsapp/messages/forward";
-    
-    const body = data;
+	public async forwardMessages(data: ForwardMessagesData) {
+		const url = "/api/whatsapp/messages/forward";
 
-    await this.ax.post<MessageResponse>(url, body);
-  }
-	public async updateContact(contactId: number, name: string, customerId?: number | null) {
+		const body = data;
+
+		await this.ax.post<MessageResponse>(url, body);
+	}
+	public async updateContact(
+		contactId: number,
+		name: string,
+		customerId?: number | null,
+	) {
 		const url = `/api/whatsapp/contacts/${contactId}`;
 		const body: Record<string, any> = { name };
 
@@ -312,5 +322,27 @@ export default class WhatsappClient extends ApiClient {
 			`/api/whatsapp/schedules/${scheduleId}`,
 		);
 		return response.data;
+	}
+
+	public async getMessages(token: string, filters: FetchMessagesFilters) {
+		const params = new URLSearchParams(
+			Object.entries(filters)
+				.filter(([_, v]) => v !== undefined && v !== null)
+				.reduce<Record<string, string>>((acc, [k, v]) => {
+					acc[k] = String(v);
+					return acc;
+				}, {}),
+		);
+		const url = `/api/whatsapp/messages?${params.toString()}`;
+
+		const { data: res } = await this.ax.get<
+			DataResponse<(WppMessage & { WppContact: WppContact | null })[]>
+		>(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		return res.data;
 	}
 }
