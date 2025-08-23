@@ -164,3 +164,29 @@ export interface WppSchedule {
 	chatId: number | null;
 	contact: WppContact;
 }
+export type NotificationType =
+  | "CHAT_AUTO_FINISHED"
+  | "CHAT_TRANSFERRED"
+  | "CHAT_REASSIGNED"
+  | "ALERT"
+  | "INFO"
+  | "WARNING"
+  | "ERROR";
+
+
+export interface AppNotification {
+  id: number;
+  title: string;
+  description: string;
+  read: boolean;
+  instance: string;
+  userId: number | null;
+  chatId: number | null;
+  type: NotificationType;
+  createdAt: string; 
+}
+
+export interface PaginatedNotificationsResponse {
+  notifications: AppNotification[];
+  totalCount: number;
+}
