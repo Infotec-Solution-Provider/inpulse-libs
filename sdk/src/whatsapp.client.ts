@@ -3,6 +3,8 @@ import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
 	AppNotification,
+  AutomaticResponseRule,
+  AutomaticResponseRuleDTO,
   CreateScheduleDTO,
   ForwardMessagesData,
   PaginatedNotificationsResponse,
@@ -338,5 +340,27 @@ export default class WhatsappClient extends ApiClient {
       },
     });
     return res.data;
+  }
+  public async getAutoResponseRules() {
+    const url = `/api/auto-response-rules`;
+    const { data: res } = await this.ax.get<DataResponse<AutomaticResponseRule[]>>(url);
+    return res.data;
+  }
+
+  public async createAutoResponseRule(ruleData: AutomaticResponseRuleDTO) {
+    const url = `/api/auto-response-rules`;
+    const { data: res } = await this.ax.post<DataResponse<AutomaticResponseRule>>(url, ruleData);
+    return res.data;
+  }
+
+  public async updateAutoResponseRule(id: number, ruleData: Omit<AutomaticResponseRuleDTO, 'instance'>) {
+    const url = `/api/auto-response-rules/${id}`;
+    const { data: res } = await this.ax.put<DataResponse<AutomaticResponseRule>>(url, ruleData);
+    return res.data;
+  }
+
+  public async deleteAutoResponseRule(id: number) {
+    const url = `/api/auto-response-rules/${id}`;
+    await this.ax.delete<MessageResponse>(url);
   }
 }

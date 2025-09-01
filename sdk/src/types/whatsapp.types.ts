@@ -5,9 +5,11 @@ export interface WppContact {
 	name: string;
 	phone: string;
 	customerId?: number;
+	avatarUrl?: string;
 	instance: string;
 	isBlocked: boolean;
 	isOnlyAdmin: boolean;
+	lastOutOfHoursReplySentAt?: Date | null;
 }
 
 export interface WppContactWithCustomer {
@@ -15,11 +17,13 @@ export interface WppContactWithCustomer {
 	name: string;
 	phone: string;
 	customerId?: number;
+	avatarUrl?: string;
 	instance: string;
 	isBlocked: boolean;
 	isOnlyAdmin: boolean;
 	customer: Customer | null;
 	chatingWith: string | null;
+	lastOutOfHoursReplySentAt?: Date | null;
 }
 
 export interface WppMessage {
@@ -32,6 +36,7 @@ export interface WppMessage {
 	type: string;
 	quotedId?: number | null;
 	chatId?: number | null;
+	userName?: string;
 	contactId?: number | null;
 	body: string;
 	timestamp: string;
@@ -54,6 +59,7 @@ export interface WppChat {
 	instance: string;
 	contactId?: number;
 	userId?: number;
+	userName?: string;
 	walletId?: number;
 	botId?: number;
 	resultId?: number;
@@ -190,3 +196,33 @@ export interface PaginatedNotificationsResponse {
   notifications: AppNotification[];
   totalCount: number;
 }
+export interface AutomaticResponseSchedule {
+  id?: number;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface AutomaticResponseRule {
+  id: number;
+  name: string;
+  message: string;
+  isEnabled: boolean;
+  isGlobal: boolean;
+  cooldownSeconds: number;
+  fileId: number | null;
+  schedules: AutomaticResponseSchedule[];
+  userAssignments: { userId: number }[];
+}
+
+export interface AutomaticResponseRuleDTO {
+  name: string;
+  message: string;
+  isEnabled: boolean;
+  isGlobal: boolean;
+  cooldownSeconds: number;
+  fileId?: number | null;
+  userIds: number[];
+  schedules: Omit<AutomaticResponseSchedule, 'id'>[];
+}
+
