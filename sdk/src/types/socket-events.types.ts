@@ -7,13 +7,19 @@ import {
 } from "./socket-rooms.types";
 import { MessageResponse } from "./response.types";
 import { WppMessage, WppMessageStatus } from "./whatsapp.types";
-import { InternalChat, InternalChatMember, InternalMessage } from "./internal.types";
+import {
+	InternalChat,
+	InternalChatMember,
+	InternalMessage,
+} from "./internal.types";
 
 export enum SocketEventType {
 	WppChatStarted = "wpp_chat_started",
 	WppChatFinished = "wpp_chat_finished",
 	WppChatTransfer = "wpp_chat_transfer",
 	WppMessage = "wpp_message",
+	WppMessageEdit = "wpp_message_edit",
+	WppMessageDelete = "wpp_message_delete",
 	WppMessageStatus = "wpp_message_status",
 	WppMessageReaction = "wpp_message_reaction",
 	WppContactMessagesRead = "wpp_contact_messages_read",
@@ -56,6 +62,16 @@ export interface EmitSocketEventFn {
 		type: SocketEventType.WppMessage,
 		room: SocketServerChatRoom,
 		data: WppMessageEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.WppMessageEdit,
+		room: SocketServerChatRoom,
+		data: WppMessageEditEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.WppMessageDelete,
+		room: SocketServerChatRoom,
+		data: WppMessageDeleteEventData,
 	): Promise<MessageResponse>;
 	(
 		type: SocketEventType.WppMessageStatus,
@@ -116,7 +132,7 @@ export interface ListenSocketEventFn {
 		type: SocketEventType.WppChatFinished,
 		callback: (data: WppChatFinishedEventData) => void,
 	): void;
-		(
+	(
 		type: SocketEventType.WppChatTransfer,
 		callback: (data: WppChatTransferEventData) => void,
 	): void;
@@ -156,6 +172,14 @@ export interface ListenSocketEventFn {
 		type: SocketEventType.InternalMessageStatus,
 		callback: (data: InternalMessageStatusEventData) => void,
 	): void;
+	(
+		type: SocketEventType.WppMessageEdit,
+		callback: (data: WppMessageEditEventData) => void,
+	): void;
+	(
+		type: SocketEventType.WppMessageDelete,
+		callback: (data: WppMessageDeleteEventData) => void,
+	): void;
 }
 
 export interface UnlistenSocketEventFn {
@@ -187,6 +211,15 @@ export interface WppContactMessagesReadEventData {
 export interface WppMessageEventData {
 	message: WppMessage;
 }
+
+export interface WppMessageEditEventData {
+	messageId: number;
+	newText: string;
+}
+
+export interface WppMessageDeleteEventData {
+	messageId: number;
+}
 export interface WppMessageStatusEventData {
 	messageId: number;
 	contactId: number;
@@ -197,7 +230,10 @@ export interface WppMessageReactionEventData {
 	reaction: string;
 }
 export interface InternalChatStartedEventData {
-	chat: InternalChat & { participants: InternalChatMember[], messages: InternalMessage[] };
+	chat: InternalChat & {
+		participants: InternalChatMember[];
+		messages: InternalMessage[];
+	};
 }
 export interface InternalChatFinishedEventData {
 	chatId: number;
