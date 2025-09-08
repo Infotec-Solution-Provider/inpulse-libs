@@ -38,12 +38,11 @@ export interface WppMessage {
 	type: string;
 	quotedId: number | null;
 	chatId: number | null;
-	userName: string;
 	contactId: number | null;
 	body: string;
 	timestamp: string;
 	status: WppMessageStatus;
-	isForwarded?: boolean;
+	isForwarded: boolean;
 	isEdited: boolean;
 	fileId: number | null;
 	fileName: string | null;
