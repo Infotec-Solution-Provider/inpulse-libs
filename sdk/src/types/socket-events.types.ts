@@ -213,11 +213,13 @@ export interface WppMessageEventData {
 }
 
 export interface WppMessageEditEventData {
+	contactId: number;
 	messageId: number;
 	newText: string;
 }
 
 export interface WppMessageDeleteEventData {
+	contactId: number;
 	messageId: number;
 }
 export interface WppMessageStatusEventData {
@@ -257,21 +259,21 @@ export type ReportStatusEventData = {
 	id: number;
 	type: string;
 } & (
-	| {
+		| {
 			isCompleted: true;
 			isFailed: false;
 			fileId: number;
 			chats: number;
 			messages: number;
-	  }
-	| {
+		}
+		| {
 			isCompleted: false;
 			isFailed: true;
 			error: string;
-	  }
-	| {
+		}
+		| {
 			isCompleted: false;
 			isFailed: false;
 			progress: number;
-	  }
-);
+		}
+	);

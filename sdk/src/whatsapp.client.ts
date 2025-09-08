@@ -2,7 +2,7 @@ import ApiClient from "./api-client";
 import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
 import {
-	AppNotification,
+  AppNotification,
   AutomaticResponseRule,
   AutomaticResponseRuleDTO,
   CreateScheduleDTO,
@@ -103,6 +103,15 @@ export default class WhatsappClient extends ApiClient {
     return res.data;
   }
 
+  public async editMessage(messageId: string, newText: string) {
+    const url = `/api/whatsapp/messages/${messageId}`;
+    const body = { newText };
+    const { data: res } = await this.ax.put<DataResponse<WppMessage>>(
+      url,
+      body,
+    );
+  }
+
   public async finishChatById(id: number, resultId: number) {
     const url = `/api/whatsapp/chats/${id}/finish`;
     const body = { resultId };
@@ -112,10 +121,10 @@ export default class WhatsappClient extends ApiClient {
   public async startChatByContactId(contactId: number, template?: any) {
     const url = `/api/whatsapp/chats`;
     const body = { contactId, template };
-    const { data: res } = await this.ax.post<
+
+    await this.ax.post<
       DataResponse<WppChatWithDetailsAndMessages>
     >(url, body);
-    return res.data;
   }
 
   public async getResults() {
@@ -242,9 +251,9 @@ export default class WhatsappClient extends ApiClient {
    * @param notificationId - O ID (numérico) da notificação a ser marcada.
    */
   public async markOneAsReadNotification(notificationId: number) {
-      const url = `/api/whatsapp/notifications/${notificationId}/read`;
-      const { data: res } = await this.ax.patch<DataResponse<AppNotification>>(url);
-      return res;
+    const url = `/api/whatsapp/notifications/${notificationId}/read`;
+    const { data: res } = await this.ax.patch<DataResponse<AppNotification>>(url);
+    return res;
   }
 
   /**
