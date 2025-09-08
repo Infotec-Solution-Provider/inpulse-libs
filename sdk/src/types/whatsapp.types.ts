@@ -31,6 +31,8 @@ export interface WppMessage {
 	instance: string;
 	wwebjsId?: string | null;
 	wabaId?: string | null;
+	gupshupId?: string | null;
+	gupshupRequestId?: string | null;
 	from: string;
 	to: string;
 	type: string;
@@ -46,12 +48,16 @@ export interface WppMessage {
 	fileName?: string | null;
 	fileType?: string | null;
 	fileSize?: string | null;
+	wwebjsIdStanza: string | null;
+	sentAt: Date;
+	userId: number | null;
+	billingCategory: string | null;
 }
 export interface ForwardMessagesData {
-	sourceType: 'whatsapp' | 'internal';
-  messageIds: number[];
-  whatsappTargets?: Array<{ id: string; isGroup: boolean }>;
-  internalTargets?: Array<{ id: number }>;
+	sourceType: "whatsapp" | "internal";
+	messageIds: number[];
+	whatsappTargets?: Array<{ id: string; isGroup: boolean }>;
+	internalTargets?: Array<{ id: number }>;
 }
 
 export interface WppChat {
@@ -171,58 +177,56 @@ export interface WppSchedule {
 	contact: WppContact;
 }
 export type NotificationType =
-  | "CHAT_AUTO_FINISHED"
-  | "CHAT_TRANSFERRED"
-  | "CHAT_REASSIGNED"
-  | "ALERT"
-  | "INFO"
-  | "WARNING"
-  | "ERROR";
-
+	| "CHAT_AUTO_FINISHED"
+	| "CHAT_TRANSFERRED"
+	| "CHAT_REASSIGNED"
+	| "ALERT"
+	| "INFO"
+	| "WARNING"
+	| "ERROR";
 
 export interface AppNotification {
-  id: number;
-  title: string;
-  description: string;
-  read: boolean;
-  instance: string;
-  userId: number | null;
-  chatId: number | null;
-  type: NotificationType;
-  createdAt: string; 
+	id: number;
+	title: string;
+	description: string;
+	read: boolean;
+	instance: string;
+	userId: number | null;
+	chatId: number | null;
+	type: NotificationType;
+	createdAt: string;
 }
 
 export interface PaginatedNotificationsResponse {
-  notifications: AppNotification[];
-  totalCount: number;
+	notifications: AppNotification[];
+	totalCount: number;
 }
 export interface AutomaticResponseSchedule {
-  id?: number;
-  dayOfWeek: number;
-  startTime: string;
-  endTime: string;
+	id?: number;
+	dayOfWeek: number;
+	startTime: string;
+	endTime: string;
 }
 
 export interface AutomaticResponseRule {
-  id: number;
-  name: string;
-  message: string;
-  isEnabled: boolean;
-  isGlobal: boolean;
-  cooldownSeconds: number;
-  fileId: number | null;
-  schedules: AutomaticResponseSchedule[];
-  userAssignments: { userId: number }[];
+	id: number;
+	name: string;
+	message: string;
+	isEnabled: boolean;
+	isGlobal: boolean;
+	cooldownSeconds: number;
+	fileId: number | null;
+	schedules: AutomaticResponseSchedule[];
+	userAssignments: { userId: number }[];
 }
 
 export interface AutomaticResponseRuleDTO {
-  name: string;
-  message: string;
-  isEnabled: boolean;
-  isGlobal: boolean;
-  cooldownSeconds: number;
-  fileId?: number | null;
-  userIds: number[];
-  schedules: Omit<AutomaticResponseSchedule, 'id'>[];
+	name: string;
+	message: string;
+	isEnabled: boolean;
+	isGlobal: boolean;
+	cooldownSeconds: number;
+	fileId?: number | null;
+	userIds: number[];
+	schedules: Omit<AutomaticResponseSchedule, "id">[];
 }
-
