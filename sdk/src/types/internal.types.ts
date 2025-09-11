@@ -9,7 +9,7 @@ export interface InternalMessage {
 	internalChatId: number;
 	body: string;
 	timestamp: string;
-	isForwarded?: boolean;
+	isForwarded: boolean;
 	status: WppMessageStatus;
 	fileId: number | null;
 	fileName: string | null;
@@ -73,7 +73,7 @@ export interface InternalSendMessageData {
 	mentions?: MentionData[];
 }
 export interface MentionData {
-  userId: number;
-  name: string;
-  phone: string;
+	userId: number;
+	name: string;
+	phone: string;
 }
