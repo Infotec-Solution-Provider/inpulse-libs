@@ -103,14 +103,14 @@ export default class WhatsappClient extends ApiClient {
     return res.data;
   }
 
-  public async editMessage(messageId: string, newText: string) {
-    const url = `/api/whatsapp/messages/${messageId}`;
+  public async editMessage(messageId: string, newText: string, isInternal = false) {
+    const type = isInternal ? 'internal' : 'whatsapp';
+
+    const url = `/api/${type}/messages/${messageId}`;
     const body = { newText };
-    const { data: res } = await this.ax.put<DataResponse<WppMessage>>(
-      url,
-      body,
-    );
+    await this.ax.put(url, body);
   }
+
 
   public async finishChatById(id: number, resultId: number) {
     const url = `/api/whatsapp/chats/${id}/finish`;
