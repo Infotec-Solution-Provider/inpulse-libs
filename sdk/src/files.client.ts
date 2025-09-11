@@ -1,3 +1,4 @@
+import FormData from "form-data";
 import ApiClient from "./api-client";
 import { File, UploadFileOptions } from "./types/files.types";
 import { DataResponse } from "./types/response.types";
@@ -47,22 +48,20 @@ class FilesClient extends ApiClient {
 	 * @returns {Promise<File>} Os dados do arquivo enviado.
 	 */
 	public async uploadFile(props: UploadFileOptions): Promise<File> {
+		// Node: use 'form-data' (evita conflito de tipos com Blob)
 		const form = new FormData();
 		form.append("instance", props.instance);
 		form.append("dirType", props.dirType);
-		form.append(
-			"file",
-			new Blob([props.buffer], { type: props.mimeType }),
-			props.fileName,
-		);
 
-		const response = await this.ax.post<DataResponse<File>>(
-			"/api/files",
-			form,
-			{
-				headers: { "Content-Type": "multipart/form-data" },
-			},
-		);
+		form.append("file", props.buffer, {
+			filename: props.fileName,
+			contentType: props.mimeType,
+		});
+
+		const response = await this.ax.post<DataResponse<File>>("/api/files", form, {
+			// deixe o boundary correto
+			headers: form.getHeaders(),
+		});
 
 		return response.data.data;
 	}
