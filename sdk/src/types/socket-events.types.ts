@@ -28,8 +28,10 @@ export enum SocketEventType {
 	ReportStatus = "report_status",
 	InternalChatStarted = "internal_chat_started",
 	InternalChatFinished = "internal_chat_finished",
-	InternalMessageStatus = "internal_chat_status",
 	InternalMessage = "internal_message",
+	InternalMessageEdit = "internal_message_edit",
+	InternalMessageDelete = "internal_message_delete",
+	InternalMessageStatus = "internal_message_status",
 }
 
 export interface EmitSocketEventFn {
@@ -97,6 +99,16 @@ export interface EmitSocketEventFn {
 		type: SocketEventType.InternalMessage,
 		room: SocketServerInternalChatRoom,
 		data: InternalMessageEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.InternalMessageEdit,
+		room: SocketServerInternalChatRoom,
+		data: InternalMessageEditEventData,
+	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.InternalMessageDelete,
+		room: SocketServerInternalChatRoom,
+		data: InternalMessageDeleteEventData,
 	): Promise<MessageResponse>;
 	(
 		type: SocketEventType.InternalMessageStatus,
@@ -167,6 +179,14 @@ export interface ListenSocketEventFn {
 	(
 		type: SocketEventType.InternalMessage,
 		callback: (data: InternalMessageEventData) => void,
+	): void;
+	(
+		type: SocketEventType.InternalMessageEdit,
+		callback: (data: InternalMessageEditEventData) => void,
+	): void;
+	(
+		type: SocketEventType.InternalMessageDelete,
+		callback: (data: InternalMessageDeleteEventData) => void,
 	): void;
 	(
 		type: SocketEventType.InternalMessageStatus,
@@ -248,6 +268,15 @@ export interface InternalContactMessagesReadEventData {
 }
 export interface InternalMessageEventData {
 	message: InternalMessage;
+}
+export interface InternalMessageEditEventData {
+	chatId: number;
+	internalMessageId: number;
+	newText: string;
+}
+export interface InternalMessageDeleteEventData {
+	chatId: number;
+	internalMessageId: number;
 }
 export interface InternalMessageStatusEventData {
 	chatId: number;
