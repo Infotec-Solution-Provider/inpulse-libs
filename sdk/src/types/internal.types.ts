@@ -10,6 +10,7 @@ export interface InternalMessage {
 	body: string;
 	timestamp: string;
 	isForwarded: boolean;
+	isEdited: boolean;
 	status: WppMessageStatus;
 	fileId: number | null;
 	fileName: string | null;
