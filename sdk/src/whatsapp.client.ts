@@ -112,9 +112,9 @@ export default class WhatsappClient extends ApiClient {
   }
 
 
-  public async finishChatById(id: number, resultId: number) {
+  public async finishChatById(id: number, resultId: number, triggerSatisfactionBot = false) {
     const url = `/api/whatsapp/chats/${id}/finish`;
-    const body = { resultId };
+    const body = { resultId, triggerSatisfactionBot };
     await this.ax.post<MessageResponse>(url, body);
   }
 
