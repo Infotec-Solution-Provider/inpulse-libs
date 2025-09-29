@@ -74,6 +74,12 @@ class FilesClient extends ApiClient {
 	public async deleteFile(id: number): Promise<void> {
 		await this.ax.delete(`/api/files/${id}`);
 	}
+
+	public async uploadWabaMedia(instance: string, wabaMediaId: string): Promise<File> {
+		const response = await this.ax.post<DataResponse<File>>(`/api/waba`, { instance, wabaMediaId });
+		return response.data.data;
+
+	}
 }
 
 export default FilesClient;
