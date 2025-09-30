@@ -201,32 +201,45 @@ export interface PaginatedNotificationsResponse {
 	notifications: AppNotification[];
 	totalCount: number;
 }
+export type Frequency = 'ONCE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
 export interface AutomaticResponseSchedule {
-	id?: number;
-	dayOfWeek: number;
-	startTime: string;
-	endTime: string;
+  id?: number;
+
+  frequency: Frequency;          
+  daysOfWeek?: number[] | null;  
+  dayOfMonth?: number | null;    
+  month?: number | null;         
+
+  startDate?: string | null;     
+  endDate?: string | null;      
+
+  startTime: string;            
+  endTime: string;               
+  timezone?: string | null;      
+
+  dayOfWeek?: number | null;    
 }
 
 export interface AutomaticResponseRule {
-	id: number;
-	name: string;
-	message: string;
-	isEnabled: boolean;
-	isGlobal: boolean;
-	cooldownSeconds: number;
-	fileId: number | null;
-	schedules: AutomaticResponseSchedule[];
-	userAssignments: { userId: number }[];
+  id: number;
+  name: string;
+  message: string;
+  isEnabled: boolean;
+  isGlobal: boolean;
+  cooldownSeconds: number;
+  fileId: number | null;
+  schedules: AutomaticResponseSchedule[];
+  userAssignments: { userId: number }[];
 }
 
 export interface AutomaticResponseRuleDTO {
-	name: string;
-	message: string;
-	isEnabled: boolean;
-	isGlobal: boolean;
-	cooldownSeconds: number;
-	fileId?: number | null;
-	userIds: number[];
-	schedules: Omit<AutomaticResponseSchedule, "id">[];
+  name: string;
+  message: string;
+  isEnabled: boolean;
+  isGlobal: boolean;
+  cooldownSeconds: number;
+  fileId?: number | null;
+  userIds: number[]; 
+  schedules: Omit<AutomaticResponseSchedule, "id">[];
 }
