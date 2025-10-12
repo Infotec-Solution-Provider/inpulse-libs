@@ -48,22 +48,47 @@ class FilesClient extends ApiClient {
 	 * @returns {Promise<File>} Os dados do arquivo enviado.
 	 */
 	public async uploadFile(props: UploadFileOptions): Promise<File> {
-		// Node: use 'form-data' (evita conflito de tipos com Blob)
 		const form = new FormData();
 		form.append("instance", props.instance);
-		form.append("dirType", props.dirType);
+		form.append("dirType", String(props.dirType));
+		form.append("fileName", props.fileName);
 
-		form.append("file", props.buffer, {
-			filename: props.fileName,
-			contentType: props.mimeType,
-		});
+		const src: any = props.buffer as any;
 
-		const response = await this.ax.post<DataResponse<File>>("/api/files", form, {
-			// deixe o boundary correto
-			headers: form.getHeaders(),
-		});
+		let ab: ArrayBuffer;
 
-		return response.data.data;
+		if (src instanceof ArrayBuffer) {
+			ab = src;
+		} else if (typeof SharedArrayBuffer !== "undefined" && src instanceof SharedArrayBuffer) {
+			const view = new Uint8Array(src);
+			const copy = new Uint8Array(view.byteLength);
+			copy.set(view);
+			ab = copy.buffer;
+		} else if (ArrayBuffer.isView(src)) {
+			const view = src as ArrayBufferView;
+			const total = view.byteLength;
+			const offset = (view as any).byteOffset ?? 0;
+			const backing: ArrayBufferLike = (view as any).buffer;
+
+			if (typeof SharedArrayBuffer !== "undefined" && backing instanceof SharedArrayBuffer) {
+				const from = new Uint8Array(backing, offset, total);
+				const copy = new Uint8Array(total);
+				copy.set(from);
+				ab = copy.buffer;
+			} else {
+				ab = (backing as ArrayBuffer).slice(offset, offset + total);
+			}
+		} else {
+			const u8 = Uint8Array.from(src as ArrayLike<number>);
+			ab = u8.buffer;
+		}
+
+		const blob = new Blob([ab], { type: props.mimeType || "application/octet-stream" });
+
+		form.append("file", blob, props.fileName);
+
+		const { data } = await this.ax.post<DataResponse<File>>("/api/files", form);
+		return data.data;
 	}
 
 	/**
