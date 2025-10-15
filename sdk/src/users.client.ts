@@ -20,8 +20,7 @@ export default class UsersClient extends ApiClient {
 			baseUrl += `?${params.toString()}`;
 		}
 
-		const response =
-			await this.ax.get<PaginatedResponse<User>>(baseUrl);
+		const response = await this.ax.get<PaginatedResponse<User>>(baseUrl);
 
 		return response.data;
 	}
@@ -47,9 +46,10 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async createUser(data: CreateUserDTO) {
 		try {
-			const { data: res } = await this.ax.post<
-				DataResponse<User>
-			>(`/api/users`, data);
+			const { data: res } = await this.ax.post<DataResponse<User>>(
+				`/api/users`,
+				data,
+			);
 
 			return res.data;
 		} catch (error) {
@@ -66,9 +66,10 @@ export default class UsersClient extends ApiClient {
 	 */
 	public async updateUser(userId: string, data: UpdateUserDTO) {
 		try {
-			const { data: res } = await this.ax.patch<
-				DataResponse<User>
-			>(`/api/users/${userId}`, data);
+			const { data: res } = await this.ax.patch<DataResponse<User>>(
+				`/api/users/${userId}`,
+				data,
+			);
 
 			return res.data;
 		} catch (error) {
@@ -82,7 +83,6 @@ export default class UsersClient extends ApiClient {
 	 * @param token - The authentication token to be used in the `Authorization` header.
 	 */
 	public setAuth(token: string) {
-		this.ax.defaults.headers.common["Authorization"] =
-			`Bearer ${token}`;
+		this.ax.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 	}
 }
