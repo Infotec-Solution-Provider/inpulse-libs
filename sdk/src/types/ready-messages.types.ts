@@ -5,7 +5,7 @@
 export interface ReadyMessage {
 	id: number;
 	instance: string;
-	sectorId: number;
+	sectorId: number | null;
 	title: string;
 	message: string;
 	fileId: number | null;
@@ -21,7 +21,7 @@ export interface ReadyMessage {
 export interface CreateReadyMessageDto {
 	title: string;
 	message: string;
-	sectorId?: number; // Opcional - se não fornecido, usa o setor do usuário
+	sectorId?: number | null; 
 	onlyAdmin?: boolean;
 }
 
@@ -32,40 +32,5 @@ export interface UpdateReadyMessageDto {
 	title?: string;
 	message?: string;
 	onlyAdmin?: boolean;
+	sectorId?: number | null;
 }
-
-/**
- * @deprecated Use CreateReadyMessageDto ao invés deste tipo legado
- * Mantido apenas para compatibilidade com código antigo que usa UPPERCASE
- */
-export interface CreateReadyMessageDtoLegacy {
-	TITULO: string;
-	TEXTO_MENSAGEM: string;
-	SETOR?: number;
-	APENAS_ADMIN?: boolean;
-}
-
-/**
- * @deprecated Use UpdateReadyMessageDto ao invés deste tipo legado
- * Mantido apenas para compatibilidade com código antigo que usa UPPERCASE
- */
-export interface UpdateReadyMessageDtoLegacy {
-	TITULO?: string;
-	TEXTO_MENSAGEM?: string;
-	APENAS_ADMIN?: boolean;
-}
-
-/**
- * @deprecated Use ReadyMessage ao invés deste tipo legado
- * Mantido apenas para compatibilidade com código antigo
- */
-export interface ReadyMessageLegacy {
-	CODIGO: number;
-	TITULO: string;
-	SETOR: number;
-	TEXTO_MENSAGEM: string;
-	ARQUIVO: string;
-	ARQUIVO_CODIGO: string;
-	LAST_UPDATE: Date;
-}
-
