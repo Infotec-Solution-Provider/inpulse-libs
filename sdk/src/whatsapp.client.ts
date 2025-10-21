@@ -13,7 +13,6 @@ import {
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
 	WppContact,
-	WppContactWithCustomer,
 	WppMessage,
 	WppSchedule,
 	WppWallet,
@@ -166,20 +165,28 @@ export default class WhatsappClient extends ApiClient {
 		let url = `/api/whatsapp/contacts/customer`;
 		if (filters) {
 			const params = new URLSearchParams();
-			if (filters.name) params.append('name', filters.name);
-			if (filters.phone) params.append('phone', filters.phone);
-			if (filters.customerId !== undefined) params.append('customerId', String(filters.customerId));
-			if (filters.customerErp) params.append('customerErp', filters.customerErp);
-			if (filters.customerCnpj) params.append('customerCnpj', filters.customerCnpj);
-			if (filters.customerName) params.append('customerName', filters.customerName);
-			if (filters.hasCustomer !== undefined) params.append('hasCustomer', String(filters.hasCustomer));
-			if (filters.page !== undefined) params.append('page', String(filters.page));
-			if (filters.perPage !== undefined) params.append('perPage', String(filters.perPage));
+			if (filters.name) params.append("name", filters.name);
+			if (filters.phone) params.append("phone", filters.phone);
+			if (filters.customerId !== undefined)
+				params.append("customerId", String(filters.customerId));
+			if (filters.customerErp)
+				params.append("customerErp", filters.customerErp);
+			if (filters.customerCnpj)
+				params.append("customerCnpj", filters.customerCnpj);
+			if (filters.customerName)
+				params.append("customerName", filters.customerName);
+			if (filters.hasCustomer !== undefined)
+				params.append("hasCustomer", String(filters.hasCustomer));
+			if (filters.page !== undefined)
+				params.append("page", String(filters.page));
+			if (filters.perPage !== undefined)
+				params.append("perPage", String(filters.perPage));
 			const queryString = params.toString();
 			if (queryString) url += `?${queryString}`;
 		}
-		const { data: res } =
-			await this.ax.get<DataResponse<PaginatedContactsResponse>>(url);
+
+		const res = await this.ax.get<PaginatedContactsResponse>(url);
+
 		return res.data;
 	}
 
