@@ -16,14 +16,30 @@ export interface WppContactWithCustomer {
 	id: number;
 	name: string;
 	phone: string;
-	customerId?: number;
-	avatarUrl?: string;
+	customerId: number | null;
+	avatarUrl: string | null;
 	instance: string;
 	isBlocked: boolean;
 	isOnlyAdmin: boolean;
+	isDeleted: boolean;
+	createdAt: Date;
+	updatedAt: Date | null;
+	conversationExpiration: string | null;
 	customer: Customer | null;
 	chatingWith: string | null;
-	lastOutOfHoursReplySentAt?: Date | null;
+	lastOutOfHoursReplySentAt: Date | null;
+}
+
+export interface PaginatedContactsResponse {
+	data: WppContactWithCustomer[];
+	pagination: {
+		page: number;
+		perPage: number;
+		total: number;
+		totalPages: number;
+		hasNext: boolean;
+		hasPrev: boolean;
+	};
 }
 
 export interface WppMessage {

@@ -7,6 +7,7 @@ import {
 	AutomaticResponseRuleDTO,
 	CreateScheduleDTO,
 	ForwardMessagesData,
+	PaginatedContactsResponse,
 	PaginatedNotificationsResponse,
 	SendMessageData,
 	WppChatsAndMessages,
@@ -178,7 +179,7 @@ export default class WhatsappClient extends ApiClient {
 			if (queryString) url += `?${queryString}`;
 		}
 		const { data: res } =
-			await this.ax.get<DataResponse<WppContactWithCustomer[]>>(url);
+			await this.ax.get<DataResponse<PaginatedContactsResponse>>(url);
 		return res.data;
 	}
 
