@@ -201,12 +201,14 @@ export default class WhatsappClient extends ApiClient {
 		name: string,
 		phone: string,
 		customerId?: number,
+		sectorIds?: number[],
 	) {
 		const baseUrl = `/api/whatsapp`;
 		const url = customerId
 			? `${baseUrl}/customers/${customerId}/contacts`
 			: `${baseUrl}/contacts`;
-		const body = { name, phone };
+		const body: Record<string, any> = { name, phone };
+		if (sectorIds !== undefined) body['sectorIds'] = sectorIds;
 		const { data: res } = await this.ax.post<DataResponse<WppContact>>(
 			url,
 			body,
@@ -222,13 +224,26 @@ export default class WhatsappClient extends ApiClient {
 
 	public async updateContact(
 		contactId: number,
-		name: string,
+		name?: string,
 		customerId?: number | null,
+		sectorIds?: number[] | null,
 	) {
 		const url = `/api/whatsapp/contacts/${contactId}`;
-		const body: Record<string, any> = { name };
-		customerId !== undefined && (body["customerId"] = customerId);
+		const body: Record<string, any> = {};
+		if (name !== undefined) body["name"] = name;
+		if (customerId !== undefined) body["customerId"] = customerId;
+		if (sectorIds !== undefined) body["sectorIds"] = sectorIds;
 		const { data: res } = await this.ax.put<DataResponse<WppContact>>(
+			url,
+			body,
+		);
+		return res.data;
+	}
+
+	public async addSectorToContact(contactId: number, sectorId: number) {
+		const url = `/api/whatsapp/contacts/${contactId}/sectors`;
+		const body = { sectorId };
+		const { data: res } = await this.ax.post<DataResponse<WppContact>>(
 			url,
 			body,
 		);
