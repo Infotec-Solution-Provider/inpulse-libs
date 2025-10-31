@@ -14,9 +14,8 @@ export interface WppContact {
 		contactId: number;
 		sectorId: number;
 	}[];
-}
-
-export interface WppContactWithCustomer {
+	sectorIds?: number[];
+}export interface WppContactWithCustomer {
 	id: number;
 	name: string;
 	phone: string;
