@@ -72,6 +72,7 @@ export interface WppMessage {
 	sentAt: Date;
 	userId: number | null;
 	billingCategory: string | null;
+	clientId: number | null;
 }
 export interface ForwardMessagesData {
 	sourceType: "whatsapp" | "internal";

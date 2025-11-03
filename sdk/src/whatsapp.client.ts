@@ -1,3 +1,4 @@
+import FormData from "form-data";
 import ApiClient from "./api-client";
 import { RequestFilters } from "./types";
 import { DataResponse, MessageResponse } from "./types/response.types";
@@ -17,7 +18,6 @@ import {
 	WppSchedule,
 	WppWallet,
 } from "./types/whatsapp.types";
-import FormData from "form-data";
 
 type GetChatsResponse = DataResponse<WppChatsAndMessages>;
 type GetChatResponse = DataResponse<WppChatWithDetailsAndMessages>;
@@ -68,7 +68,7 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async markContactMessagesAsRead(contactId: number) {
-		const url = "/api/whatsapp/messages/mark-as-read";
+		const url = `/api/whatsapp/messages/mark-as-read`;
 		const body = { contactId };
 		const { data: res } = await this.ax.patch<MarkChatAsReadResponse>(
 			url,
@@ -77,8 +77,12 @@ export default class WhatsappClient extends ApiClient {
 		return res.data;
 	}
 
-	public async sendMessage(to: string, data: SendMessageData) {
-		const url = "/api/whatsapp/messages";
+	public async sendMessage(
+		clientId: string,
+		to: string,
+		data: SendMessageData,
+	) {
+		const url = `/api/whatsapp/${clientId}/messages`;
 		const formData = new FormData();
 		formData.append("to", to);
 		data.text && formData.append("text", data.text);
@@ -104,13 +108,13 @@ export default class WhatsappClient extends ApiClient {
 	}
 
 	public async editMessage(
+		clientId: string,
 		messageId: string,
 		newText: string,
 		isInternal = false,
 	) {
 		const type = isInternal ? "internal" : "whatsapp";
-
-		const url = `/api/${type}/messages/${messageId}`;
+		const url = `/api/${type}/${clientId}/messages/${messageId}`;
 		const body = { newText };
 		await this.ax.put(url, body);
 	}
@@ -128,7 +132,6 @@ export default class WhatsappClient extends ApiClient {
 	public async startChatByContactId(contactId: number, template?: any) {
 		const url = `/api/whatsapp/chats`;
 		const body = { contactId, template };
-
 		await this.ax.post<DataResponse<WppChatWithDetailsAndMessages>>(
 			url,
 			body,
@@ -184,9 +187,7 @@ export default class WhatsappClient extends ApiClient {
 			const queryString = params.toString();
 			if (queryString) url += `?${queryString}`;
 		}
-
 		const res = await this.ax.get<PaginatedContactsResponse>(url);
-
 		return res.data;
 	}
 
@@ -208,7 +209,7 @@ export default class WhatsappClient extends ApiClient {
 			? `${baseUrl}/customers/${customerId}/contacts`
 			: `${baseUrl}/contacts`;
 		const body: Record<string, any> = { name, phone };
-		if (sectorIds !== undefined) body['sectorIds'] = sectorIds;
+		if (sectorIds !== undefined) body["sectorIds"] = sectorIds;
 		const { data: res } = await this.ax.post<DataResponse<WppContact>>(
 			url,
 			body,
@@ -216,8 +217,8 @@ export default class WhatsappClient extends ApiClient {
 		return res.data;
 	}
 
-	public async forwardMessages(data: ForwardMessagesData) {
-		const url = "/api/whatsapp/messages/forward";
+	public async forwardMessages(clientId: string, data: ForwardMessagesData) {
+		const url = `/api/whatsapp/${clientId}/messages/forward`;
 		const body = data;
 		await this.ax.post<MessageResponse>(url, body);
 	}
