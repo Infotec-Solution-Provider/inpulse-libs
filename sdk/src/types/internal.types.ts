@@ -47,7 +47,7 @@ export interface InternalGroup {
 	groupDescription: string | null;
 	groupImageFileId: number | null;
 	participants: {
-		userId: number;
+		participantId: string;
 		joinedAt: Date;
 		lastReadAt: Date | null;
 		internalChatId: number;
