@@ -80,4 +80,6 @@ export interface File {
      * Data e hora em que o arquivo foi criado.
      */
     created_at: Date;
+
+    public_id: string;
 }
