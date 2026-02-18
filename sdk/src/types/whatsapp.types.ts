@@ -163,7 +163,6 @@ export interface SendMessageData {
 
 export interface SendFileMessageData extends SendMessageData {
 	fileId: number;
-	publicFileId: string;
 	sendAsDocument?: boolean;
 	sendAsAudio?: boolean;
 }
