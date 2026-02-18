@@ -113,7 +113,7 @@ export interface EmitSocketEventFn {
 	(
 		type: SocketEventType.InternalMessageStatus,
 		room: SocketServerInternalChatRoom,
-		data: InternalMessageEventData,
+		data: InternalMessageStatusEventData,
 	): Promise<MessageResponse>;
 	(
 		type: SocketEventType.InternalChatStarted,

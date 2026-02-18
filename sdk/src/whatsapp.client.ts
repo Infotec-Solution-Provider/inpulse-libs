@@ -10,6 +10,7 @@ import {
 	ForwardMessagesData,
 	PaginatedContactsResponse,
 	PaginatedNotificationsResponse,
+	SendFileMessageData,
 	SendMessageData,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
@@ -80,21 +81,21 @@ export default class WhatsappClient extends ApiClient {
 	public async sendMessage(
 		clientId: string,
 		to: string,
-		data: SendMessageData,
+		data: SendMessageData | SendFileMessageData,
 	) {
 		const url = `/api/whatsapp/${clientId}/messages`;
 		const formData = new FormData();
 		formData.append("to", to);
-		data.text && formData.append("text", data.text);
-		data.file && formData.append("file", data.file);
-		data.fileId && formData.append("fileId", String(data.fileId));
-		data.quotedId && formData.append("quotedId", String(data.quotedId));
-		data.chatId && formData.append("chatId", String(data.chatId));
-		data.contactId && formData.append("contactId", String(data.contactId));
-		data.sendAsAudio && formData.append("sendAsAudio", "true");
-		data.sendAsDocument && formData.append("sendAsDocument", "true");
-		data.sendAsChatOwner &&
-			formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
+		formData.append("text", data.text);
+		formData.append("contactId", String(data.contactId));
+		
+		("quotedId" in data) && data.quotedId && formData.append("quotedId", String(data.quotedId));
+		("chatId" in data) && data.chatId && formData.append("chatId", String(data.chatId));
+		("fileId" in data) && data.fileId && formData.append("fileId", String(data.fileId));
+		("sendAsAudio" in data) && data.sendAsAudio && formData.append("sendAsAudio", "true");
+		("sendAsDocument" in data) && data.sendAsDocument && formData.append("sendAsDocument", "true");
+		("sendAsChatOwner" in data) && data.sendAsChatOwner && formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
+
 		const { data: res } = await this.ax.post<DataResponse<WppMessage>>(
 			url,
 			formData,
@@ -122,10 +123,10 @@ export default class WhatsappClient extends ApiClient {
 	public async finishChatById(
 		id: number,
 		resultId: number,
-		triggerSatisfactionBot = false,
+		scheduleDate?: Date | null,
 	) {
 		const url = `/api/whatsapp/chats/${id}/finish`;
-		const body = { resultId, triggerSatisfactionBot };
+		const body = { resultId, scheduleDate };
 		await this.ax.post<MessageResponse>(url, body);
 	}
 
