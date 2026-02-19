@@ -1,4 +1,6 @@
-export interface FileExistsByHashResponse {
+import { DataResponse } from "./response.types";
+
+export type FileExistsByHashResponse = DataResponse<{
     /**
      * Indica se um arquivo com o hash especificado existe.
      */
@@ -7,7 +9,7 @@ export interface FileExistsByHashResponse {
      * Os dados do arquivo encontrado, caso exista.
      */
     file?: File;
-}
+}>;
 
 export interface UploadFileOptions {
     /**

@@ -1,6 +1,6 @@
 import FormData from "form-data";
 import ApiClient from "./api-client";
-import { File, UploadFileOptions } from "./types/files.types";
+import { File, FileExistsByHashResponse, UploadFileOptions } from "./types/files.types";
 import { DataResponse } from "./types/response.types";
 
 class FilesClient extends ApiClient {
@@ -42,8 +42,8 @@ class FilesClient extends ApiClient {
 		return (baseUrl || this.ax.defaults.baseURL) + `/api/files/${id}`;
 	}
 
-	public async getFileByHash(instance: string, hash: string): Promise<File> {
-		const { data: res } = await this.ax.get<DataResponse<File>>(
+	public async getFileByHash(instance: string, hash: string): Promise<FileExistsByHashResponse["data"]> {
+		const { data: res } = await this.ax.get<FileExistsByHashResponse>(
 			`/api/files/exists?instance=${instance}&hash=${hash}`,
 		);
 
