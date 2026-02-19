@@ -1,3 +1,14 @@
+export interface FileExistsByHashResponse {
+    /**
+     * Indica se um arquivo com o hash especificado existe.
+     */
+    exists: boolean;
+    /**
+     * Os dados do arquivo encontrado, caso exista.
+     */
+    file?: File;
+}
+
 export interface UploadFileOptions {
     /**
      * Nome da instância onde o arquivo está armazenado.

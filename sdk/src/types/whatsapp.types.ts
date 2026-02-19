@@ -154,17 +154,21 @@ export type WppChatWithDetailsAndMessages = WppChatWithDetails & {
 };
 
 export interface SendMessageData {
-	sendAsChatOwner?: boolean;
-	contactId: number;
 	text: string;
-	quotedId?: number | null;
+	contactId: number;
 	chatId?: number | null;
+	quotedId?: number | null;
+	isForwarded?: boolean;
+	sendAsChatOwner?: boolean;
+	sendAsAudio?: boolean;
+	sendAsDocument?: boolean;
+	fileId?: number;
 }
 
 export interface SendFileMessageData extends SendMessageData {
 	fileId: number;
-	sendAsDocument?: boolean;
-	sendAsAudio?: boolean;
+	sendAsDocument: boolean;
+	sendAsAudio: boolean;
 }
 
 export interface MonitorChat {

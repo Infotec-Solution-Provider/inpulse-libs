@@ -42,6 +42,14 @@ class FilesClient extends ApiClient {
 		return (baseUrl || this.ax.defaults.baseURL) + `/api/files/${id}`;
 	}
 
+	public async getFileByHash(instance: string, hash: string): Promise<File> {
+		const { data: res } = await this.ax.get<DataResponse<File>>(
+			`/api/files/exists?instance=${instance}&hash=${hash}`,
+		);
+
+		return res.data;
+	}
+
 	/**
 	 * Faz o upload de um arquivo.
 	 * @param {UploadFileOptions} props - Opções para o upload do arquivo.
