@@ -3,6 +3,7 @@ import { PaginatedResponse, RequestFilters } from "./types";
 import {
 	CreateCustomerDTO,
 	Customer,
+	CustomerFullDetail,
 	UpdateCustomerDTO,
 } from "./types/customers.types";
 
@@ -27,6 +28,19 @@ class CustomersClient extends ApiClient {
 		const response = await this.ax.get(
 			`/api/customers/${customerId}`,
 		);
+		return response.data;
+	}
+
+	/**
+	 * Obtém os detalhes completos do cliente para o modal CRM.
+	 * @param customerId - O ID do cliente a ser obtido.
+	 * @returns Uma Promise que resolve para os detalhes agregados do cliente.
+	 */
+	public async getCustomerFullDetail(customerId: number) {
+		const response = await this.ax.get<{ message: string; data: CustomerFullDetail }>(
+			`/api/customers/${customerId}/full`,
+		);
+
 		return response.data;
 	}
 
