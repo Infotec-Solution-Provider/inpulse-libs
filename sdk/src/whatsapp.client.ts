@@ -6,6 +6,10 @@ import {
 	AppNotification,
 	AutomaticResponseRule,
 	AutomaticResponseRuleDTO,
+	CustomerProfileManualOverrides,
+	CustomerProfileSummaryBatchRequest,
+	CustomerProfileSummaryFilters,
+	CustomerProfileSummaryPayload,
 	CreateScheduleDTO,
 	ForwardMessagesData,
 	PaginatedContactsResponse,
@@ -17,6 +21,7 @@ import {
 	WppContact,
 	WppMessage,
 	WppSchedule,
+	UpdateCustomerProfileManualOverridesInput,
 	WppWallet,
 } from "./types/whatsapp.types";
 
@@ -152,6 +157,57 @@ export default class WhatsappClient extends ApiClient {
 		const url = `/api/whatsapp/customer/${customerId}/contacts`;
 		const { data: res } =
 			await this.ax.get<DataResponse<WppContact[]>>(url);
+		return res.data;
+	}
+
+	public async getCustomerProfileSummary(customerId: number) {
+		const { data: res } = await this.ax.get<DataResponse<CustomerProfileSummaryPayload>>(
+			`/api/whatsapp/customers/${customerId}/profile-tags/summary`,
+		);
+		return res.data;
+	}
+
+	public async getCustomerProfileManualOverrides(customerId: number) {
+		const { data: res } = await this.ax.get<DataResponse<CustomerProfileManualOverrides | null>>(
+			`/api/whatsapp/customers/${customerId}/profile-tags/manual-overrides`,
+		);
+		return res.data;
+	}
+
+	public async updateCustomerProfileManualOverrides(
+		customerId: number,
+		data: UpdateCustomerProfileManualOverridesInput,
+	) {
+		const { data: res } = await this.ax.put<DataResponse<CustomerProfileSummaryPayload>>(
+			`/api/whatsapp/customers/${customerId}/profile-tags/manual-overrides`,
+			data,
+		);
+		return res.data;
+	}
+
+	public async getCustomerProfileSummaries(data: CustomerProfileSummaryBatchRequest) {
+		const { data: res } = await this.ax.post<DataResponse<CustomerProfileSummaryPayload[]>>(
+			`/api/whatsapp/customers/profile-tags/summary/batch`,
+			data,
+		);
+		return res.data;
+	}
+
+	public async findCustomerIdsByProfileFilters(filters: CustomerProfileSummaryFilters) {
+		const params = new URLSearchParams();
+
+		if (filters.profileLevel) params.append("profileLevel", filters.profileLevel);
+		if (filters.interactionLevel) params.append("interactionLevel", filters.interactionLevel);
+		if (filters.purchaseLevel) params.append("purchaseLevel", filters.purchaseLevel);
+		if (filters.ageLevel) params.append("ageLevel", filters.ageLevel);
+		if (filters.purchaseInterestLevel) params.append("purchaseInterestLevel", filters.purchaseInterestLevel);
+
+		const queryString = params.toString();
+		const url = queryString
+			? `/api/whatsapp/customers/profile-tags/customer-ids?${queryString}`
+			: `/api/whatsapp/customers/profile-tags/customer-ids`;
+
+		const { data: res } = await this.ax.get<DataResponse<number[]>>(url);
 		return res.data;
 	}
 
