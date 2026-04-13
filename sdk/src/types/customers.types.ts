@@ -146,6 +146,22 @@ export interface CustomerScheduleDetail {
 	MANUAL: "S" | "N" | null;
 }
 
+export interface CustomerTelephonySchedule extends CustomerScheduleDetail {
+	CAMPANHA_NOME: string | null;
+	OPERADOR_NOME: string | null;
+	OPERADOR_LIGACAO_NOME: string | null;
+	CLIENTE_RAZAO: string | null;
+	CLIENTE_FANTASIA: string | null;
+}
+
+export interface FinishTelephonyScheduleDTO {
+	resultId: number;
+	scheduleDate?: string;
+	startedAt?: string;
+	finishedAt?: string;
+	dialedPhone?: string;
+}
+
 export interface CustomerCallHistoryDetail {
 	CODIGO: number;
 	OPERADOR: number;

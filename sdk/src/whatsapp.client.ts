@@ -16,6 +16,9 @@ import {
 	PaginatedNotificationsResponse,
 	SendFileMessageData,
 	SendMessageData,
+	UnifiedSchedule,
+	UnifiedScheduleFilters,
+	UnifiedSchedulesResponse,
 	WppChatsAndMessages,
 	WppChatWithDetailsAndMessages,
 	WppContact,
@@ -406,6 +409,26 @@ export default class WhatsappClient extends ApiClient {
 			}
 		}
 		const response = await this.ax.get(baseUrl);
+		return response.data;
+	}
+
+	public async getUnifiedSchedules(filters?: UnifiedScheduleFilters) {
+		let baseUrl = `/api/whatsapp/schedules/unified`;
+		const params = new URLSearchParams(
+			Object.entries(filters ?? {}).reduce<Record<string, string>>((acc, [key, value]) => {
+				if (value !== undefined && value !== null) {
+					acc[key] = String(value);
+				}
+
+				return acc;
+			}, {}),
+		);
+
+		if (params.toString()) {
+			baseUrl += `?${params.toString()}`;
+		}
+
+		const response = await this.ax.get<UnifiedSchedulesResponse>(baseUrl);
 		return response.data;
 	}
 

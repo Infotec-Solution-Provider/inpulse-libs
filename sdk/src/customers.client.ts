@@ -1,9 +1,11 @@
 import ApiClient from "./api-client";
-import { PaginatedResponse, RequestFilters } from "./types";
+import { MessageResponse, PaginatedResponse, RequestFilters } from "./types";
 import {
 	CreateCustomerDTO,
 	Customer,
 	CustomerFullDetail,
+	FinishTelephonyScheduleDTO,
+	CustomerTelephonySchedule,
 	UpdateCustomerDTO,
 } from "./types/customers.types";
 
@@ -75,6 +77,34 @@ class CustomersClient extends ApiClient {
 
 		const response =
 			await this.ax.get<PaginatedResponse<Customer>>(baseUrl);
+
+		return response.data;
+	}
+
+	public async getTelephonySchedules(
+		filters?: RequestFilters<CustomerTelephonySchedule>,
+	) {
+		let baseUrl = `/api/customers/schedules/telephony`;
+
+		if (filters) {
+			const params = new URLSearchParams(filters);
+			baseUrl += `?${params.toString()}`;
+		}
+
+		const response =
+			await this.ax.get<PaginatedResponse<CustomerTelephonySchedule>>(baseUrl);
+
+		return response.data;
+	}
+
+	public async finishTelephonySchedule(
+		scheduleId: number,
+		data: FinishTelephonyScheduleDTO,
+	) {
+		const response = await this.ax.patch<MessageResponse>(
+			`/api/customers/schedules/telephony/${scheduleId}/finish`,
+			data,
+		);
 
 		return response.data;
 	}
