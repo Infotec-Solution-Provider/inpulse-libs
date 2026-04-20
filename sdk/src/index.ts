@@ -1,4 +1,5 @@
 export * from "./types";
+export { default as AiClient } from "./ai.client";
 export { default as AuthClient } from "./auth.client";
 export { default as CustomersClient } from "./customers.client";
 export { default as FilesClient } from "./files.client";
