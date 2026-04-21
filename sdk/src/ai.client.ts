@@ -1,5 +1,5 @@
 import ApiClient from "./api-client";
-import type { DataResponse } from "./types/response.types";
+import type { DataResponse, FlexiblePaginatedResponse, PaginatedResponse } from "./types/response.types";
 import type {
 	AiAgentConfig,
 	AiTenantConfig,
@@ -9,7 +9,18 @@ import type {
 	SuggestResponseResponse,
 	SummarizeChatRequest,
 	SummarizeChatResponse,
+	AiAgent,
+	AiAgentChatSession,
+	AiAgentActionLog,
+	CreateAiAgentInput,
+	UpdateAiAgentInput,
+	AiAgentAudienceInput,
+	AiAgentKnowledgeEntryInput,
+	AiAgentActionLogFilters,
+	PaginatedActionLogs,
+	AiAgentAudiencePreview,
 } from "./types/ai.types";
+import type { WppContactWithCustomer } from "./types/whatsapp.types";
 
 export default class AiClient extends ApiClient {
 	private authHeader(token: string) {
@@ -80,6 +91,124 @@ export default class AiClient extends ApiClient {
 		const { data: res } = await this.ax.put<DataResponse<AiAgentConfig>>(
 			`/api/ai/agent-config/${instance}`,
 			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	// ─── AI Agents CRUD ───────────────────────────────────────────────────────
+
+	async listAgents(token: string): Promise<AiAgent[]> {
+		const { data: res } = await this.ax.get<DataResponse<AiAgent[]>>(
+			"/api/ai/agents",
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async getAgent(agentId: number, token: string): Promise<AiAgent> {
+		const { data: res } = await this.ax.get<DataResponse<AiAgent>>(
+			`/api/ai/agents/${agentId}`,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async createAgent(data: CreateAiAgentInput, token: string): Promise<AiAgent> {
+		const { data: res } = await this.ax.post<DataResponse<AiAgent>>(
+			"/api/ai/agents",
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async updateAgent(agentId: number, data: UpdateAiAgentInput, token: string): Promise<AiAgent> {
+		const { data: res } = await this.ax.patch<DataResponse<AiAgent>>(
+			`/api/ai/agents/${agentId}`,
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async deleteAgent(agentId: number, token: string): Promise<void> {
+		await this.ax.delete(`/api/ai/agents/${agentId}`, { headers: this.authHeader(token) });
+	}
+
+	async upsertAgentAudience(agentId: number, data: AiAgentAudienceInput, token: string): Promise<AiAgent> {
+		const { data: res } = await this.ax.put<DataResponse<AiAgent>>(
+			`/api/ai/agents/${agentId}/audience`,
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async previewAgentAudience(
+		agentId: number,
+		filters: { page?: number; perPage?: number } | undefined,
+		token: string,
+	): Promise<AiAgentAudiencePreview> {
+		const { data: res } = await this.ax.post<FlexiblePaginatedResponse<WppContactWithCustomer>>(
+			`/api/ai/agents/${agentId}/audience/preview`,
+			undefined,
+			{
+				params: filters,
+				headers: this.authHeader(token),
+			},
+		);
+
+		return { data: res.data, page: res.page };
+	}
+
+	async addAgentKnowledgeEntry(
+		agentId: number,
+		data: AiAgentKnowledgeEntryInput,
+		token: string,
+	): Promise<AiAgent> {
+		const { data: res } = await this.ax.post<DataResponse<AiAgent>>(
+			`/api/ai/agents/${agentId}/knowledge`,
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async updateAgentKnowledgeEntry(
+		agentId: number,
+		entryId: number,
+		data: Partial<AiAgentKnowledgeEntryInput>,
+		token: string,
+	): Promise<AiAgent> {
+		const { data: res } = await this.ax.patch<DataResponse<AiAgent>>(
+			`/api/ai/agents/${agentId}/knowledge/${entryId}`,
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async deleteAgentKnowledgeEntry(agentId: number, entryId: number, token: string): Promise<void> {
+		await this.ax.delete(`/api/ai/agents/${agentId}/knowledge/${entryId}`, {
+			headers: this.authHeader(token),
+		});
+	}
+
+	async listAgentActionLogs(filters: AiAgentActionLogFilters, token: string): Promise<PaginatedActionLogs> {
+		const { data: res } = await this.ax.get<DataResponse<PaginatedActionLogs>>(
+			"/api/ai/agents/logs",
+			{
+				params: filters,
+				headers: this.authHeader(token),
+			},
+		);
+		return res.data;
+	}
+
+	async listActiveSessions(token: string): Promise<AiAgentChatSession[]> {
+		const { data: res } = await this.ax.get<DataResponse<AiAgentChatSession[]>>(
+			"/api/ai/agents/sessions/active",
 			{ headers: this.authHeader(token) },
 		);
 		return res.data;

@@ -21,6 +21,15 @@ export interface PaginatedResponse<T> {
 	};
 }
 
+export interface FlexiblePaginatedResponse<T> {
+	message: string;
+	data: Array<T>;
+	page: {
+		current: number;
+		totalRows: number;
+	};
+}
+
 export interface QueryResponse<T> {
 	result: T;
 }

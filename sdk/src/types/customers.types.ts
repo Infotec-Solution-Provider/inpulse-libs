@@ -77,6 +77,11 @@ export interface CreateCustomerDTO {
 }
 export type UpdateCustomerDTO = Partial<CreateCustomerDTO>;
 
+export interface CustomerLookupOption {
+	CODIGO: number;
+	NOME: string | null;
+}
+
 export interface CustomerContactDetail {
 	CODIGO: string;
 	NOME: string;

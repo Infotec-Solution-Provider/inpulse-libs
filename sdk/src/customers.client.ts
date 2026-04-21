@@ -1,9 +1,10 @@
 import ApiClient from "./api-client";
-import { MessageResponse, PaginatedResponse, RequestFilters } from "./types";
+import { DataResponse, MessageResponse, PaginatedResponse, RequestFilters } from "./types";
 import {
 	CreateCustomerDTO,
 	Customer,
 	CustomerFullDetail,
+	CustomerLookupOption,
 	FinishTelephonyScheduleDTO,
 	CustomerTelephonySchedule,
 	UpdateCustomerDTO,
@@ -79,6 +80,30 @@ class CustomersClient extends ApiClient {
 			await this.ax.get<PaginatedResponse<Customer>>(baseUrl);
 
 		return response.data;
+	}
+
+	public async getCampaigns() {
+		const response = await this.ax.get<DataResponse<CustomerLookupOption[]>>(
+			`/api/customers/campaigns`,
+		);
+
+		return response.data.data;
+	}
+
+	public async getSegments() {
+		const response = await this.ax.get<DataResponse<CustomerLookupOption[]>>(
+			`/api/customers/segments`,
+		);
+
+		return response.data.data;
+	}
+
+	public async getOperators() {
+		const response = await this.ax.get<DataResponse<CustomerLookupOption[]>>(
+			`/api/customers/operators`,
+		);
+
+		return response.data.data;
 	}
 
 	public async getTelephonySchedules(
