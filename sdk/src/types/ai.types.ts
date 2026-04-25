@@ -50,7 +50,7 @@ export interface AiAgentConfig {
 
 // ─── AI Agents (full CRUD) ────────────────────────────────────────────────────
 
-export type AiAgentTriggerType = "NEW_MESSAGE_NO_AGENT" | "RESPONSE_TIMEOUT" | "KEYWORD" | "ALWAYS";
+export type AiAgentTriggerType = "MESSAGE_DURING_HOURS" | "RESPONSE_TIMEOUT" | "KEYWORD" | "ALWAYS";
 
 export type AiAgentProactiveFrequency = "DAILY" | "WEEKDAYS" | "CUSTOM_DAYS";
 
@@ -88,6 +88,10 @@ export interface AiAgentKnowledgeEntry {
 	agentId: number;
 	title: string;
 	content: string;
+	fileId: number | null;
+	fileName: string | null;
+	fileType: string | null;
+	fileSize: number | null;
 	order: number;
 }
 
@@ -186,12 +190,22 @@ export interface AiAgentAudienceInput {
 
 export interface AiAgentTriggerInput {
 	type: AiAgentTriggerType;
-	config?: { timeoutMinutes?: number; keywords?: string[] };
+	config?: {
+		timeoutMinutes?: number;
+		keywords?: string[];
+		startTime?: string;
+		endTime?: string;
+		timezone?: string;
+	};
 }
 
 export interface AiAgentKnowledgeEntryInput {
 	title: string;
 	content: string;
+	fileId?: number;
+	fileName?: string;
+	fileType?: string;
+	fileSize?: number;
 	order?: number;
 }
 
