@@ -5,8 +5,11 @@ import type {
 	AiTenantConfig,
 	AnalyzeCustomerRequest,
 	AnalyzeCustomerResponse,
+	CreateSupervisorAiSessionRequest,
 	SuggestResponseRequest,
 	SuggestResponseResponse,
+	SupervisorAiSession,
+	SupervisorAiSessionDetail,
 	SummarizeChatRequest,
 	SummarizeChatResponse,
 	AiAgent,
@@ -19,6 +22,8 @@ import type {
 	AiAgentActionLogFilters,
 	PaginatedActionLogs,
 	AiAgentAudiencePreview,
+	SendSupervisorAiMessageRequest,
+	SendSupervisorAiMessageResponse,
 } from "./types/ai.types";
 import type { WppContactWithCustomer } from "./types/whatsapp.types";
 
@@ -48,6 +53,47 @@ export default class AiClient extends ApiClient {
 	async analyzeCustomer(data: AnalyzeCustomerRequest, token: string): Promise<AnalyzeCustomerResponse> {
 		const { data: res } = await this.ax.post<DataResponse<AnalyzeCustomerResponse>>(
 			"/api/ai/completions/analyze-customer",
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async listSupervisorSessions(token: string): Promise<SupervisorAiSession[]> {
+		const { data: res } = await this.ax.get<DataResponse<SupervisorAiSession[]>>(
+			"/api/ai/supervisor-chat/sessions",
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async createSupervisorSession(
+		data: CreateSupervisorAiSessionRequest | undefined,
+		token: string,
+	): Promise<SupervisorAiSession> {
+		const { data: res } = await this.ax.post<DataResponse<SupervisorAiSession>>(
+			"/api/ai/supervisor-chat/sessions",
+			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async getSupervisorSession(sessionId: number, token: string): Promise<SupervisorAiSessionDetail> {
+		const { data: res } = await this.ax.get<DataResponse<SupervisorAiSessionDetail>>(
+			`/api/ai/supervisor-chat/sessions/${sessionId}`,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async sendSupervisorMessage(
+		sessionId: number,
+		data: SendSupervisorAiMessageRequest,
+		token: string,
+	): Promise<SendSupervisorAiMessageResponse> {
+		const { data: res } = await this.ax.post<DataResponse<SendSupervisorAiMessageResponse>>(
+			`/api/ai/supervisor-chat/sessions/${sessionId}/messages`,
 			data,
 			{ headers: this.authHeader(token) },
 		);
