@@ -59,9 +59,10 @@ export default class AiClient extends ApiClient {
 		return res.data;
 	}
 
-	async listSupervisorSessions(token: string): Promise<SupervisorAiSession[]> {
+	async listSupervisorSessions(token: string, status?: "ACTIVE" | "ARCHIVED"): Promise<SupervisorAiSession[]> {
+		const query = status ? `?status=${status}` : "";
 		const { data: res } = await this.ax.get<DataResponse<SupervisorAiSession[]>>(
-			"/api/ai/supervisor-chat/sessions",
+			`/api/ai/supervisor-chat/sessions${query}`,
 			{ headers: this.authHeader(token) },
 		);
 		return res.data;
@@ -74,6 +75,19 @@ export default class AiClient extends ApiClient {
 		const { data: res } = await this.ax.post<DataResponse<SupervisorAiSession>>(
 			"/api/ai/supervisor-chat/sessions",
 			data,
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async patchSupervisorSessionStatus(
+		sessionId: number,
+		status: "ACTIVE" | "ARCHIVED",
+		token: string,
+	): Promise<SupervisorAiSession> {
+		const { data: res } = await this.ax.patch<DataResponse<SupervisorAiSession>>(
+			`/api/ai/supervisor-chat/sessions/${sessionId}`,
+			{ status },
 			{ headers: this.authHeader(token) },
 		);
 		return res.data;

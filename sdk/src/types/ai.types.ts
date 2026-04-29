@@ -92,9 +92,16 @@ export interface CreateSupervisorAiSessionRequest {
 	title?: string;
 }
 
+export interface SupervisorAiFileContext {
+	name: string;
+	content: string;
+}
+
 export interface SendSupervisorAiMessageRequest {
 	message: string;
 	context?: SupervisorAiContextInput;
+	model?: string;
+	fileContext?: SupervisorAiFileContext[];
 }
 
 export interface SendSupervisorAiMessageResponse {
