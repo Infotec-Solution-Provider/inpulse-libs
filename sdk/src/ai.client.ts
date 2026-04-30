@@ -24,6 +24,7 @@ import type {
 	AiAgentAudiencePreview,
 	SendSupervisorAiMessageRequest,
 	SendSupervisorAiMessageResponse,
+	AiUsageSummary,
 } from "./types/ai.types";
 import type { WppContactWithCustomer } from "./types/whatsapp.types";
 
@@ -269,6 +270,14 @@ export default class AiClient extends ApiClient {
 	async listActiveSessions(token: string): Promise<AiAgentChatSession[]> {
 		const { data: res } = await this.ax.get<DataResponse<AiAgentChatSession[]>>(
 			"/api/ai/agents/sessions/active",
+			{ headers: this.authHeader(token) },
+		);
+		return res.data;
+	}
+
+	async getUsageSummary(period: string, token: string): Promise<AiUsageSummary> {
+		const { data: res } = await this.ax.get<DataResponse<AiUsageSummary>>(
+			`/api/ai/usage?period=${encodeURIComponent(period)}`,
 			{ headers: this.authHeader(token) },
 		);
 		return res.data;
