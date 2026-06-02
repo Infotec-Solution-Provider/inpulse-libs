@@ -4,6 +4,7 @@ import {
 	SocketServerInternalChatRoom,
 	SocketServerReportsRoom,
 	SocketServerRoom,
+	SocketServerUserRoom,
 } from "./socket-rooms.types";
 import { MessageResponse } from "./response.types";
 import { WppMessage, WppMessageStatus } from "./whatsapp.types";
@@ -32,6 +33,7 @@ export enum SocketEventType {
 	InternalMessageEdit = "internal_message_edit",
 	InternalMessageDelete = "internal_message_delete",
 	InternalMessageStatus = "internal_message_status",
+	TelephonyCallReceived = "telephony_call_received",
 }
 
 export interface EmitSocketEventFn {
@@ -125,6 +127,11 @@ export interface EmitSocketEventFn {
 		room: SocketServerRoom,
 		data: InternalChatFinishedEventData,
 	): Promise<MessageResponse>;
+	(
+		type: SocketEventType.TelephonyCallReceived,
+		room: SocketServerUserRoom,
+		data: TelephonyCallReceivedEventData,
+	): Promise<MessageResponse>;
 }
 
 export interface ListenSocketEventFn {
@@ -199,6 +206,10 @@ export interface ListenSocketEventFn {
 	(
 		type: SocketEventType.WppMessageDelete,
 		callback: (data: WppMessageDeleteEventData) => void,
+	): void;
+	(
+		type: SocketEventType.TelephonyCallReceived,
+		callback: (data: TelephonyCallReceivedEventData) => void,
 	): void;
 }
 
@@ -306,3 +317,14 @@ export type ReportStatusEventData = {
 			progress: number;
 		}
 	);
+
+export interface TelephonyCallReceivedEventData {
+	uniqueid: string;
+	callerNumber: string;
+	callerName: string | null;
+	ramal: string;
+	operatorId: number | null;
+	instance: string;
+	receivedAt: string;
+	receptiveCallId: number | null;
+}
