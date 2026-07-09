@@ -69,6 +69,9 @@ class FilesClient extends ApiClient {
 		const response = await this.ax.post<DataResponse<File>>("/api/files", form, {
 			// deixe o boundary correto
 			headers: form.getHeaders(),
+			timeout: ApiClient.UPLOAD_TIMEOUT_MS,
+			maxBodyLength: Infinity,
+			maxContentLength: Infinity,
 		});
 
 		return response.data.data;

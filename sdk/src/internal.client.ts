@@ -38,6 +38,9 @@ export default class InternalChatClient extends ApiClient {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
+			timeout: groupImage
+				? ApiClient.UPLOAD_TIMEOUT_MS
+				: ApiClient.DEFAULT_TIMEOUT_MS,
 		});
 
 		return res.data;
@@ -91,6 +94,9 @@ export default class InternalChatClient extends ApiClient {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
+				timeout: data.file
+					? ApiClient.UPLOAD_TIMEOUT_MS
+					: ApiClient.DEFAULT_TIMEOUT_MS,
 			},
 		);
 	}
@@ -119,6 +125,7 @@ export default class InternalChatClient extends ApiClient {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
+			timeout: ApiClient.UPLOAD_TIMEOUT_MS,
 		});
 		return res.data;
 	}
