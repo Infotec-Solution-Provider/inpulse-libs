@@ -103,6 +103,7 @@ export default class WhatsappClient extends ApiClient {
 		("sendAsAudio" in data) && data.sendAsAudio && formData.append("sendAsAudio", "true");
 		("sendAsDocument" in data) && data.sendAsDocument && formData.append("sendAsDocument", "true");
 		("sendAsChatOwner" in data) && data.sendAsChatOwner && formData.append("sendAsChatOwner", String(data.sendAsChatOwner));
+		("traceId" in data) && data.traceId && formData.append("traceId", data.traceId);
 
 		const { data: res } = await this.ax.post<DataResponse<WppMessage>>(
 			url,
@@ -110,7 +111,11 @@ export default class WhatsappClient extends ApiClient {
 			{
 				headers: {
 					"Content-Type": "multipart/form-data",
+					...(("traceId" in data) && data.traceId ? { "x-upload-trace-id": data.traceId } : {}),
 				},
+				timeout: ("fileId" in data) && data.fileId
+					? ApiClient.UPLOAD_TIMEOUT_MS
+					: ApiClient.DEFAULT_TIMEOUT_MS,
 			},
 		);
 		return res.data;

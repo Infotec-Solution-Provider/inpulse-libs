@@ -60,6 +60,12 @@ class FilesClient extends ApiClient {
 		const form = new FormData();
 		form.append("instance", props.instance);
 		form.append("dirType", props.dirType);
+		if (props.contentHash) {
+			form.append("contentHash", props.contentHash);
+		}
+		if (props.traceId) {
+			form.append("traceId", props.traceId);
+		}
 
 		form.append("file", props.buffer, {
 			filename: props.fileName,
@@ -68,7 +74,10 @@ class FilesClient extends ApiClient {
 
 		const response = await this.ax.post<DataResponse<File>>("/api/files", form, {
 			// deixe o boundary correto
-			headers: form.getHeaders(),
+			headers: {
+				...form.getHeaders(),
+				...(props.traceId ? { "x-upload-trace-id": props.traceId } : {}),
+			},
 			timeout: ApiClient.UPLOAD_TIMEOUT_MS,
 			maxBodyLength: Infinity,
 			maxContentLength: Infinity,

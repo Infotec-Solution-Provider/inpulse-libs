@@ -84,6 +84,7 @@ export default class InternalChatClient extends ApiClient {
 		data.sendAsDocument && formData.append("sendAsDocument", "true");
 		data.file && formData.append("file", data.file);
 		data.fileId && formData.append("fileId", data.fileId.toString());
+		data.traceId && formData.append("traceId", data.traceId);
 		if (data.mentions && data.mentions.length > 0) {
   		formData.append("mentions", JSON.stringify(data.mentions));
 		}
@@ -93,6 +94,7 @@ export default class InternalChatClient extends ApiClient {
 			{
 				headers: {
 					"Content-Type": "multipart/form-data",
+					...(data.traceId ? { "x-upload-trace-id": data.traceId } : {}),
 				},
 				timeout: data.file
 					? ApiClient.UPLOAD_TIMEOUT_MS

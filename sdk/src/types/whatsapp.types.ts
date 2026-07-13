@@ -302,6 +302,7 @@ export interface SendMessageData {
 	sendAsAudio?: boolean;
 	sendAsDocument?: boolean;
 	fileId?: number;
+	traceId?: string;
 }
 
 export interface SendFileMessageData extends SendMessageData {

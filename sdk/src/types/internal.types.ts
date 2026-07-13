@@ -72,6 +72,7 @@ export interface InternalSendMessageData {
 	file?: File;
 	fileId?: number;
 	mentions?: MentionData[];
+	traceId?: string;
 }
 export interface MentionData {
 	userId: number;

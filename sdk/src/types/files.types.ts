@@ -36,6 +36,16 @@ export interface UploadFileOptions {
      * Tipo MIME do arquivo.
      */
     mimeType: string;
+
+    /**
+     * Identificador de rastreio para correlacionar logs ponta a ponta.
+     */
+    traceId?: string;
+
+    /**
+     * Hash SHA-256 pré-calculado do conteúdo, quando disponível.
+     */
+    contentHash?: string;
 }
 
 /**
