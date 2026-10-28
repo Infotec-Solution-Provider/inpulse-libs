@@ -1,3 +1,4 @@
+import type { CatalogOrderKind, CatalogOrderSnapshot, CatalogOrderSave } from "./types/crm-marketing.types";
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import type {
   CrmMarketingCatalog,
@@ -201,13 +202,33 @@ export default class CrmMarketingClient {
   async ordering() {
     return (await this.ax.get<CrmOrdering>(`${this.root}/ordering`)).data;
   }
-  async saveOrdering(criteria: CrmOrderCriterion[], expected: CrmOrderingSnapshot) {
+  async saveOrdering(criteria: CrmOrderCriterion[], expected: CrmOrderingSnapshot, cityMode?: "S" | "N") {
     return (
       await this.ax.patch<CrmOrdering>(
         `${this.root}/ordering`,
-        { criteria, expected },
+        { criteria, expected, ...(cityMode ? { cityMode } : {}) },
         this.pinned(),
       )
     ).data;
   }
+	async catalogOrdering(
+		kind: CatalogOrderKind,
+		scope = kind === "cities" ? "national" : "all",
+	) {
+		return (
+			await this.ax.get<CatalogOrderSnapshot>(
+				`/api/crm/catalog-ordering/${kind}`,
+				{ params: { scope } },
+			)
+		).data;
+	}
+	async saveCatalogOrdering(kind: CatalogOrderKind, data: CatalogOrderSave) {
+		return (
+			await this.ax.put<CatalogOrderSnapshot>(
+				`/api/crm/catalog-ordering/${kind}`,
+				data,
+				this.pinned(),
+			)
+		).data;
+	}
 }
